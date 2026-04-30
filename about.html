@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Glamour | Our Vision</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+
+        :root {
+            --glam-gold: #d4af37;
+            --glam-black: #050505;
+            --glam-dark: #111111;
+        }
+
+        body {
+            background-color: var(--glam-black);
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #f5e050 0%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 30px;
+            transition: transform 0.3s ease, border 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 4px;
+        }
+
+        .stat-circle {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--glam-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .nav-link {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.6);
+            transition: 0.3s;
+        }
+
+        .nav-link:hover { color: var(--glam-gold); }
+
+        /* Animation for smooth entrance */
+        .fade-in {
+            animation: fadeIn 1.2s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="pt-24 pb-12">
+
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/5">
+        <div class="text-2xl hero-title gold-gradient">GLAMOUR</div>
+        <div class="flex gap-8">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="register.html" class="nav-link">Join</a>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6">
+        
+        <section class="text-center mb-24 fade-in">
+            <h1 class="text-5xl md:text-7xl font-extrabold hero-title mb-6">REDEFINING <br><span class="gold-gradient">SOFT LIFE</span></h1>
+            <p class="text-zinc-400 max-w-2xl mx-auto text-lg leading-relaxed">
+                Glamour is more than a platform; it's a digital ecosystem designed to turn your time into high-value assets. We empower creators, students, and professionals to monetize their daily lifestyle.
+            </p>
+        </section>
+
+        <div class="grid md:grid-cols-2 gap-8 mb-24">
+            <div class="glass-card p-10">
+                <div class="stat-circle text-2xl"><i class="fas fa-eye gold-gradient"></i></div>
+                <h3 class="text-2xl font-bold text-center mb-4 gold-gradient">Our Vision</h3>
+                <p class="text-zinc-400 text-center leading-relaxed">
+                    To build a world where "The Soft Life" is accessible to everyone. We bridge the gap between effort and reward through innovative digital modules.
+                </p>
+            </div>
+            <div class="glass-card p-10">
+                <div class="stat-circle text-2xl"><i class="fas fa-bullseye gold-gradient"></i></div>
+                <h3 class="text-2xl font-bold text-center mb-4 gold-gradient">Our Mission</h3>
+                <p class="text-zinc-400 text-center leading-relaxed">
+                    To provide a stable, high-yield earning environment that utilizes global payment gateways to ensure our users get paid for their skills in real-time.
+                </p>
+            </div>
+        </div>
+
+        <section class="mb-24">
+            <h2 class="text-center text-3xl font-bold hero-title mb-12 gold-gradient">WHY GLAMOUR?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-8 border-l border-gold-500/20 bg-white/5 rounded-r-2xl">
+                    <h4 class="font-bold text-white mb-2">Global Connectivity</h4>
+                    <p class="text-sm text-zinc-500">We connect you with European markets, allowing you to earn in Euros and Pounds seamlessly from anywhere.</p>
+                </div>
+                <div class="p-8 border-l border-gold-500/20 bg-white/5 rounded-r-2xl">
+                    <h4 class="font-bold text-white mb-2">Instant Liquidity</h4>
+                    <p class="text-sm text-zinc-500">Your earnings are yours. Our automated payout systems ensure that withdrawals are fast, secure, and hassle-free.</p>
+                </div>
+                <div class="p-8 border-l border-gold-500/20 bg-white/5 rounded-r-2xl">
+                    <h4 class="font-bold text-white mb-2">Digital Innovation</h4>
+                    <p class="text-sm text-zinc-500">From GlamScript to FaceTime modules, we stay ahead of the curve in digital monetization trends.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card p-12 text-center relative overflow-hidden">
+            <div class="relative z-10">
+                <h2 class="text-3xl font-bold mb-4">READY TO START?</h2>
+                <p class="text-zinc-400 mb-8">Join thousands of members already living the Glamour lifestyle.</p>
+                <button onclick="window.location.href='register.html'" class="px-12 py-4 bg-gradient-to-r from-yellow-600 to-yellow-400 text-black font-black uppercase tracking-widest rounded-full hover:scale-105 transition-transform">
+                    Activate Now
+                </button>
+            </div>
+            <i class="fas fa-crown absolute -bottom-10 -right-10 text-[200px] text-white/5 rotate-12"></i>
+        </section>
+
+        <footer class="mt-24 text-center">
+            <p class="text-[10px] text-zinc-600 uppercase tracking-[4px] font-bold">© 2026 GLAMOUR — DEFINING LUXURY EARNINGS</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
