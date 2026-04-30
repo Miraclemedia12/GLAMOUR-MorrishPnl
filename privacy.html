@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Privacy Policy | Glamour</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            --glam-gold: #d4af37;
+            --glam-black: #050505;
+        }
+
+        body { 
+            background-color: var(--glam-black); 
+            color: #ffffff; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            margin: 0; padding: 0;
+            line-height: 1.7;
+        }
+
+        .gold-text {
+            color: var(--glam-gold);
+            background: linear-gradient(135deg, #f5e050 0%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .content-section {
+            padding: 40px 24px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .policy-tag {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--glam-gold);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+        }
+
+        .policy-block {
+            margin-bottom: 40px;
+        }
+
+        .policy-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #f3f4f6;
+        }
+
+        .policy-text {
+            color: #9ca3af;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--glam-gold);
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        #loader {
+            position: fixed; inset: 0; background: var(--glam-black);
+            z-index: 9999; display: flex; align-items: center; justify-content: center;
+        }
+
+        .spinner {
+            width: 24px; height: 24px; border: 2px solid rgba(212, 175, 55, 0.1);
+            border-top-color: var(--glam-gold); border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .footer-minimal {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Minimal Header -->
+    <nav class="nav-container">
+        <div class="max-w-lg mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <img src="logo.png" alt="Logo" class="w-8 h-8 object-contain" onerror="this.src='https://cdn-icons-png.flaticon.com/512/6941/6941697.png'">
+                <span class="text-xl font-black uppercase tracking-tighter">Glamour</span>
+            </div>
+            <a href="index.html" class="text-white/40 text-[10px] font-bold uppercase tracking-widest border border-white/10 px-3 py-1 rounded-full">Close</a>
+        </div>
+    </nav>
+
+    <main class="content-section">
+        <div class="policy-tag">Secure & Private</div>
+        <h1 class="text-4xl font-extrabold gold-text mb-10 tracking-tight leading-tight">Privacy Policy</h1>
+
+        <div class="policy-block">
+            <h2 class="policy-title">Data Collection</h2>
+            <p class="policy-text">
+                Glamour is a digital lifestyle platform. We collect information you provide when creating an account, including your basic profile details, to help you connect with European counterparts and facilitate payments in Euros and Pounds.
+            </p>
+        </div>
+
+        <div class="policy-block">
+            <h2 class="policy-title">Our Commitment</h2>
+            <p class="policy-text">
+                Your information is kept secure according to our global privacy standards. We ensure that your digital participation is protected, and your interactions with foreign counterparts are encrypted and private.
+            </p>
+        </div>
+
+        <div class="policy-block">
+            <h2 class="policy-title">Usage of Content</h2>
+            <p class="policy-text">
+                Content you share via Glam Lifestyle, Glam Cuisine, or Glam Realtime is used solely to enhance your earning potential and provide a seamless cultural exchange experience. We do not sell your personal media to third parties.
+            </p>
+        </div>
+
+        <div class="policy-block">
+            <h2 class="policy-title">AI & Technology</h2>
+            <p class="policy-text">
+                We focus on responsible use of technology. Our Lingua AI and earning tracking systems are designed to process data efficiently while maintaining the highest level of user anonymity where possible.
+            </p>
+        </div>
+
+        <div class="policy-block">
+            <h2 class="policy-title">User Rights</h2>
+            <p class="policy-text">
+                Thousands of users trust Glamour because we give you full control over your profile. You have the right to update, delete, or request a copy of your data at any time through our support channels.
+            </p>
+        </div>
+
+        <a href="index.html" class="back-link">
+            <i class="fas fa-chevron-left text-[10px]"></i>
+            <span>Back to Home</span>
+        </a>
+
+        <div class="footer-minimal">
+            <p class="text-[9px] text-gray-700 font-bold uppercase tracking-[0.4em]">© 2026 GLAMOUR PREMIUM NETWORK • ALL RIGHTS RESERVED</p>
+        </div>
+    </main>
+
+    <script>
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 500);
+        });
+    </script>
+</body>
+</html>
