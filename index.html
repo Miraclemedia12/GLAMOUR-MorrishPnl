@@ -1,0 +1,1408 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <title>Glamour Official | Empowering Your Lifestyle</title>
+    <meta name="google-site-verification" content="DHtjCJmN9OurTswmTDLrJYn76sqBxj70ENbEQ2-yQIw" />
+    <meta name="description" content="Glamour  - The ultimate platform for high-end digital earnings and lifestyle monetization.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet"> -->
+    <style>
+        :root {
+            --primary-gold: #ffd700;
+            --btn-gradient: linear-gradient(135deg, #00ffff, #00ff80);
+            --dark-bg: #0b0a006a;
+            --glass: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.15);
+            --container-width: 1100px;
+        }
+
+        html, body {
+    max-width: 100%;
+    overflow-x: hidden; /* Stops the side-to-side shifting */
+    position: relative;
+}
+
+* {
+    box-sizing: border-box; /* Ensures padding doesn't push width over 100% */
+}
+
+        /* --- NEW ANIMATION SYSTEM --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Disable scrolling when popup is open */
+        body.popup-active {
+            overflow: hidden;
+        }
+
+        /* Full Screen Overlay */
+        #glamourPopup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.952);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        /* Popup Box */
+        .popup-content {
+            width: 82%;
+            max-width: 440px;
+            padding: 10px;
+            position: relative;
+            text-align: center;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            animation: scaleIn 1s ease-in-out;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(6px);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            font-size: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .popup-content img { width: 100%; max-height: 300px; border-radius: 20px; }
+        .popup-title { font-family: 'Times new roman', sans-serif; color: #fff; font-weight: bold; margin-top: 15px; font-size: 22px; letter-spacing: 1px; }
+
+        @keyframes fadeIn { from {opacity: 2;} to {opacity: 5;} }
+        @keyframes scaleIn { from {transform: scale(0.85); opacity: 0;} to {transform: scale(1); opacity: 1;} }
+
+        .popup-subtitle { font-family: 'inter', sans-serif; color: #cbd5e0; font-size: 13px; margin-top: 8px; line-height: 1.5; padding: 0 10px; }
+        .subtitle-bold { font-weight: 700; color: #cbd5e0; font-size: 15px; }
+
+        body {
+    margin: 0;
+    padding: 0;
+    /* This combines your dark gradient with a subtle gold grid */
+    background-color: #000000;
+    background-image: 
+        linear-gradient(rgba(255, 215, 0, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px),
+        radial-gradient(circle at top, #2a2100 0%, #000000 100%);
+    background-size: 40px 40px, 40px 40px, 100% 100%;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    color: white;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+        /* UPDATED TOPBAR: Transparent with Shadow */
+        .topbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+           background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            box-sizing: border-box;
+            border-bottom: none;
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 20px; text-decoration: none; }
+        .logo-img { height: 45px; width: auto; filter: drop-shadow(0 0 10px var(--primary-gold)); }
+        .logo-text { font-size: 24px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; background: linear-gradient(90deg, #00ffff, #fff, #00ffff); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite; }
+
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .main-join-btn {
+            background: linear-gradient(90deg, #00F2FE, #00C9FF);
+            color: black;
+            padding: 12px 25px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 15px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 225, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        .main-join-btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 255, 255, 0.5); }
+
+        .box-btn {
+            background: linear-gradient(90deg, #00F2FE, #00C9FF);
+            color: black;
+            padding: 12px 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 17px;
+            text-transform: uppercase;
+            display: block;
+            width: 80%;
+            box-sizing: border-box;
+            transition: 0.3s;
+            border: none;
+            text-align: center;
+            margin-top: auto;
+            box-shadow: 0 20px rgba(0, 242, 254, 0.5);
+            font-family: "Times New Roman", Times, serif;
+    transition: transform 0.3s ease;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Add a little animation so it "pops" when they hover */
+.box-btn:hover i {
+    transform: translate(3px, -3px); /* The arrow moves up and out slightly */
+    color: #ffd700; /* Matches your gold theme */
+}
+
+        .box-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+        .main-join-btn, .box-btn { animation: pulse 2s infinite; }
+        .main-join-btn:hover, .box-btn:hover { animation-play-state: paused; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.6); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(0, 255, 255, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+        }
+
+        .unified-container { width: 90%; max-width: var(--container-width); margin-left: auto; margin-right: auto; box-sizing: border-box; }
+
+       /* --- AMBASSADOR 3D STACK SYSTEM --- */
+.ambassador-scene {
+    position: relative;
+    height: 500px;
+    width: 100%;
+    perspective: 1000px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -10px;
+}
+
+.stack-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.glass-video-card {
+    position: absolute;
+    width: 280px; /* Vertical Shape */
+    height: 430px;
+    background: rgba(255, 255, 255, 0.07); /* Match your feature box */
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    padding: 10px;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    user-select: none;
+}
+
+/* MOBILE FIX FOR AMBASSADORS */
+@media screen and (max-width: 480px) {
+    .glass-video-card {
+        width: 240px; /* Reduced from 240px */
+        height: 360px; /* Reduced from 380px to keep it vertical */
+    }
+    
+    .ambassador-scene {
+        height: 450px; /* Pulls the section tighter on mobile */
+    }
+
+    .card-right { transform: translate3d(30%, 0, -100px) scale(0.8); }
+    .card-left  { transform: translate3d(-30%, 0, -100px) scale(0.8); }
+}
+
+.glass-video-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 22px;
+}
+
+/* 3D Positions */
+.card-front { transform: translate3d(0, 0, 0) scale(1); z-index: 3; opacity: 1; }
+.card-right { transform: translate3d(40%, 0, -100px) scale(0.85); z-index: 2; opacity: 0.6; filter: blur(2px); }
+.card-left  { transform: translate3d(-40%, 0, -100px) scale(0.85); z-index: 2; opacity: 0.6; filter: blur(2px); }
+.card-back  { transform: translate3d(0, 0, -200px) scale(0.7); z-index: 1; opacity: 0; }
+}
+        .bright-header { text-align: center; padding: 60px 0 30px; }
+        .bright-header h2.sliding-gold {
+    /* 1. THE FONT: Exactly like your Hero Title */
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 900; 
+    
+    /* 2. THE SPACING: This closes the gap between "What do we" and "Represent" */
+    line-height: 0.2; 
+    letter-spacing: 1px; /* Tighter letters for that premium look */
+    
+    /* 3. THE SIZE: Matches the Hero Title scale */
+    font-size: clamp(2.5rem, 8vw, 4.5rem); 
+    
+    margin-bottom: 10px;
+    text-transform: none; /* Keeps it exactly as typed */
+}
+        .works-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 60px; }
+
+        .work-box {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            max-width: 2000px;
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
+            min-height: 700px;
+        }
+
+        .work-box:hover { border-color: var(--primary-gold); transform: translateY(-10px); }
+        .work-box img {max width: 100 %; max height: 300px; object-fit: cover; border-radius: 14px; margin-bottom: 20px; }
+        .work-box h3 { color: var(--primary-gold); margin: 10px 0; font-weight: 805; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .work-box i { color: var(--primary-gold); }
+        .work-box p i { color: var(--primary-gold); margin-right: 5px; }
+        .work-box p { color: #ccc; font-size: 14px; margin-bottom: 25px; text-align: left; white-space: pre-line; }
+
+        .trust-section {
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .stat-item { display: flex; align-items: center; gap: 20px; }
+        .stat-icon { width: 70px; height: 70px; background: rgba(255, 215, 0, 0.1); border: 1px solid var(--primary-gold); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--primary-gold); position: relative; }
+        .live-badge { background: rgba(255, 215, 0, 0.2); border: 1px solid var(--primary-gold); color: var(--primary-gold); padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 900; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+        .pulse-dot { width: 8px; height: 8px; background: var(--primary-gold); border-radius: 50%; box-shadow: 0 0 10px var(--primary-gold); animation: pulse-active 1.5s infinite; }
+
+        @keyframes pulse-active { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        .stat-text h2 { font-size: 36px; margin: 0; font-weight: 900; color: var(--primary-gold); }
+
+        .faq-section { margin-bottom: 100px; }
+        details { background: var(--glass); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 15px; overflow: hidden; }
+        summary { padding: 22px; cursor: pointer; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+        summary::after { content: "\f0fe"; font-family: "Font Awesome 6 Free"; font-weight: 900; color: var(--primary-gold); }
+        details[open] summary::after { content: "\f146"; }
+
+        .main-footer { background: #000; padding: 80px 0 40px; border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; }
+        .footer-column ul { list-style: none; padding: 0; }
+        .footer-column ul li { margin-bottom: 15px; display: flex; align-items: center; gap: 12px; color: #999; }
+        .footer-column i { color: var(--primary-gold); }
+        .footer-column a { color: #999; text-decoration: none; }
+        .copyright { margin-top: 60px; text-align: center; border-top: 1px solid #111; padding-top: 30px; color: #444; font-size: 12px; text-transform: uppercase; }
+
+        @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; gap: 40px; } .trust-section { flex-direction: column; text-align: center; } .work-box { min-height: auto; } }
+
+        /* HERO SECTION FROM IMAGE */
+.hero-image-style {
+    padding: 140px 5% 20px;
+    background-image: 
+        linear-gradient(rgba(255, 215, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 215, 0, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px; /* The grid effect */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.hero-badge {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid var(--primary-gold);
+    color: var(--primary-gold);
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hero-structure-text {
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #fff;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+.hero-main-title {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    line-height: 1.1;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+    max-width: 600px;
+}
+
+.hero-main-title span {
+    color: var(--primary-gold);
+    display: block;
+}
+
+.hero-description {
+    color: #ccc;
+    font-size: 18px;
+    max-width: 500px;
+    margin: 10px 0 20px;
+}
+
+.live-track {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.live-track span {
+    color: var(--primary-gold);
+}
+
+.verify-link {
+    color: var(--primary-gold);
+    text-decoration: underline;
+    font-weight: 700;
+    font-size: 15px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+/* Control Buttons (Arrow & Hamburger) */
+.topbar-controls { display: flex; align-items: center; gap: 15px; }
+
+.control-btn {
+    width: 40px; height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white; border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer; font-size: 18px; transition: 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+
+/* Expandable Menu Panel */
+.expandable-menu {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background: radial-gradient(circle at top, #1a1500 0%, #000000 100%);
+    z-index: 1000; padding: 100px 5% 40px; box-sizing: border-box;
+    transform: translateY(-100%); opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s;
+}
+
+.expandable-menu.is-active { transform: translateY(0); opacity: 1; }
+
+.menu-link {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 0; color: #fff; text-decoration: none;
+    font-size: 19px; font-weight: 700; cursor: pointer;
+}
+
+/* Pages Dropdown & Faded Lines */
+.dropdown-menu {
+    max-height: 0; overflow: hidden; list-style: none; padding: 0;
+    transition: max-height 0.4s ease-out;
+}
+
+.dropdown-menu.expanded { max-height: 500px; }
+
+.dropdown-menu li {
+    border-bottom: 1px solid;
+    border-image: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.2), transparent) 1;
+}
+
+.dropdown-link {
+    display: block; padding: 18px 25px; color: #aaa; text-decoration: none;
+}
+
+/* Header inside the slide-down menu */
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.menu-content {
+    margin-top: px; /* Space so links don't hit the menu header */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Thin icon styling again to ensure it stays light */
+.menu-header .control-btn i {
+    font-size: 18px;
+    font-weight: 300;
+    opacity: 0.8;
+}
+
+/* Arrow rotation for the "Pages" dropdown */
+.submenu-trigger i {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.submenu-trigger.active i {
+    transform: rotate(180deg);
+}
+
+/* --- START BUTTON BASE & PULSE --- */
+.glamour-btn {
+    position: relative;
+    padding: 10px 20px;
+    border-radius:14px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(90deg, #00F2FE, #00C9FF);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+    transition: all 0.4s ease;
+    animation: pulse 2s infinite; /* Your requested pulse */
+}
+
+.glamour-btn span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #000000;
+    font-weight: 900;
+    font-size: 15px;
+    font-family: 'inter', serif;
+}
+
+/* THE LOADING STATE: Shrinks inward and Fades */
+.glamour-btn.is-loading {
+    pointer-events: none;
+    opacity: 0.5; /* This makes it Fade */
+    transform: scale(0.85); /* This makes it Shrink from all sides (Inward) */
+    animation: none; /* Stops the pulsing */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hide the START text when loading */
+.glamour-btn.is-loading .btn-text {
+    display: none;
+}
+
+/* The Circular Spinner (Hidden by default) */
+.btn-spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top: 3px solid #000;
+    border-radius: 50%;
+    animation: spin-loader 0.8s linear infinite;
+}
+
+/* Show spinner only when loading */
+.glamour-btn.is-loading .btn-spinner {
+    display: block;
+}
+
+@keyframes spin-loader {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 64, 0.6); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(0, 255, 64, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 64, 0); }
+}
+
+.sliding-gold {
+    font-size: 1.2em; /* Makes it bigger than the other text */
+    display: block;
+    background: linear-gradient(90deg, #ffe100, #9c5d00, #ffe100);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gold-slide 2s linear infinite;
+    font-weight: 900;
+}
+
+@keyframes gold-slide {
+    to { background-position: 200% center; }
+}
+
+.live-track {
+    color: var(--primary-gold); /* Keeps "Live track:" Gold */
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+#typing-text {
+    color: #ffffff; /* This makes the moving/typing text WHITE */
+    font-weight: 500; /* Optional: make it slightly lighter than the header */
+    margin-left: 5px;
+}
+
+/* Optional: Add a blinking cursor effect at the end of the white text */
+#typing-text::after {
+    content: "|";
+    animation: blink 0.7s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.btn-loading {
+    pointer-events: none; /* Prevents double clicking */
+    opacity: 0.3 !important;
+    transform: scale(0.7) !important; /* Shrinks the button */
+    filter: blur(2px); /* Adds that smooth 'fading away' look */
+    transition: all 5.0s cubic-bezier(0.4, 0, 0.2, 1) !important; 
+}
+
+/* Modern App-Like Shrink (No fade, no spinner) */
+.glamour-btn.shrink-active {
+    transform: scale(0.92) !important; /* The subtle "pressed" look */
+    pointer-events: none; /* Prevents multiple clicks */
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    filter: brightness(0.9); /* Slight darken to show it's active */
+}
+
+     .btn-gold {
+            background: linear-gradient(90deg, #00F2FE, #00C9FF);
+            color: #000;
+            font-weight: 800;
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 16px 20px;
+            transition: background 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        #menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 5, 0.98);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            padding: 24px;
+        }
+
+        .menu-link {
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #e5e7eb;
+        }
+
+        .glam-card {
+            background: rgba(15, 17, 21, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .glam-card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: block;
+            color: var(--glam-bright-gold);
+        }
+
+        .step-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-box {
+            background: rgba(212, 175, 55, 0.03);
+            border-left: 3px solid var(--glam-gold);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
+        }
+
+        .floating-join {
+            position: fixed;
+            bottom: 25px;
+            right: 27px;
+            z-index: 100;
+            padding: 11px 25px;
+            border-radius: 17px;
+            font-family: 'Times', Times, serif;
+            font-size: 18px;
+            font-weight: 900;
+            box-shadow: 0 10px 40px rgba(55, 181, 212, 0.429);
+            animation: shake 4s infinite;
+        }
+/* CAC IMAGE SWITCHER */
+.cac-switcher {
+    position: relative;
+    width: 100%;
+    height: 460px; /* Matches your current image height */
+    overflow: hidden;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+.cac-switcher img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Logic to hide/show images */
+.cac-switcher img.hidden {
+    opacity: 0;
+}
+
+.glamour-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.4s ease;
+}
+
+.glamour-popup.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.popup-box {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(20px);
+    padding: 30px 25px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 320px;
+
+    transform: scale(0.8);
+    transition: 0.4s ease;
+}
+
+.glamour-popup.show .popup-box {
+    transform: scale(1);
+}
+
+.popup-box i {
+    font-size: 40px;
+    color: #00ffff;
+    margin-bottom: 10px;
+}
+
+.popup-box h3 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.popup-box p {
+    color: #ccc;
+    font-size: 14px;
+}
+
+.popup-box i {
+    font-size: 40px;
+    color: #ffd700; /* GOLD instead of blue */
+    margin-bottom: 10px;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+    <a class='logo-container' href='/'>
+        <img src="logo.png" alt="G" class="logo-img">
+    </a>
+    
+<div class="topbar-controls">
+    <button id="glamourBtn" class="glamour-btn" onclick="runStartLoading()">
+    <span class="btn-text">Register</span>
+    <div class="btn-spinner"></div>
+</button>
+    
+    <button class="control-btn" onclick="toggleMenu()">
+        <svg viewBox="0 0 24 24" fill="none" class="celeste-icon" style="width:22px; height:22px;">
+            <path d="M4 5h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M4 12h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+    </button>
+</div>
+</div>
+</div>
+
+<nav class="expandable-menu" id="mobileMenu">
+    <div class="menu-header">
+        <div class="logo-container">
+            <img src="logo.png" alt="G" class="logo-img" style="height:35px;">
+        </div>
+        <button class="control-btn" onclick="toggleMenu()">
+            <i class="ph-bold ph-x"></i>
+        </button>
+    </div>
+
+    <div class="menu-content">
+        <a class='menu-link' href='/'>Home</a>
+        <a class='menu-link' href='/about'>About</a>
+        
+        <div class="menu-link submenu-trigger" onclick="toggleDropdown()">
+            Pages <i class="fa-solid fa-chevron-down" id="arrowIcon"></i>
+        </div>
+        <ul class="dropdown-menu" id="pagesDropdown">
+            <li><a class='dropdown-link' href='/privacy'>Privacy Policy</a></li>
+            <li><a href="#contact-footer" class="dropdown-link" onclick="toggleMenu()">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+    <section class="hero-image-style reveal">
+    <div class="hero-badge">GLAMOUR INCOME SYSTEM</div>
+    
+    <div class="hero-structure-text">CREDIT STRUCTURE</div>
+    
+    <h1 class="hero-main-title">
+        Monetise your lifestyle to
+        <span class="sliding-gold">Euros</span>
+    </h1>
+    
+    <p class="hero-description">
+        Glamour is where digital presence meets purpose. 
+        Create, participate, and turn every moment into measurable euro earnings.
+    </p>
+    
+    <div class="live-track">
+    <span>Live track:</span> <span id="typing-text"></span>
+</div>
+    
+   <button class="glamour-btn" 
+        style="display: inline-flex; align-items: center; justify-content: center; min-width: 200px; min-height: 60px; border-radius: 20px; border: none; cursor: pointer;" 
+        onclick="modernShrink(this)">
+    <span class="btn-text" style="font-size: 20px; font-weight: bold; line-height: 1;">GET STARTED</span>
+</button>
+    
+</section>
+
+    <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 5px; margin-top: 20px;">
+    <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 25px 50px; border-radius: 30px; display: inline-block; text-align: center; max-width: 90%;">
+        <h1 style="font-family: 'Inter', sans-serif; font-weight: 900; line-height: 1.1; margin: 0;">
+            <span style="color: #ffffff; font-size: 30px; display: block;">Glamour Elite</span>
+            <span class="sliding-gold" style="font-size: 30px; display: block;">Ambassadors <i class="fas fa-briefcase icon-hover"style="font-size: 30px; color: #ffffff;"></i>
+            </span>
+        </h1>
+    </div>
+</div>
+
+    <div class="ambassador-scene" id="trigger-area">
+        <div class="stack-container" id="videoStack">
+            <div class="glass-video-card card-front"><video src="video1.mp4" controls playsinline onplay="this.muted=false" onended="playNextVideo()"></video></div>
+<div class="glass-video-card card-right"><video src="video2.mov" controls playsinline onplay="this.muted=false" onended="playNextVideo()"></video></div>
+<div class="glass-video-card card-back"><video src="video3.mov" controls playsinline onplay="this.muted=false" onended="playNextVideo()"></video></div>
+<div class="glass-video-card card-left"><video src="video4.mp4" controls playsinline onplay="this.muted=false" onended="playNextVideo()"></video></div>
+        </div>
+    </div>
+</div>
+
+    <div id="features-section" class="unified-container bright-header reveal" style="text-align: left;">
+    <h1 class="hero-main-title">
+         What do we
+        <span class="sliding-gold">Represent:</span>
+    </h1>
+    
+    <p class="feature-subtitle">
+        Glamour turns your lifestyle activities into<br> real Euro. It is where your daily routines<br>becomes your steady icome flow.<br>
+         <span class="sliding-gold">Engage | Create and earn.</span>
+    </p>
+</div><br>
+
+    <div class="unified-container">
+        <div class="works-grid">
+            <div class="unified-container work-box reveal">
+                <img src="hero1.jpg" alt="TikTok" onerror="this.src='https://via.placeholder.com/400x220/ffd700/000000?text=TikTok+Earnings'">
+                <h3><i class="fas fa-euro-sign"></i> GLAM – LIFESTYLE</h3>
+                <p>Getting Paid for Basically how you live your life?? That is the basis of GLAMOUR. <i class="fas fa-coins"></i>
+                How You Earn on Glam - LifeStyle:
+                - <i class="fas fa-shirt"></i> Showcase your daily routines $ outfits
+                - <i class="fas fa-circle-play"></i> Get Ready with me videos
+                - <i class="fas fa-share-nodes"></i> Share the video
+                <i class="fas fa-arrow-right"></i> Earn up to €2 per hour</p>
+            </div>
+
+            <div class="unified-container work-box reveal">
+                <img src="hero2.jpg" alt="Telegram" onerror="this.src='https://via.placeholder.com/400x220/ffd700/000000?text=Telegram+Monetize'">
+                <h3><i class="fas fa-euro-sign"></i> GLAM REALTIME</h3>
+                <p>Pictures Tell It All <i class="fas fa-camera"></i>...And with GlamRealtime, you get paid for living in the moment.
+                2 Easy Ways to Earn:
+                1. <i class="fas fa-images"></i> Take pictures of daily activities.
+                2. <i class="fas fa-gem"></i> With GlsmRealtime, Users help foreigners understand how we live on daily basis and get paid for it <i class="fas fa-glass-cheers"></i>
+                3. <i class="fas fa-euro-sign"></i> Earn 2 Euros per hour of activity.</p>
+            </div>
+
+            <div class="unified-container work-box reveal">
+                <img src="hero3.jpg" alt="Watch & Earn" onerror="this.src='https://via.placeholder.com/400x220/ffd700/000000?text=Watch+and+Earn'">
+                <h3><i class="fas fa-moon"></i> GLAM DARKMODE</h3>
+                <p>One thing that is different, between us Africans and Europeans is the time difference, now you can use that to your advantage!!!
+                <i class="fas fa-euro-sign"></i>Earn up to €10 daily for partnering with foreigners in doing tasks and showcasing your lifestyle. <i class="fas fa-glass-cheers"></i></p>
+            </div>
+
+            <div class="unified-container work-box reveal">
+                <img src="hero4.jpg" alt="Twitter X" onerror="this.src='https://via.placeholder.com/400x220/ffd700/000000?text=Twitter+X+Earnings'">
+                <h3><i class="fas fa-microphone"></i> GLAM - LINGUA</h3>
+                <p>Can you speak your Local Language??<br> Can you showcase it to the world?? <br>Can you teach it to Europeans??
+                  <span class="live-track">Glamour Will Pay you for it!!!</span>
+
+                <i class="fas fa-language"></i> Your local language like Yoruba, Hausa, Igbo, etc... can earn you Euros and Pounds Daily!! <br/>
+               <i class="fas fa-robot"></i>  And the best Part of it all Is that you can use the Lingua AI Assistant on Glamour to do it seamlessly and get paid  <span class="live-track"> £2 per hour...</span>  <i class="fas fa-bullhorn"></i> 
+            </div>
+
+            <div class="unified-container work-box reveal">
+                <img src="hero5.jpg" alt="Glamour Script2cash" onerror="this.src='https://via.placeholder.com/400x220/ffd700/000000?text=Telegram+Live'">
+                <h3><i class="fas fa-video"></i> GLAM SCRIPT2CASH</h3>
+                <p> <i class="fas fa-play-circle"></i>Glamour Pays users for Bringing Content to life everyday!!!<br/> 
+               Videos and Content are what you already do everyday on Tiktok and Instagram, but you'll be doing it to get Paid...<i class="fas fa-euro sign"></i>
+
+                What You Get:
+                - <i class="fas fa-video "></i> create video scripts & video contents.
+                - <i class="fas fa-share-alt"></i> Post on Tiktok, IG, Facebook etc..
+                - <i class="fas fa-link"></i> Share video link on Glamour.
+                - <i class="fas fa-euro-sign"></i><span class="live-track">Earn £2 per Script shared.<span/> <i class="fas fa-hand-holding-usd"></i></p>
+            </div>
+
+            <div class="unified-container work-box reveal">
+                <img src="hero6.jpg" alt="status" onerror="this.src='https://via.placeholder.com/400x220/ffd700/000000?text=Snap+and+Upload'">
+                <h3><i class="fas fa-plus-circle"></i> GLAM STATUS</h3>
+                <p><i class="fas fa-hand-holding-usd"></i>Turn every whatsapp status post into instant cash.<i class="fas fa-money-bill-trend-up "></i>
+                <span class="live-track">POST | SHARE | EARN PER VIEW..</span> <i class="fas fa-wallet"></i>
+                
+                    How It Works:
+                - <i class="fas fa-user-plus"></i> Sign up on Glamour.
+                - <i class="fas fa-link"></i> Link your whatsapp account.
+                - <i class="fas fa-money-bill-wave"></i><span class="live-track">Earn €3 per 10 status views!!<span/>
+                Simple. Fast. Profitable.</p>
+            </div>
+
+            <div class="unified-container work-box reveal">
+                <img src="hero7.jpg" alt="works" onerror="this.src='https://via.placeholder.com/400x220/ffd700/000000?text=Casino+Games'">
+                <h3><i class="fas fa-briefcase"></i> GLAM 9-5 WORKS</h3>
+                <p>-With GlamWorks, once you sign up, you list any skill you have on our Platform, and you're connected with European firms that need your services. <br>
+                   <span class="live-track">You work these remote jobs and you get paid £2 per hour in Euros...</span><i class="fas fa-glass-cheers"></i>
+
+                - <i class="fas fa-globe-africa"></i> On Glamour, We are here for everyone,<br>Even if you love the 9 to 5 pattern, we got you covered...<i class="fas fa-glass-cheers"></i></p>
+                </div>
+
+            <div class="unified-container work-box reveal">
+    <div class="cac-switcher" id="cacSwitcher">
+        <img src="hero8.jpg" alt="CAC Certified 1" id="cacImg1">
+        <img src="hero9.jpg" alt="CAC Certified 2" id="cacImg2" class="hidden">
+    </div>
+    <h3><i class="fas fa-certificate"></i> GLAMOUR is Nigeria & Europe Certified</h3>
+    <p>We are proud to announce that GLAMOUR is now officially recognized and verified through Nigeria CAC and a European incorporation registry, marking a major step forward in our journey.
+This milestone shows that what we’re building is structured, international, and positioned for real opportunities beyond borders.
+With strategic partnerships in place, Glamour is designed to connect you to a wider global network where your online activities can create real value.
+    <br>
+    <i class="fas fa-check-double"></i><span class="live-track">Registered. Verified. Trusted Globally.</h3></p>
+</div>
+ </div>
+    </div>
+
+    <div class="unified-container trust-section reveal">
+        <div class="stat-item">
+            <div class="stat-icon"> <i class="fas fa-users-gear"></i> </div>
+            <div class="stat-text">
+                <div class="live-badge"> <div class="pulse-dot"></div> LIVE NOW </div>
+                <h2>100,000+</h2>
+                <p>Verified Active Users</p>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="stat-text">
+                <div class="live-badge" style="border-color: #fff; color: #fff; background: rgba(255,255,255,0.1);"> SECURE </div>
+                <h2>Verified</h2>
+                <p>Trust Protocol</p>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon"><i class="fas fa-globe-africa"></i></div>
+            <div class="stat-text">
+                <div class="live-badge" style="border-color: #0088ff; color: #0088ff; background: rgba(0,136,255,0.1);"> GLOBAL </div>
+                <h2>Asset</h2>
+                <p>Ecosystem</p>
+            </div>
+        </div>
+    </div>
+     <!-- 🔥 TESTIMONIALS UPDATED -->
+<div class="unified-container reveal" style="margin-top:60px;">
+<h2 style="text-align:center; font-weight:900; margin-bottom:30px;">WHAT OUR USERS SAY</h2>
+
+<div class="works-grid">
+
+<div class="work-box testimonial-card">
+  <div class="testimonial-header" style="display:flex; gap:15px; align-items:center;">
+    <img src="suzan.png" style="width:50px; height:50px; border-radius:50%;">
+    <div>
+      <h3 style="margin:0;">Suzan Chigozie</h3>
+      <small>April 9, 2026</small>
+    </div>
+  </div>
+  <div class="stars">⭐⭐⭐⭐⭐</div>
+  <h4>Don't Miss Glamour, Join Today!</h4>
+  <p>I earned my first online income here and it really helped me financially as a student.</p>
+  <i class="fas fa-location-dot" style="color:#ffd700;"></i>
+<span>Lagos University, Nigeria</span>
+</div>
+
+<div class="work-box testimonial-card">
+  <div class="testimonial-header" style="display:flex; gap:15px; align-items:center;">
+    <img src="daniel.png" style="width:50px; height:50px; border-radius:50%;">
+    <div>
+      <h3 style="margin:0;">Daniel Okafor</h3>
+      <small>March 8, 2026</small>
+    </div>
+  </div>
+  <div class="stars">⭐⭐⭐⭐⭐</div>
+  <h4>Best Platform Ever</h4>
+  <p>Glamour helped me earn consistently every day without stress. Highly recommended!</p>
+  <i class="fas fa-location-dot" style="color:#ffd700;"></i>
+<span>ABUJA, Nigeria</span>
+</div>
+
+<div class="work-box testimonial-card">
+  <div class="testimonial-header" style="display:flex; gap:15px; align-items:center;">
+    <img src="fatima.png" style="width:50px; height:50px; border-radius:50%;">
+    <div>
+      <h3 style="margin:0;">Fatima Bello</h3>
+      <small>January 23, 2026</small>
+    </div>
+  </div>
+  <div class="stars">⭐⭐⭐⭐⭐</div>
+  <h4>Life Changing Experience</h4>
+  <p>I started with fear and now I earn weekly. This platform is truly amazing.</p>
+  <i class="fas fa-location-dot" style="color:#ffd700;"></i>
+<span>Port Harcourt, Nigeria</span>
+</div>
+
+<div class="work-box testimonial-card">
+  <div class="testimonial-header" style="display:flex; gap:15px; align-items:center;">
+    <img src="freya.png" style="width:50px; height:50px; border-radius:50%;">
+    <div>
+      <h3 style="margin:0;">Freya Elise</h3>
+      <small>April 16, 2026</small>
+    </div>
+  </div>
+  <div class="stars">⭐⭐⭐⭐⭐</div>
+  <h4>Thank You for Changing My Life</h4>
+  <p>As a single mother, I struggled to take care of my child after losing my job. I joined Glamour with doubt, but within a short time I started earning weekly. This platform has truly helped me stand again financially and take care of my family.</p>
+  <i class="fas fa-location-dot" style="color:#ffd700;"></i>
+<span>Berlin, Germany </span>
+</div>
+<p id="viewMoreText" style="text-align:center; color:#ffd700; cursor:pointer; margin-top:10px;">
+    View more...
+</p>
+<script>
+const viewMore = document.getElementById("viewMoreText");
+
+if (viewMore) {
+    viewMore.addEventListener("click", function(){
+        location.reload(); // refresh page
+    });
+}
+</script>
+
+</div>
+</div>
+<!-- 💬 COMMENT SECTION (ADMIN APPROVED) -->
+<div class="unified-container reveal" style="margin-top:60px;">
+<h2 style="text-align:center; font-weight:900; margin-bottom:20px;">Leave a Testimony</h2>
+
+<form id="commentForm" style="max-width:500px; margin:auto;">
+    <input type="text" placeholder="Your Name" required 
+        style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:none;">
+    
+    <textarea placeholder="Your Testimony..." required 
+        style="width:100%; padding:12px; height:120px; border-radius:10px; border:none;"></textarea>
+    
+    <button type="submit" class="main-join-btn" style="width:100%; margin-top:10px;">
+        Submit 
+    </button>
+</form>
+
+<p style="text-align:center; color:#aaa; margin-top:10px;">
+Your testimony will appear here.
+</p>
+</div>
+</div>
+
+    <div id="faq-section" class="unified-container faq-section reveal">
+        <h2 style="text-align: center; font-style: italic; font-weight: 950; text-transform: uppercase; margin-bottom: 30px;">Frequently Asked Questions</h2>
+        <details>
+            <summary>How do I start earning on Glamour?</summary>
+            <div style="padding: 22px; color: #aaa;">Simply click 'Join Now', complete your registration, and choose your preferred activity. You can start earning within minutes.</div>
+        </details>
+        <details>
+            <summary>Is my account information secure?</summary>
+            <div style="padding: 22px; color: #aaa;">Yes. Glamour uses end-to-end encryption for all user data and financial transactions.</div>
+        </details>
+        <details>
+            <summary>What are the withdrawal limits?</summary>
+            <div style="padding: 22px; color: #aaa;">Withdrawals are processed daily. There is a low minimum threshold to ensure quick access to funds.</div>
+        </details>
+        <details>
+            <summary>Is Glamour available in my country?</summary>
+            <div style="padding: 22px; color: #aaa;">Glamour is a global ecosystem. While CAC certified in Nigeria, it is accessible from anywhere in the world.</div>
+        </details>
+        <details>
+            <summary>Can I earn from multiple activities?</summary>
+            <div style="padding: 22px; color: #aaa;">Absolutely. You can earn from creating video contents, posting on WhatsApp status, completing appointed jobs. No caps.</div>
+        </details>
+    </div>
+
+    <footer class="main-footer reveal">
+        <div class="unified-container footer-grid">
+            <div class="footer-brand">
+                <div class="logo-container" style="margin-bottom: 20px;">
+                    <img src="logo.png" alt="G" class="logo-img" onerror="this.src='https://via.placeholder.com/40/ffd700/000000?text=G'">
+                </div>
+                <p>Glamour is an innovation ecosystem connecting people, creating opportunities, and rewarding engagement.</p>
+            </div>
+            <div class="footer-column" id="contact-footer">
+                <h3>Platform</h3>
+                <ul>
+                    <a href="about.html">About Us</a></li>
+                    <li><a href="#features-section">Features</a></li>
+                    <li><a href="#faq-section">FAQ</a></li>
+                </ul>
+            <div class="footer-column">
+                <a href="contact.html" style="text-decoration:none; color:inherit;">
+    <h3>Contact</h3>
+</a>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:support@glamoureurope.site">support@glamoureurope.site</a></li>
+                    <li>
+  <i class="fas fa-globe"></i>
+  <span>Global Platform • Africa & Europe</span>
+</li>
+                </ul>
+
+                 <div class="footer-column">
+                <h3>Legal</h3>
+                <ul>
+                    <li><i class="fas fa-shield-alt"></i> <a href="privacy.html">Privacy Policy</a></li>
+                    <li><i class="fas fa-file-contract"></i> <a href="terms.html">Terms & Conditions</a></li>
+                </ul>
+            </div>
+        </div>
+
+        
+        <div class="copyright">&copy; 2026 Glamour. Turning your lifestyle into value</div>
+    </footer>
+
+     <button onclick="window.location.href='reward.html'" class="btn-gold floating-join uppercase text-xs tracking-tighter">
+        JOIN NOW
+    </button>
+
+    <script>
+        function closePopup() {
+            document.getElementById("glamourPopup").style.display = "none";
+        }
+
+        // Full Site Animation Logic
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        // Initialize animations for all elements with 'reveal' class
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach((el) => observer.observe(el));
+        });
+
+       function toggleMenu() {
+    const menu = document.getElementById("mobileMenu");
+    // This handles the slide down/up
+    menu.classList.toggle("is-active");
+    
+    // Prevent body from scrolling when menu is open
+    if (menu.classList.contains("is-active")) {
+        document.body.style.overflow = "hidden";
+    } else {
+        document.body.style.overflow = "auto";
+    }
+}
+
+function toggleDropdown() {
+    const dropdown = document.getElementById("pagesDropdown");
+    const trigger = document.querySelector(".submenu-trigger");
+    
+    dropdown.classList.toggle("expanded");
+    trigger.classList.toggle("active");
+}
+
+function handleStartClick(button) {
+    showPleaseWait(button, function() {
+        window.location.href = 'reward.html';
+    });
+}
+
+function runStartLoading() {
+    const btn = document.getElementById('glamourBtn');
+    
+    // 1. Trigger the Shrink and Fade (via CSS class)
+    btn.classList.add('is-loading');
+    
+    // 2. Wait 5 seconds, then redirect
+    setTimeout(() => {
+        window.location.href = 'reward.html';
+    }, 5000);
+}
+
+const textElement = document.getElementById("typing-text");
+const phrases = ["Realtime jobs and rewards.", "Fast and secure payouts.", "Lifestyle monetization.", "Global payment gateways.", "Zero-fee transactions.", "Daily bonus incentives.", "Unlimited job opportunities.", "Seemless passive income.", "24/7 Customer support system.", "Automated earning cycles.", "Limitless earning potential.",];
+let phraseIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+
+function type() {
+    const currentPhrase = phrases[phraseIndex];
+    
+    if (isDeleting) {
+        textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+        charIndex--;
+    } else {
+        textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+        charIndex++;
+    }
+
+    let typeSpeed = isDeleting ? 50 : 100;
+
+    if (!isDeleting && charIndex === currentPhrase.length) {
+        typeSpeed = 2000; // Stay visible for 2 seconds
+        isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        typeSpeed = 500;
+    }
+
+    setTimeout(type, typeSpeed);
+}
+
+// Start the animation
+document.addEventListener("DOMContentLoaded", type);
+
+function modernShrink(btn) {
+    // 1. Immediately apply the shrink effect
+    btn.classList.add('shrink-active');
+    
+    // 2. Wait exactly 2 seconds (2000ms) then move to rewards page
+    setTimeout(() => {
+        window.location.href = 'reward.html';
+    }, 2000);
+}
+let cards = Array.from(document.querySelectorAll('.glass-video-card'));
+let currentIndex = 0;
+let isHoveringActive = true;
+let hoverDirection = 1;
+let hoverInterval;
+
+function updateStack() {
+    cards.forEach((card, i) => {
+        card.className = 'glass-video-card';
+        let pos = (i - currentIndex + cards.length) % cards.length;
+        if (pos === 0) card.classList.add('card-front');
+        else if (pos === 1) card.classList.add('card-right');
+        else if (pos === cards.length - 1) card.classList.add('card-left');
+        else card.classList.add('card-back');
+    });
+}
+
+function startHover() {
+    clearInterval(hoverInterval);
+    hoverInterval = setInterval(() => {
+        if (isHoveringActive) {
+            currentIndex = (currentIndex + hoverDirection + cards.length) % cards.length;
+            updateStack();
+        }
+    }, 3000);
+}
+
+// 1. SOUND & STOP: Triggered when any video starts playing
+document.getElementById('videoStack').addEventListener('play', (e) => {
+    isHoveringActive = false; 
+    e.target.muted = false; // Unmutes the video
+}, true);
+
+// 2. RESUME: When clicking anywhere outside the video area
+document.addEventListener('click', (e) => {
+    const area = document.getElementById('trigger-area');
+    if (!area.contains(e.target)) {
+        isHoveringActive = true;
+        document.querySelectorAll('video').forEach(v => { v.pause(); v.muted = true; });
+    }
+});
+
+// 3. JUMP: Moves to next video when one finishes
+function playNextVideo() {
+    currentIndex = (currentIndex + 1) % cards.length;
+    updateStack();
+    setTimeout(() => {
+        const nextVid = document.querySelector('.card-front video');
+        if(nextVid) { nextVid.muted = false; nextVid.play(); }
+    }, 800);
+}
+
+// 4. SWIPE Direction
+let touchStartX = 0;
+document.getElementById('trigger-area').addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+document.getElementById('trigger-area').addEventListener('touchend', e => {
+    let touchEndX = e.changedTouches[0].clientX;
+    if (touchStartX - touchEndX > 50) { hoverDirection = 1; currentIndex++; }
+    if (touchEndX - touchStartX > 50) { hoverDirection = -1; currentIndex--; }
+    updateStack();
+});
+
+startHover();
+
+function startCacSwitcher() {
+    const img1 = document.getElementById('cacImg1');
+    const img2 = document.getElementById('cacImg2');
+    
+    setInterval(() => {
+        if (img1.classList.contains('hidden')) {
+            img1.classList.remove('hidden');
+            img2.classList.add('hidden');
+        } else {
+            img1.classList.add('hidden');
+            img2.classList.remove('hidden');
+        }
+    }, 4000); // Switches every 2 seconds
+}
+
+// Call this when the page loads
+window.addEventListener('DOMContentLoaded', startCacSwitcher);
+document.getElementById("commentForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const popup = document.getElementById("glamourPopupMsg");
+    popup.classList.add("show");
+
+    this.reset();
+
+    // auto close after 3 seconds
+    setTimeout(() => {
+        popup.classList.remove("show");
+    }, 3000);
+});
+
+ </script>
+ <div id="glamourPopupMsg" class="glamour-popup">
+  <div class="popup-box">
+    <i class="fas fa-circle-check"></i>
+    <h3>Submitted Successfully</h3>
+    <p>Your testimony is under review. It will appear once approved.</p>
+  </div>
+</div>
+</body>
+</html>
