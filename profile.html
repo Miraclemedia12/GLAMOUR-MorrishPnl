@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Profile Settings | GLAMOUR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #e7c792 0%, #ba945d 100%); min-height: 100vh; color: #000; margin: 0; padding-bottom: 40px; }
+        .glass-container { background: #0a0a0a; border-radius: 32px; margin: 20px; padding: 25px; color: white; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .input-group { background: #151515; border: 1px solid rgba(212, 160, 23, 0.2); border-radius: 16px; padding: 12px 18px; margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 9px; text-transform: uppercase; font-weight: 800; color: #d4a017; margin-bottom: 4px; letter-spacing: 1px; }
+        .input-group input, .input-group select { background: transparent; border: none; color: white; width: 100%; font-size: 14px; font-weight: 600; outline: none; }
+        .save-btn { background: linear-gradient(to bottom, #fff5c0, #f5c24c, #d4a017); color: #000; font-weight: 800; width: 100%; padding: 16px; border-radius: 16px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; text-transform: uppercase; border:none; cursor:pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 3px solid #d4a017; padding: 3px; margin: 0 auto 15px; position: relative; }
+        .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .badge { position: absolute; bottom: 0; right: 0; background: #d4a017; color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #0a0a0a; }
+    </style>
+</head>
+<body>
+
+    <div class="px-6 pt-10 flex items-center gap-4">
+        <button onclick="window.location.href='dashboard.html'" class="w-10 h-10 bg-black/20 rounded-full flex items-center justify-center">
+            <i class="fas fa-chevron-left text-sm"></i>
+        </button>
+        <h1 class="text-xl font-extrabold uppercase tracking-tight">Account Settings</h1>
+    </div>
+
+    <div class="glass-container">
+        <!-- Profile Header -->
+        <div class="text-center mb-8">
+            <div class="profile-pic">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Miracle" alt="Avatar">
+                <div class="badge"><i class="fas fa-crown"></i></div>
+            </div>
+            <h2 class="text-xl font-bold" id="display-name">Miracle</h2>
+            <p class="text-[10px] opacity-40 uppercase font-bold tracking-widest mt-1">Verified Member</p>
+        </div>
+
+        <form id="profileForm">
+            <!-- Personal Info -->
+            <div class="mb-6">
+                <h3 class="text-[11px] font-bold uppercase opacity-40 mb-4 px-2">Personal Information</h3>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="full_name" placeholder="Enter Full Name" required>
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="email@example.com" required>
+                </div>
+            </div>
+
+            <!-- Banking Info -->
+            <div class="mb-6">
+                <h3 class="text-[11px] font-bold uppercase opacity-40 mb-4 px-2">Withdrawal Method</h3>
+                <div class="input-group">
+                    <label>Select Bank</label>
+                    <select id="bank_name" class="text-white">
+                        <option value="" class="bg-black">Choose Bank</option>
+                        <option value="OPay" class="bg-black">OPay (Digital Bank)</option>
+                        <option value="Palmpay" class="bg-black">Palmpay</option>
+                        <option value="Kuda" class="bg-black">Kuda Bank</option>
+                        <option value="Moniepoint" class="bg-black">Moniepoint MFB</option>
+                        <option value="Zenith" class="bg-black">Zenith Bank</option>
+                        <option value="GTBank" class="bg-black">GTBank</option>
+                        <option value="Access" class="bg-black">Access Bank</option>
+                         <option value="UBA" class="bg-black">United Bank of Africa (UBA)</option>
+                          <option value="FirstBank" class="bg-black">First Bank</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Account Number</label>
+                    <input type="number" id="acc_number" placeholder="0000000000" required>
+                </div>
+                <div class="input-group">
+                    <label>Account Name</label>
+                    <input type="text" id="acc_name" placeholder="Name on account" required>
+                </div>
+            </div>
+
+            <button type="submit" class="save-btn">
+                <i class="fas fa-check-circle"></i>
+                Save Profile Details
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Load existing data
+        window.onload = function() {
+            const savedName = localStorage.getItem('glamour_username');
+            if(savedName) {
+                document.getElementById('display-name').innerText = savedName;
+                document.getElementById('full_name').value = savedName;
+            }
+            
+            // Populate other fields if they exist
+            document.getElementById('email').value = localStorage.getItem('glamour_email') || '';
+            document.getElementById('bank_name').value = localStorage.getItem('glamour_bank') || '';
+            document.getElementById('acc_number').value = localStorage.getItem('glamour_acc_num') || '';
+            document.getElementById('acc_name').value = localStorage.getItem('glamour_acc_name') || '';
+        };
+
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Save data to localStorage
+            const name = document.getElementById('full_name').value;
+            localStorage.setItem('glamour_username', name);
+            localStorage.setItem('glamour_email', document.getElementById('email').value);
+            localStorage.setItem('glamour_bank', document.getElementById('bank_name').value);
+            localStorage.setItem('glamour_acc_num', document.getElementById('acc_number').value);
+            localStorage.setItem('glamour_acc_name', document.getElementById('acc_name').value);
+            
+            // Critical: Set this to true to unlock withdrawal on the dashboard
+            localStorage.setItem('profile_saved', 'true');
+            
+            alert('Profile Updated Successfully! Withdrawal feature unlocked.');
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>
