@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Admin | Glamour System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        :root { --glamour-gold: #d4af37; --glamour-dark: #050505; }
+        
+        body { 
+            background: var(--glamour-dark); 
+            color: #fff; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-image: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.03) 0%, transparent 100%);
+            min-height: 100vh;
+        }
+
+        .glass { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(212, 175, 55, 0.15); backdrop-filter: blur(20px); }
+        
+        .stat-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover { border-color: var(--glamour-gold); transform: translateY(-3px); }
+
+        .input-group { position: relative; }
+        .input-group i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--glamour-gold); opacity: 0.5; font-size: 10px; }
+        
+        input { 
+            background: rgba(0, 0, 0, 0.3) !important; 
+            border: 1px solid rgba(212, 175, 55, 0.1) !important; 
+            color: white !important; 
+            padding-left: 32px !important;
+            transition: all 0.3s ease; 
+        }
+        input:focus { border-color: var(--glamour-gold) !important; box-shadow: 0 0 15px rgba(212, 175, 55, 0.1); outline: none; }
+        
+        .glamour-btn { 
+            background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%); 
+            color: #000; 
+            font-weight: 800; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .glamour-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+        
+        .loader { width: 18px; height: 18px; border: 2px solid #000; border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--glamour-gold); border-radius: 10px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4 md:p-8">
+
+    <!-- Auth Card -->
+    <div id="login-card" class="glass w-full max-w-sm rounded-[40px] p-10 text-center">
+        <div class="mb-8">
+            <div class="w-16 h-16 bg-[#d4af37]/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#d4af37]/20">
+                <i class="fas fa-fingerprint text-[#d4af37] text-2xl"></i>
+            </div>
+            <h1 class="text-2xl font-black text-white uppercase tracking-widest">Glamour <span class="text-[#d4af37]">HQ</span></h1>
+        </div>
+        <div class="space-y-4">
+            <input type="text" id="user" placeholder="Username" class="w-full p-4 rounded-2xl text-sm">
+            <input type="password" id="pass" placeholder="Password" class="w-full p-4 rounded-2xl text-sm">
+            <button onclick="handleLogin()" class="w-full glamour-btn p-4 rounded-2xl mt-4 shadow-xl uppercase text-xs">Authorize Access</button>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dash-card" class="glass w-full max-w-5xl rounded-[40px] p-6 md:p-10 hidden">
+        
+        <!-- Header & Analytics -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+            <div>
+                <h1 class="text-2xl font-black text-white uppercase flex items-center gap-3">
+                    <span class="w-2 h-8 bg-[#d4af37] rounded-full"></span> Control Center
+                </h1>
+                <p class="text-[10px] text-white/40 font-bold uppercase tracking-[0.3em] mt-1">Global Payment Infrastructure</p>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full md:w-auto">
+                <div class="stat-card p-4 rounded-2xl min-w-[120px]">
+                    <p class="text-[9px] font-bold text-white/40 uppercase">Total Users</p>
+                    <h3 class="text-xl font-black text-[#d4af37]">1,284</h3>
+                </div>
+                <div class="stat-card p-4 rounded-2xl min-w-[120px]">
+                    <p class="text-[9px] font-bold text-white/40 uppercase">Active Now</p>
+                    <h3 class="text-xl font-black text-green-500">42</h3>
+                </div>
+                <div class="stat-card p-4 rounded-2xl min-w-[120px] hidden sm:block">
+                    <p class="text-[9px] font-bold text-white/40 uppercase">Conversion</p>
+                    <h3 class="text-xl font-black text-white">87%</h3>
+                </div>
+            </div>
+        </div>
+                
+        <div class="space-y-8 max-h-[60vh] overflow-y-auto pr-4 custom-scrollbar">
+            
+            <!-- Country Management Grid -->
+            <div id="country-forms" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Nigeria -->
+                <div class="p-6 rounded-[30px] bg-white/[0.03] border border-white/5">
+                    <div class="flex justify-between mb-4">
+                        <p class="text-[10px] font-black text-[#d4af37] uppercase tracking-widest">🇳🇬 Nigeria Node</p>
+                        <i class="fas fa-shield-check text-white/10"></i>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="input-group"><i class="fas fa-bank"></i><input type="text" id="ng-bank" placeholder="Bank" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="ng-num" placeholder="Account No" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="ng-name" placeholder="Name" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-money-bill-wave"></i><input type="text" id="ng-amt" placeholder="Amount" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                    </div>
+                </div>
+
+                <!-- Ghana -->
+                <div class="p-6 rounded-[30px] bg-white/[0.03] border border-white/5">
+                    <div class="flex justify-between mb-4">
+                        <p class="text-[10px] font-black text-[#d4af37] uppercase tracking-widest">🇬🇭 Ghana Node</p>
+                        <i class="fas fa-shield-check text-white/10"></i>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="input-group"><i class="fas fa-bank"></i><input type="text" id="gh-bank" placeholder="Bank" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="gh-num" placeholder="Number" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="gh-name" placeholder="Name" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-money-bill-wave"></i><input type="text" id="gh-amt" placeholder="Amount" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                    </div>
+                </div>
+
+                <!-- South Africa -->
+                <div class="p-6 rounded-[30px] bg-white/[0.03] border border-white/5">
+                    <div class="flex justify-between mb-4">
+                        <p class="text-[10px] font-black text-[#d4af37] uppercase tracking-widest">🇿🇦 SA Node</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="input-group"><i class="fas fa-bank"></i><input type="text" id="sa-bank" placeholder="Bank" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="sa-num" placeholder="Account No" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="sa-name" placeholder="Name" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-money-bill-wave"></i><input type="text" id="sa-amt" placeholder="Amount" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                    </div>
+                </div>
+
+                <!-- Kenya -->
+                <div class="p-6 rounded-[30px] bg-white/[0.03] border border-white/5">
+                    <div class="flex justify-between mb-4">
+                        <p class="text-[10px] font-black text-[#d4af37] uppercase tracking-widest">🇰🇪 Kenya Node</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="input-group"><i class="fas fa-bank"></i><input type="text" id="ke-bank" placeholder="Method" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="ke-num" placeholder="Number" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="ke-name" placeholder="Name" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-money-bill-wave"></i><input type="text" id="ke-amt" placeholder="Amount" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                    </div>
+                </div>
+
+                <!-- Uganda -->
+                <div class="p-6 rounded-[30px] bg-white/[0.03] border border-white/5">
+                    <div class="flex justify-between mb-4">
+                        <p class="text-[10px] font-black text-[#d4af37] uppercase tracking-widest">🇺🇬 Uganda Node</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="input-group"><i class="fas fa-bank"></i><input type="text" id="ug-bank" placeholder="Method" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="ug-num" placeholder="Number" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="ug-name" placeholder="Name" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-money-bill-wave"></i><input type="text" id="ug-amt" placeholder="Amount" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                    </div>
+                </div>
+
+                <!-- Cameroon -->
+                <div class="p-6 rounded-[30px] bg-white/[0.03] border border-white/5">
+                    <div class="flex justify-between mb-4">
+                        <p class="text-[10px] font-black text-[#d4af37] uppercase tracking-widest">🇨🇲 Cameroon Node</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="input-group"><i class="fas fa-bank"></i><input type="text" id="cm-bank" placeholder="Method" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-id-card"></i><input type="text" id="cm-num" placeholder="Number" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="cm-name" placeholder="Name" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                        <div class="input-group"><i class="fas fa-money-bill-wave"></i><input type="text" id="cm-amt" placeholder="Amount" class="w-full p-2.5 rounded-xl text-[11px]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Settings -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="p-8 rounded-[35px] bg-[#d4af37]/5 border border-[#d4af37]/10">
+                    <p class="text-xs font-black text-white uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <i class="fab fa-telegram"></i> Confirmation Gateway
+                    </p>
+                    <input type="text" id="link-in" class="w-full p-4 rounded-2xl outline-none text-xs" placeholder="https://t.me/gateway_link">
+                </div>
+                
+                <div class="flex flex-col justify-center gap-4">
+                    <button onclick="handleUpdate()" id="up-btn" class="w-full glamour-btn p-6 rounded-[28px] shadow-2xl flex items-center justify-center gap-3 text-sm">
+                        DEPLOY LIVE UPDATES
+                    </button>
+                    <p id="sync-status" class="text-center text-[9px] font-black text-white/30 uppercase tracking-[0.4em]">System Synced</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyASDlQQMoXCeMZKs5O3KmO8zuFztt8rg2E",
+        authDomain: "celeste-web1.firebaseapp.com",
+        projectId: "celeste-web1",
+        storageBucket: "celeste-web1.firebasestorage.app",
+        messagingSenderId: "905722043319",
+        appId: "1:905722043319:web:83d032bf3608b8957b2632"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const docRef = doc(db, "configs", "main");
+
+    window.handleLogin = () => {
+        const u = document.getElementById('user').value;
+        const p = document.getElementById('pass').value;
+        if(u === "admin" && p === "glamour2026") {
+            document.getElementById('login-card').classList.add('hidden');
+            document.getElementById('dash-card').classList.remove('hidden');
+            initDash();
+        } else { alert("Unauthorized Entry Attempt Blocked"); }
+    };
+
+    async function initDash() {
+        await signInAnonymously(auth);
+        const snap = await getDoc(docRef);
+        if(snap.exists()) {
+            const d = snap.data();
+            if(d.lastUpdated) document.getElementById('sync-status').innerText = `Last Sync: ${d.lastUpdated}`;
+            
+            // Fill Nigeria
+            if(d.nigeria) {
+                document.getElementById('ng-bank').value = d.nigeria.bank || "";
+                document.getElementById('ng-num').value = d.nigeria.num || "";
+                document.getElementById('ng-name').value = d.nigeria.name || "";
+                document.getElementById('ng-amt').value = d.nigeria.amt || "";
+            }
+            // Fill Ghana
+            if(d.ghana) {
+                document.getElementById('gh-bank').value = d.ghana.bank || "";
+                document.getElementById('gh-num').value = d.ghana.num || "";
+                document.getElementById('gh-name').value = d.ghana.name || "";
+                document.getElementById('gh-amt').value = d.ghana.amt || "";
+            }
+            // Fill SA
+            if(d.south_africa) {
+                document.getElementById('sa-bank').value = d.south_africa.bank || "";
+                document.getElementById('sa-num').value = d.south_africa.num || "";
+                document.getElementById('sa-name').value = d.south_africa.name || "";
+                document.getElementById('sa-amt').value = d.south_africa.amt || "";
+            }
+            // Fill Kenya
+            if(d.kenya) {
+                document.getElementById('ke-bank').value = d.kenya.bank || "";
+                document.getElementById('ke-num').value = d.kenya.num || "";
+                document.getElementById('ke-name').value = d.kenya.name || "";
+                document.getElementById('ke-amt').value = d.kenya.amt || "";
+            }
+            // Fill Uganda
+            if(d.uganda) {
+                document.getElementById('ug-bank').value = d.uganda.bank || "";
+                document.getElementById('ug-num').value = d.uganda.num || "";
+                document.getElementById('ug-name').value = d.uganda.name || "";
+                document.getElementById('ug-amt').value = d.uganda.amt || "";
+            }
+            // Fill Cameroon
+            if(d.cameroon) {
+                document.getElementById('cm-bank').value = d.cameroon.bank || "";
+                document.getElementById('cm-num').value = d.cameroon.num || "";
+                document.getElementById('cm-name').value = d.cameroon.name || "";
+                document.getElementById('cm-amt').value = d.cameroon.amt || "";
+            }
+            document.getElementById('link-in').value = d.telegramLink || "";
+        }
+    }
+
+    window.handleUpdate = async () => {
+        const btn = document.getElementById('up-btn');
+        btn.innerHTML = `<div class="loader"></div> SYNCING TO CLOUD...`;
+        btn.disabled = true;
+
+        const updateObj = {
+            nigeria: { bank: document.getElementById('ng-bank').value, num: document.getElementById('ng-num').value, name: document.getElementById('ng-name').value, amt: document.getElementById('ng-amt').value },
+            ghana: { bank: document.getElementById('gh-bank').value, num: document.getElementById('gh-num').value, name: document.getElementById('gh-name').value, amt: document.getElementById('gh-amt').value },
+            south_africa: { bank: document.getElementById('sa-bank').value, num: document.getElementById('sa-num').value, name: document.getElementById('sa-name').value, amt: document.getElementById('sa-amt').value },
+            kenya: { bank: document.getElementById('ke-bank').value, num: document.getElementById('ke-num').value, name: document.getElementById('ke-name').value, amt: document.getElementById('ke-amt').value },
+            uganda: { bank: document.getElementById('ug-bank').value, num: document.getElementById('ug-num').value, name: document.getElementById('ug-name').value, amt: document.getElementById('ug-amt').value },
+            cameroon: { bank: document.getElementById('cm-bank').value, num: document.getElementById('cm-num').value, name: document.getElementById('cm-name').value, amt: document.getElementById('cm-amt').value },
+            telegramLink: document.getElementById('link-in').value,
+            lastUpdated: new Date().toLocaleTimeString()
+        };
+
+        try {
+            await setDoc(docRef, updateObj, { merge: true });
+            document.getElementById('sync-status').innerText = `Last Sync: ${updateObj.lastUpdated}`;
+            alert("Glamour System Live: Deployment Successful");
+        } catch (e) { alert("Error: " + e.message); }
+        btn.innerHTML = "DEPLOY LIVE UPDATES";
+        btn.disabled = false;
+    };
+</script>
+</body>
+</html>
