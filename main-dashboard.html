@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dashboard | GLAMOUR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #e7c792 0%, #ba945d 100%); min-height: 100vh; color: #000; margin: 0; padding-bottom: 90px; }
+        .gold-gradient-text { background: linear-gradient(to bottom, #fff5c0, #f5c24c, #d4a017); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        
+        .balance-card { background: #0a0a0a; border-radius: 28px; padding: 25px; color: white; display: flex; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .balance-main { width: 55%; }
+        .balance-side { width: 45%; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 15px; display: flex; flex-direction: column; justify-content: space-between; }
+        
+        .withdraw-btn { background: linear-gradient(to bottom, #fff5c0, #f5c24c, #d4a017); color: #000; font-weight: 800; width: 100%; padding: 12px; border-radius: 12px; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 12px; text-transform: uppercase; border:none; cursor:pointer;}
+        .feature-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .feature-card { min-width: 155px; background: #0a0a0a; border-radius: 20px; padding: 18px; color: white; cursor: pointer; }
+        .icon-circle { width: 38px; height: 38px; border: 1.5px solid #d4a017; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: #f5c24c; }
+        .stream-item { background: #0a0a0a; border-radius: 18px; padding: 15px; display: flex; align-items: center; justify-content: space-between; color: white; margin-bottom: 10px; cursor: pointer; }
+        
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: #111; border: 1px solid #d4a017; border-radius: 24px; padding: 30px; width: 100%; max-width: 380px; color: white; text-align: center; }
+        
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0a0a0a; display: flex; justify-content: space-around; padding: 15px 0 25px; z-index: 100; border-top: 1px solid rgba(255,255,255,0.05); }
+        .nav-item { text-align: center; color: #666; font-size: 10px; font-weight: 700; text-transform: uppercase; cursor: pointer; }
+        .nav-item.active { color: white; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="px-6 pt-12 pb-4">
+        <!-- Header -->
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <p class="text-[10px] font-extrabold uppercase opacity-60">Welcome back,</p>
+                <h1 class="text-3xl font-bold" id="user-display">Miracle</h1>
+            </div>
+            <div class="flex gap-2">
+                <div class="bg-white/40 px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
+  <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+  NG REGION
+</div>
+                <div class="bg-white/30 p-2 rounded-full"><i class="fa-regular fa-bell text-xl"></i></div>
+            </div>
+        </div>
+
+        <!-- Balance Card -->
+        <div class="balance-card mb-8">
+            <div class="balance-main">
+                <p class="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-2">Total Balance</p>
+                <h2 class="text-3xl gold-gradient-text">₦14,000</h2>
+                <p class="text-[10px] opacity-60 mt-1">Available for withdrawal</p>
+                
+                <button class="withdraw-btn" onclick="handleWithdrawLogic()">
+                    <i class="fas fa-wallet"></i> Withdraw
+                </button>
+            </div>
+
+            <div class="balance-side">
+                <div class="flex justify-between items-center text-[9px] uppercase font-bold tracking-tighter">
+                    <span>Convert To <i class="fas fa-sync-alt ml-1"></i></span>
+                    <i class="fas fa-gem text-amber-400"></i>
+                </div>
+
+                <div class="relative mt-2">
+                    <select class="bg-transparent border border-white/20 rounded-lg p-2 text-[11px] w-full appearance-none text-white">
+                        <option class="bg-black">EUR - NG</option>
+                        <option class="bg-black">NG - EUR</option>
+                    </select>
+                    <i class="fas fa-chevron-down absolute right-2 top-3 text-[10px] opacity-40"></i>
+                </div>
+
+                <div class="mt-4">
+                    <h3 class="text-lg font-bold">€7</h3>
+                    <p class="text-[9px] font-bold opacity-40">1 EUR = ₦2,000</p>
+                    <p class="text-[9px] opacity-40">Rates as of today</p>
+                </div>
+            </div>
+        </div> 
+
+        <!-- 4 Glam Features -->
+        <h3 class="text-[11px] font-extrabold uppercase mb-4 tracking-wider flex items-center gap-2">
+            <i class="fas fa-star text-amber-500 text-[10px]"></i> Glam Features
+        </h3>
+        <div class="feature-scroll">
+            <div class="feature-card" onclick="gateCheck()"><div class="icon-circle"><i class="fas fa-bolt"></i></div><h4 class="text-[11px] font-bold">Glam Real Time</h4><p class="text-[8px] opacity-50">Get paid for living in moment.</p></div>
+            <div class="feature-card" onclick="gateCheck()"><div class="icon-circle"><i class="fas fa-crown"></i></div><h4 class="text-[11px] font-bold">Glam Status</h4><p class="text-[8px] opacity-50">Track your status rewards.</p></div>
+            <div class="feature-card" onclick="gateCheck()"><div class="icon-circle"><i class="fas fa-video"></i></div><h4 class="text-[11px] font-bold">Glam FaceTime</h4><p class="text-[8px] opacity-50">Connect & earn in real-time.</p></div>
+            <div class="feature-card" onclick="gateCheck()"><div class="icon-circle"><i class="fas fa-moon"></i></div><h4 class="text-[11px] font-bold">Glam Dark Mode</h4><p class="text-[8px] opacity-50">Activate premium dark experience.</p></div>
+        </div>
+
+        <!-- 5 Inactive Glam Streams -->
+        <div class="flex justify-between items-center mt-8 mb-4">
+            <h3 class="text-[11px] font-extrabold uppercase tracking-wider">Glam Streams</h3>
+            <span class="text-[9px] font-extrabold px-3 py-1 bg-black/20 rounded-full">5 INACTIVE</span>
+        </div>
+
+        <div class="space-y-3">
+            <div class="stream-item" onclick="gateCheck()">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center"><i class="fas fa-utensils text-amber-500"></i></div>
+                    <div><h4 class="text-xs font-bold uppercase">Glam cuisine</h4><p class="text-[9px] opacity-50">Teach your local dishes and earn</p></div>
+                </div>
+                <i class="fas fa-lock opacity-30 text-xs"></i>
+            </div>
+            <div class="stream-item" onclick="gateCheck()">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center"><i class="fas fa-robot text-amber-500"></i></div>
+                    <div><h4 class="text-xs font-bold uppercase">Glam lingua</h4><p class="text-[9px] opacity-50">Teach local language & get paid daily (AI)</p></div>
+                </div>
+                <i class="fas fa-lock opacity-30 text-xs"></i>
+            </div>
+            <div class="stream-item" onclick="gateCheck()">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center"><i class="fas fa-clapperboard text-amber-500"></i></div>
+                    <div><h4 class="text-xs font-bold uppercase">Glam script</h4><p class="text-[9px] opacity-50">Get paid for making videos about Glamour</p></div>
+                </div>
+                <i class="fas fa-lock opacity-30 text-xs"></i>
+            </div>
+            <div class="stream-item" onclick="gateCheck()">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center"><i class="fas fa-camera text-amber-500"></i></div>
+                    <div><h4 class="text-xs font-bold uppercase">Lifestyle Monetization</h4><p class="text-[9px] opacity-50">Post & earn daily</p></div>
+                </div>
+                <i class="fas fa-lock opacity-30 text-xs"></i>
+            </div>
+            <div class="stream-item" onclick="gateCheck()">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center"><i class="fas fa-gem text-amber-500"></i></div>
+                    <div><h4 class="text-xs font-bold uppercase">Glam Prime</h4><p class="text-[9px] opacity-50">Premium creator access</p></div>
+                </div>
+                <i class="fas fa-lock opacity-30 text-xs"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="cashbackModal" class="modal">
+        <div class="modal-content">
+            <div class="text-amber-500 text-6xl mb-4"><i class="fas fa-check-circle"></i></div>
+            <h2 class="text-2xl font-bold mb-2">Glamour Cashback Successfully</h2>
+            <p class="text-sm opacity-70 mb-8">Your registration bonus of ₦14,000 is ready for withdrawal.</p>
+            <button onclick="dismissCashback()" class="withdraw-btn mb-3">Continue Earning</button>
+            <button onclick="handleWithdrawLogic()" class="w-full text-white/40 text-[10px] font-bold uppercase">Claim Cashback & Withdraw</button>
+        </div>
+    </div>
+
+    <div id="verifyModal" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-shield-halved text-5xl mb-4 text-amber-500"></i>
+            <h2 class="text-xl font-bold mb-2">Verify Dashboard</h2>
+            <p class="text-xs opacity-70 mb-6 leading-relaxed">Verify your dashboard with an official Glamour Agent to unlock all features and withdrawals.</p>
+            <button onclick="window.location.href='https://t.me/glamour_agent'" class="withdraw-btn">Verify via Telegram</button>
+        </div>
+    </div>
+
+    <div id="bankAlertModal" class="modal">
+        <div class="modal-content border-amber-600">
+            <i class="fas fa-envelope-open-text text-5xl mb-4 text-amber-500"></i>
+            <h2 class="text-xl font-bold mb-2 uppercase tracking-tighter">Access the Mail</h2>
+            <p class="text-xs opacity-70 mb-8 px-4">Please complete your banking details in your profile before processing your cashback withdrawal.</p>
+            <button onclick="window.location.href='profile.html'" class="withdraw-btn">Update Profile Now</button>
+            <button onclick="closeModal('bankAlertModal')" class="mt-4 text-[10px] font-bold opacity-40 uppercase">Close</button>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <div class="nav-item active"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-item" onclick="gateCheck()"><i class="fas fa-briefcase"></i>Glam Work</div>
+        <div class="nav-item" onclick="window.location.href='profile.html'"><i class="fas fa-user-circle"></i>Profile</div>
+    </nav>
+
+    <script>
+        const username = localStorage.getItem('glamour_username') || "Miracle";
+        document.getElementById('user-display').innerText = username;
+        
+        // Popup shows only once
+        if(!localStorage.getItem('cashback_interacted')) {
+            setTimeout(() => { document.getElementById('cashbackModal').style.display = 'flex'; }, 800);
+        }
+
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function dismissCashback() {
+            localStorage.setItem('cashback_interacted', 'true');
+            closeModal('cashbackModal');
+        }
+
+        function handleWithdrawLogic() {
+            localStorage.setItem('cashback_interacted', 'true');
+            closeModal('cashbackModal');
+
+            if(localStorage.getItem('has_withdrawn') === 'true') {
+                gateCheck();
+                return;
+            }
+
+            if(localStorage.getItem('profile_saved') !== 'true') {
+                document.getElementById('bankAlertModal').style.display = 'flex';
+            } else {
+                localStorage.setItem('has_withdrawn', 'true');
+                alert("Withdrawal Successful! Printing Receipt...");
+                window.location.href = 'withdrawal.html';
+            }
+        }
+
+        function gateCheck() {
+            if(localStorage.getItem('has_withdrawn') === 'true') {
+                document.getElementById('verifyModal').style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>
