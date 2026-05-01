@@ -22,17 +22,28 @@
         .amount-box div { font-size: 28px; font-weight: 900; color: #ffffff; }
         .bank-details-wrapper { background: rgba(255,255,255,0.02); border: 1px dashed rgba(212, 175, 55, 0.4); border-radius: 24px; padding: 24px; margin: 25px 0; cursor: pointer; transition: all 0.3s; }
         .account-number-text { font-size: 26px; font-weight: 900; letter-spacing: 1px; color: var(--glamour-gold); margin: 6px 0; word-break: break-all; }
-        .btn-main { background: var(--glamour-gold); color: var(--glamour-dark); width: 100%; padding: 20px; border-radius: 20px; font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s; text-transform: uppercase; }
+        .btn-main { background: var(--glamour-gold); color: var(--glamour-dark); width: 100%; padding: 20px; border-radius: 20px; font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s; text-transform: uppercase; border: none; cursor: pointer; }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 8000; backdrop-filter: blur(10px); padding: 20px; }
         .upload-card { background: #0d1211; border: 1px solid var(--glamour-gold); border-radius: 30px; width: 100%; max-width: 400px; padding: 35px 25px; text-align: center; }
         #overlay { position: fixed; inset: 0; background: rgba(10, 10, 10, 0.98); display: none; align-items: center; justify-content: center; flex-direction: column; z-index: 9999; backdrop-filter: blur(15px); }
         .loader-ring { width: 60px; height: 60px; border: 4px solid rgba(212, 175, 55, 0.1); border-top: 4px solid var(--glamour-gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        /* NEW CUSTOM TOAST */
+        .glamour-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #111; border: 1px solid var(--glamour-gold); padding: 12px 24px; border-radius: 15px; display: flex; align-items: center; gap: 10px; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; z-index: 10001; }
+        .glamour-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
         .activity-popup { position: fixed; top: 15px; left: 15px; background: var(--glamour-dark); border: 2px solid var(--glamour-gold); border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; transform: translateX(-130%); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); z-index: 1000; min-width: 250px; }
         .activity-popup.show { transform: translateX(0); }
     </style>
 </head>
 <body>
+
+<!-- Custom Copy Notification -->
+<div id="copy-toast" class="glamour-toast">
+    <i class="fas fa-check-circle text-[#d4af37]"></i>
+    <span class="text-xs font-bold tracking-widest uppercase">Copied to Clipboard</span>
+</div>
 
 <div id="activity-popup" class="activity-popup">
     <div id="activity-icon" class="activity-icon text-[#d4af37]"><i class="fas fa-circle-check"></i></div>
@@ -72,8 +83,11 @@
     <div class="upload-card">
         <i class="fas fa-cloud-arrow-up text-5xl text-[#d4af37] mb-5"></i>
         <h2 class="text-xl font-black uppercase mb-2">Upload Receipt</h2>
-        <input type="file" id="receipt-input" accept="image/*" class="hidden" onchange="handleFileSelect()">
-        <div onclick="document.getElementById('receipt-input').click()" class="border-2 border-dashed border-white/20 rounded-2xl p-8 mb-6 cursor-pointer"><p id="file-name" class="text-xs font-bold text-white/40">Select screenshot</p></div>
+        <!-- Fixed File Input -->
+        <input type="file" id="receipt-input" accept="image/*" class="hidden">
+        <div id="drop-zone" onclick="document.getElementById('receipt-input').click()" class="border-2 border-dashed border-white/20 rounded-2xl p-8 mb-6 cursor-pointer transition hover:border-[#d4af37]/50">
+            <p id="file-name" class="text-xs font-bold text-white/40">Select screenshot</p>
+        </div>
         <button onclick="startVerification()" id="verify-btn" class="btn-main opacity-30 pointer-events-none">Verify Payment</button>
         <button onclick="closeUploadModal()" class="mt-4 text-[10px] font-black text-white/30 uppercase">Cancel</button>
     </div>
@@ -124,6 +138,7 @@
         { name: "Lerato M.", loc: "Pretoria", amt: "R380" }
     ];
 
+    // Activity Popups logic
     function showActivity() {
         const popup = document.getElementById('activity-popup');
         const item = activities[Math.floor(Math.random() * activities.length)];
@@ -169,37 +184,73 @@
         }, 1000);
     }
 
+    // Initialize Page
     async function initPage() {
         setupUI();
         const tenMinutes = 60 * 10;
         startTimer(tenMinutes, document.querySelector('#timer'));
         
-        // Start Activity Popups
         setInterval(showActivity, 5000);
         showActivity();
 
         onSnapshot(doc(db, "configs", "main"), (snap) => {
             if(snap.exists()) setupUI(snap.data());
         });
+
+        // Event Listener for File Upload
+        document.getElementById('receipt-input').addEventListener('change', function(e) {
+            if(this.files && this.files[0]) {
+                document.getElementById('file-name').innerText = "Selected: " + this.files[0].name;
+                document.getElementById('file-name').classList.replace('text-white/40', 'text-[#d4af37]');
+                document.getElementById('verify-btn').classList.remove('opacity-30', 'pointer-events-none');
+            }
+        });
     }
 
     window.onload = initPage;
+
+    // GLOBAL FUNCTIONS
     window.openUploadModal = () => document.getElementById('upload-modal').style.display = 'flex';
-    window.closeUploadModal = () => document.getElementById('upload-modal').style.display = 'none';
-    window.handleFileSelect = () => { if(document.getElementById('receipt-input').files[0]) document.getElementById('verify-btn').classList.remove('opacity-30', 'pointer-events-none'); };
+    window.closeUploadModal = () => {
+        document.getElementById('upload-modal').style.display = 'none';
+        // Reset file state if cancelled
+        document.getElementById('receipt-input').value = "";
+        document.getElementById('file-name').innerText = "Select screenshot";
+        document.getElementById('verify-btn').classList.add('opacity-30', 'pointer-events-none');
+    };
+
     window.startVerification = async () => {
-        closeUploadModal();
-        document.getElementById('overlay').style.display = 'flex';
+        const modal = document.getElementById('upload-modal');
+        const overlay = document.getElementById('overlay');
+        
+        modal.style.display = 'none';
+        overlay.style.display = 'flex';
+
         try {
-            await updateDoc(doc(db, "users", auth.currentUser.uid), { status: "paid" });
+            // Update Firestore Status
+            if(auth.currentUser) {
+                await updateDoc(doc(db, "users", auth.currentUser.uid), { status: "paid" });
+            }
+            
             setTimeout(() => {
                 document.getElementById('loader-content').classList.add('hidden');
                 document.getElementById('success-content').classList.remove('hidden');
                 setTimeout(() => { window.location.href = 'main-dashboard.html'; }, 3000);
             }, 5000);
-        } catch(e) { alert(e.message); document.getElementById('overlay').style.display = 'none'; }
+        } catch(e) { 
+            console.error(e); 
+            overlay.style.display = 'none'; 
+        }
     };
-    window.copyNum = () => { navigator.clipboard.writeText(document.getElementById('db-number').innerText); alert("Copied!"); };
+
+    window.copyNum = () => { 
+        const num = document.getElementById('db-number').innerText;
+        navigator.clipboard.writeText(num).then(() => {
+            const toast = document.getElementById('copy-toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        });
+    };
 </script>
 </body>
 </html>
