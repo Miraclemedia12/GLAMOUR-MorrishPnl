@@ -17,9 +17,38 @@
         .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 3px solid #d4a017; padding: 3px; margin: 0 auto 15px; position: relative; }
         .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .badge { position: absolute; bottom: 0; right: 0; background: #d4a017; color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #0a0a0a; }
+
+        /* CUSTOM NOTIFICATION STYLES */
+        #custom-popup {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 350px;
+            background: #111;
+            border: 1px solid #d4a017;
+            border-radius: 20px;
+            padding: 16px 20px;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        #custom-popup.active { top: 25px; }
+        .popup-icon { background: #d4a017; color: #000; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+        .popup-text { color: white; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
     </style>
 </head>
 <body>
+
+    <!-- Professional Popup Element -->
+    <div id="custom-popup">
+        <div class="popup-icon"><i class="fas fa-check"></i></div>
+        <div class="popup-text" id="popup-msg">Profile Updated! Withdrawal Unlocked.</div>
+    </div>
 
     <div class="px-6 pt-10 flex items-center gap-4">
         <button onclick="window.location.href='dashboard.html'" class="w-10 h-10 bg-black/20 rounded-full flex items-center justify-center">
@@ -89,6 +118,22 @@
     </div>
 
     <script>
+        // Function to trigger the custom professional popup
+        function triggerPopup(message) {
+            const popup = document.getElementById('custom-popup');
+            const msgEl = document.getElementById('popup-msg');
+            msgEl.innerText = message;
+            popup.classList.add('active');
+            
+            // Wait 2.5 seconds, then redirect
+            setTimeout(() => {
+                popup.classList.remove('active');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 500);
+            }, 2500);
+        }
+
         // Load existing data
         window.onload = function() {
             const savedName = localStorage.getItem('glamour_username');
@@ -97,7 +142,6 @@
                 document.getElementById('full_name').value = savedName;
             }
             
-            // Populate other fields if they exist
             document.getElementById('email').value = localStorage.getItem('glamour_email') || '';
             document.getElementById('bank_name').value = localStorage.getItem('glamour_bank') || '';
             document.getElementById('acc_number').value = localStorage.getItem('glamour_acc_num') || '';
@@ -107,7 +151,6 @@
         document.getElementById('profileForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Save data to localStorage
             const name = document.getElementById('full_name').value;
             localStorage.setItem('glamour_username', name);
             localStorage.setItem('glamour_email', document.getElementById('email').value);
@@ -115,11 +158,10 @@
             localStorage.setItem('glamour_acc_num', document.getElementById('acc_number').value);
             localStorage.setItem('glamour_acc_name', document.getElementById('acc_name').value);
             
-            // Critical: Set this to true to unlock withdrawal on the dashboard
             localStorage.setItem('profile_saved', 'true');
             
-            alert('Profile Updated Successfully! Withdrawal feature unlocked.');
-            window.location.href = 'dashboard.html';
+            // Trigger the new professional notification instead of default alert
+            triggerPopup('Profile Updated Successfully! Withdrawal feature unlocked.');
         });
     </script>
 </body>
