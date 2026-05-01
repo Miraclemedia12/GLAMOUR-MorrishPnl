@@ -13,9 +13,19 @@
         .input-box { background: #151515; border: 1px solid #d4a017; border-radius: 16px; padding: 15px; width: 100%; color: white; font-size: 18px; font-weight: 700; outline: none; margin-top: 10px; }
         .withdraw-now-btn { background: linear-gradient(to bottom, #fff5c0, #f5c24c, #d4a017); color: #000; font-weight: 800; width: 100%; padding: 16px; border-radius: 16px; margin-top: 20px; font-size: 14px; text-transform: uppercase; border:none; cursor:pointer; }
         
-        #receipt-view { display: none; background: white; color: #000; border-radius: 24px; padding: 30px; position: relative; }
-        .status-approved { background: #e6fffa; color: #2d8a6e; padding: 6px 12px; border-radius: 50px; font-size: 10px; font-weight: 800; display: inline-block; }
-        
+        /* Updated Receipt Styling based on Image */
+        #receipt-view { display: none; background: #fffcf5; color: #000; border-radius: 0; position: fixed; top:0; left:0; width:100%; height:100%; overflow-y:auto; z-index: 2000; padding: 0; }
+        .receipt-header { background: #8b6b3d; color: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; font-weight: 700; }
+        .receipt-body { padding: 20px; }
+        .glamour-logo-section { text-align: center; margin-top: 20px; }
+        .success-circle { width: 60px; height: 60px; border: 4px solid #d4a017; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 15px auto; color: #2d8a6e; font-size: 30px; }
+        .receipt-row { display: flex; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #f0e6d2; }
+        .receipt-label { width: 40%; font-size: 11px; font-weight: 600; color: #8b6b3d; display: flex; align-items: center; gap: 8px; }
+        .receipt-value { width: 60%; font-size: 11px; font-weight: 700; text-align: right; color: #333; word-break: break-all; }
+        .footer-btns { margin-top: 30px; padding: 0 20px; }
+        .download-btn { background: #ba945d; color: white; width: 100%; padding: 15px; border-radius: 8px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .share-btn { border: 1px solid #ba945d; color: #ba945d; width: 100%; padding: 15px; border-radius: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
         .history-card { background: #0a0a0a; border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.05); }
         .history-item { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 12px; }
         .history-item:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
@@ -74,31 +84,75 @@
         </div>
     </div>
 
-    <!-- Approved Receipt View -->
-    <div id="receipt-view" class="shadow-2xl">
-        <div class="text-center mb-6">
-            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-check text-2xl text-green-600"></i>
+    <!-- New Image-Style Receipt View -->
+    <div id="receipt-view">
+        <div class="receipt-header">
+            <span>Transaction Successful</span>
+            <span id="header-time" class="text-[10px]">Today, 12:00 PM</span>
+        </div>
+        
+        <div class="receipt-body">
+            <div class="mb-4">
+                <h3 class="font-bold text-sm">Withdrawal successful</h3>
+                <p class="text-[10px] opacity-60">Your withdrawal has been placed successfully.</p>
             </div>
-            <h1 class="text-2xl font-black uppercase tracking-tighter">Approved</h1>
-            <p class="text-[10px] font-bold opacity-40 uppercase tracking-widest mt-1">Glamour Payment Receipt</p>
+
+            <div class="glamour-logo-section">
+                <div class="flex items-center justify-center gap-2 mb-1">
+                    <div class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold">G</div>
+                    <span class="text-xl font-black tracking-tighter">GLAMOUR</span>
+                </div>
+                <p class="text-[8px] font-bold opacity-40 uppercase tracking-widest">CORPORATION</p>
+                
+                <div class="success-circle">
+                    <i class="fas fa-check"></i>
+                </div>
+
+                <h2 class="text-lg font-bold">Withdrawal Successful!</h2>
+                <p class="text-[10px] opacity-60 mb-4">and is being processed.</p>
+
+                <p class="text-[10px] font-bold opacity-40 uppercase">AMOUNT RECEIVED</p>
+                <h1 class="text-3xl font-black mb-1" id="r-amt">₦0.00</h1>
+                <div class="bg-amber-100 text-amber-700 text-[9px] font-bold py-1 px-4 inline-block rounded">RECEIVED IN NAIRA</div>
+            </div>
+
+            <div class="mt-8 space-y-1">
+                <div class="receipt-row">
+                    <span class="receipt-label"><i class="fas fa-user"></i> Recipient</span>
+                    <span class="receipt-value" id="r-recipient">---</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label"><i class="fas fa-university"></i> Originator</span>
+                    <span class="receipt-value">GLAMOUR Corporation<br>Europe</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label"><i class="fas fa-calendar-alt"></i> Created At</span>
+                    <span class="receipt-value" id="r-date">---</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label"><i class="fas fa-file-alt"></i> Description</span>
+                    <span class="receipt-value">Glamour Website</span>
+                </div>
+                <div class="receipt-row" style="border:none;">
+                    <span class="receipt-label"><i class="fas fa-hashtag"></i> Reference</span>
+                    <span class="receipt-value" id="r-ref">---</span>
+                </div>
+            </div>
         </div>
 
-        <div class="space-y-4 border-t border-dashed border-gray-200 pt-6">
-            <div class="flex justify-between items-center"><span class="text-[10px] font-bold opacity-40 uppercase">Beneficiary</span> <span class="text-xs font-bold" id="r-name">---</span></div>
-            <div class="flex justify-between items-center"><span class="text-[10px] font-bold opacity-40 uppercase">Bank Name</span> <span class="text-xs font-bold" id="r-bank">---</span></div>
-            <div class="flex justify-between items-center"><span class="text-[10px] font-bold opacity-40 uppercase">Account No</span> <span class="text-xs font-bold" id="r-acc">---</span></div>
-            <div class="flex justify-between items-center"><span class="text-[10px] font-bold opacity-40 uppercase">Amount</span> <span class="text-sm font-black text-green-600" id="r-amt">---</span></div>
-            <div class="flex justify-between items-center"><span class="text-[10px] font-bold opacity-40 uppercase">Timestamp</span> <span class="text-xs font-bold" id="r-date">---</span></div>
-            <div class="flex justify-between items-center border-t border-gray-100 pt-4"><span class="text-[10px] font-bold opacity-40 uppercase">Ref Number</span> <span class="text-[10px] font-bold tracking-tight" id="r-ref">---</span></div>
+        <div class="footer-btns">
+            <button class="download-btn" onclick="window.print()">
+                <i class="fas fa-download"></i> Download Receipt
+            </button>
+            <button class="share-btn" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-share-alt"></i> Back to Dashboard
+            </button>
         </div>
 
-        <button class="withdraw-now-btn !bg-black !text-white mt-8" onclick="window.print()">
-            <i class="fas fa-print mr-2"></i> Print Official Receipt
-        </button>
-        <button class="w-full text-[10px] font-bold opacity-40 uppercase mt-4 tracking-widest" onclick="window.location.href='dashboard.html'">
-            Return to Dashboard
-        </button>
+        <div class="text-center mt-6 pb-10">
+            <p class="text-[9px] font-bold opacity-40 uppercase">Secure. Verified. Trusted.</p>
+            <p class="text-[9px] font-black">Powered by GLAMOUR CORP</p>
+        </div>
     </div>
 
     <script>
@@ -119,13 +173,21 @@
             }
 
             const now = new Date();
-            document.getElementById('r-name').innerText = localStorage.getItem('glamour_acc_name') || "Member";
-            document.getElementById('r-bank').innerText = localStorage.getItem('glamour_bank') || "Bank";
-            document.getElementById('r-acc').innerText = localStorage.getItem('glamour_acc_num') || "0000000000";
-            document.getElementById('r-amt').innerText = "₦" + Number(amount).toLocaleString();
-            document.getElementById('r-date').innerText = now.toLocaleString();
-            document.getElementById('r-ref').innerText = "GLM-" + Math.floor(Math.random() * 900000000 + 100000000);
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const dateStr = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
+            const bank = localStorage.getItem('glamour_bank') || "Bank";
+            const acc = localStorage.getItem('glamour_acc_num') || "0000000000";
+            const name = localStorage.getItem('glamour_acc_name') || "Member";
+
+            // Update Receipt Data
+            document.getElementById('header-time').innerText = "Today, " + timeStr;
+            document.getElementById('r-amt').innerText = "₦" + Number(amount).toLocaleString() + ".00";
+            document.getElementById('r-recipient').innerHTML = acc + "<br>" + bank + " - " + name;
+            document.getElementById('r-date').innerText = dateStr + ", " + timeStr;
+            document.getElementById('r-ref').innerText = "TMP-" + Math.random().toString(36).substring(2, 10).toUpperCase() + "-" + Math.floor(Math.random() * 1000000000);
+
+            // Toggle Views
             document.getElementById('withdrawal-form').style.display = 'none';
             document.getElementById('receipt-view').style.display = 'block';
 
