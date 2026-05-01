@@ -28,6 +28,10 @@
         .nav-item { text-align: center; color: #666; font-size: 10px; font-weight: 700; text-transform: uppercase; cursor: pointer; }
         .nav-item.active { color: white; }
         .nav-item i { font-size: 20px; margin-bottom: 4px; display: block; }
+
+        /* Receipt Loading Animation */
+        .loader-ring { width: 40px; height: 40px; border: 3px solid rgba(212, 160, 23, 0.2); border-radius: 50%; border-top-color: #d4a017; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -37,13 +41,15 @@
         <div class="flex justify-between items-start mb-6">
             <div>
                 <p class="text-[10px] font-extrabold uppercase opacity-60">Welcome back,</p>
-                <h1 class="text-3xl font-bold" id="user-display">Miracle</h1>
+                <!-- Combined Username and Email Display -->
+                <h1 class="text-2xl font-bold" id="user-display">User</h1>
+                <p class="text-[9px] font-bold text-black/50" id="email-display">account@glamour.com</p>
             </div>
             <div class="flex gap-2">
                 <div class="bg-white/40 px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
-  <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-  NG REGION
-</div>
+                    <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                    NG REGION
+                </div>
                 <div class="bg-white/30 p-2 rounded-full"><i class="fa-regular fa-bell text-xl"></i></div>
             </div>
         </div>
@@ -154,7 +160,8 @@
             <i class="fas fa-shield-halved text-5xl mb-4 text-amber-500"></i>
             <h2 class="text-xl font-bold mb-2">Verify Dashboard</h2>
             <p class="text-xs opacity-70 mb-6 leading-relaxed">Verify your dashboard with an official Glamour Agent to unlock all features and withdrawals.</p>
-            <button onclick="window.location.href='https://t.me/glamour_agent'" class="withdraw-btn">Verify via Telegram</button>
+            <!-- Updated Telegram Link -->
+            <button onclick="window.location.href='https://t.me/morrishmedia'" class="withdraw-btn">Verify via Telegram</button>
         </div>
     </div>
 
@@ -168,6 +175,16 @@
         </div>
     </div>
 
+    <!-- New Professional Receipt Modal -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content">
+            <div class="loader-ring"></div>
+            <h2 class="text-xl font-bold mb-2 uppercase tracking-widest">Processing...</h2>
+            <p class="text-xs opacity-70 mb-2">Withdrawal Successful!</p>
+            <p class="text-[10px] text-amber-500 font-bold">PRINTING DIGITAL RECEIPT</p>
+        </div>
+    </div>
+
     <!-- Bottom Nav -->
     <nav class="bottom-nav">
         <div class="nav-item active"><i class="fas fa-home"></i>Home</div>
@@ -176,8 +193,12 @@
     </nav>
 
     <script>
+        // Track and show username and email from localStorage
         const username = localStorage.getItem('glamour_username') || "Miracle";
+        const email = localStorage.getItem('glamour_email') || "Not Set";
+        
         document.getElementById('user-display').innerText = username;
+        document.getElementById('email-display').innerText = email;
         
         // Popup shows only once
         if(!localStorage.getItem('cashback_interacted')) {
@@ -204,8 +225,13 @@
                 document.getElementById('bankAlertModal').style.display = 'flex';
             } else {
                 localStorage.setItem('has_withdrawn', 'true');
-                alert("Withdrawal Successful! Printing Receipt...");
-                window.location.href = 'withdrawal.html';
+                
+                // Show professional receipt modal instead of alert
+                document.getElementById('receiptModal').style.display = 'flex';
+                
+                setTimeout(() => {
+                    window.location.href = 'withdrawal.html';
+                }, 2500);
             }
         }
 
