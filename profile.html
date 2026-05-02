@@ -2,167 +2,237 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Profile Settings | GLAMOUR</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | GLAMOUR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #e7c792 0%, #ba945d 100%); min-height: 100vh; color: #000; margin: 0; padding-bottom: 40px; }
-        .glass-container { background: #0a0a0a; border-radius: 32px; margin: 20px; padding: 25px; color: white; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .input-group { background: #151515; border: 1px solid rgba(212, 160, 23, 0.2); border-radius: 16px; padding: 12px 18px; margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 9px; text-transform: uppercase; font-weight: 800; color: #d4a017; margin-bottom: 4px; letter-spacing: 1px; }
-        .input-group input, .input-group select { background: transparent; border: none; color: white; width: 100%; font-size: 14px; font-weight: 600; outline: none; }
-        .save-btn { background: linear-gradient(to bottom, #fff5c0, #f5c24c, #d4a017); color: #000; font-weight: 800; width: 100%; padding: 16px; border-radius: 16px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; text-transform: uppercase; border:none; cursor:pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 3px solid #d4a017; padding: 3px; margin: 0 auto 15px; position: relative; }
-        .profile-pic img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .badge { position: absolute; bottom: 0; right: 0; background: #d4a017; color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #0a0a0a; }
-
-        /* CUSTOM NOTIFICATION STYLES */
-        #custom-popup {
-            position: fixed;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 350px;
-            background: #111;
-            border: 1px solid #d4a017;
-            border-radius: 20px;
-            padding: 16px 20px;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        
+        :root { 
+            --glamour-gold: #d4a017; 
+            --glamour-dark: #0a0a0a; 
+            --glamour-bg: #ba945d;
         }
-        #custom-popup.active { top: 25px; }
-        .popup-icon { background: #d4a017; color: #000; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
-        .popup-text { color: white; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { 
+            background-color: var(--glamour-dark); 
+            background: linear-gradient(135deg, #e7c792 0%, #ba945d 100%);
+            color: #000; margin: 0; padding: 15px; padding-bottom: 50px; 
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* CUSTOM MODAL */
+        #customAlert { 
+            position: fixed; inset: 0; display: none; align-items: center; justify-content: center; 
+            z-index: 10005; padding: 25px; backdrop-filter: blur(15px); background: rgba(0,0,0,0.8);
+        }
+        .alert-box { 
+            background: #0d1211; border: 1px solid var(--glamour-gold); 
+            padding: 40px 30px; border-radius: 40px; width: 100%; max-width: 360px; text-align: center;
+        }
+
+        /* HEADER */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-top: 10px; }
+        .back-btn { display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+
+        /* LOGO AREA */
+        .logo-container { text-align: center; margin-bottom: 40px; }
+        .logo-circle {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 100px; height: 100px; border-radius: 50%;
+            border: 4px solid var(--glamour-dark);
+            background: rgba(255, 255, 255, 0.2); margin-bottom: 20px;
+            animation: pulse 2.5s infinite; color: var(--glamour-dark); font-size: 45px;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        /* INPUTS */
+        .form-label { font-size: 11px; font-weight: 900; color: #000; text-transform: uppercase; letter-spacing: 1.5px; margin-left: 20px; margin-bottom: 8px; display: block; }
+        .profile-pill-input {
+            background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08);
+            width: 100%; padding: 22px 28px; border-radius: 100px; color: #fff; font-weight: 600;
+            outline: none; transition: 0.3s; font-size: 15px; margin-bottom: 25px;
+        }
+        .profile-pill-input:focus { border-color: #fff; background: #151515; }
+        .profile-pill-input:read-only { opacity: 0.6; cursor: not-allowed; border-style: dashed; }
+
+        .btn-submit { 
+            background: #0a0a0a; color: #fff; 
+            width: 100%; padding: 22px; border-radius: 100px; 
+            font-weight: 900; font-size: 15px; text-transform: uppercase;
+            margin-top: 40px; margin-bottom: 25px; border: none; cursor: pointer;
+        }
+        .logout-link { display: block; text-align: center; color: #700; font-weight: 800; text-transform: uppercase; font-size: 12px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- Professional Popup Element -->
-    <div id="custom-popup">
-        <div class="popup-icon"><i class="fas fa-check"></i></div>
-        <div class="popup-text" id="popup-msg">Profile Updated! Withdrawal Unlocked.</div>
+    <div id="customAlert">
+        <div class="alert-box">
+            <div id="alertIcon" class="mb-5 text-4xl text-[#d4a017]"><i class="fas fa-shield-halved"></i></div>
+            <h2 id="alertTitle" class="text-xl font-black mb-2 uppercase text-white">GLAMOUR SECURE</h2>
+            <p id="alertMsg" class="text-white/50 text-xs leading-relaxed px-4"></p>
+            <button onclick="closeAlert()" class="mt-8 bg-[#ba945d] text-[#000] w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest">Acknowledge</button>
+        </div>
     </div>
 
-    <div class="px-6 pt-10 flex items-center gap-4">
-        <button onclick="window.location.href='main-dashboard.html'" class="w-10 h-10 bg-black/20 rounded-full flex items-center justify-center">
-            <i class="fas fa-chevron-left text-sm"></i>
-        </button>
-        <h1 class="text-xl font-extrabold uppercase tracking-tight">Account Settings</h1>
+    <div class="header">
+        <a href="dashboard.html" class="back-btn w-12 h-12">
+            <i class="fas fa-arrow-left text-[#000]"></i>
+        </a>
+        <h1 class="text-sm font-black tracking-widest uppercase text-black/60">Edit Profile</h1>
+        <div class="w-12"></div>
     </div>
 
-    <div class="glass-container">
-        <!-- Profile Header -->
-        <div class="text-center mb-8">
-            <div class="profile-pic">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user" alt="Avatar">
-                <div class="badge"><i class="fas fa-crown"></i></div>
-            </div>
-            <h2 class="text-xl font-bold" id="display-name">user</h2>
-            <p class="text-[10px] opacity-40 uppercase font-bold tracking-widest mt-1">Verified Member</p>
+    <div class="logo-container">
+        <div class="logo-circle"><i class="fas fa-user-gear"></i></div>
+        <p style="font-size: 24px; font-weight: 900; margin-bottom: 5px; color: #000;" id="statusText">LOADING...</p>
+        <p class="text-[11px] font-extrabold uppercase text-black/50 tracking-widest">Glamour Verified Account</p>
+    </div>
+
+    <div class="form-section px-2">
+        <label class="form-label">Full Name</label>
+        <input type="text" id="legalName" class="profile-pill-input" placeholder="Enter Full Name">
+
+        <label class="form-label">Email Address</label>
+        <input type="email" id="emailProtocol" class="profile-pill-input" placeholder="Email Address" readonly>
+
+        <label class="form-label">Phone Line</label>
+        <input type="tel" id="phoneLine" class="profile-pill-input" placeholder="+234...">
+
+        <label class="form-label">Username</label>
+        <input type="text" id="displayUsername" class="profile-pill-input" placeholder="@username">
+
+        <div class="flex items-center gap-3 mt-8 mb-6 text-[#000]">
+            <i class="fas fa-university"></i>
+            <span class="font-black text-sm uppercase tracking-widest">Bank Details</span>
         </div>
 
-        <form id="profileForm">
-            <!-- Personal Info -->
-            <div class="mb-6">
-                <h3 class="text-[11px] font-bold uppercase opacity-40 mb-4 px-2">Personal Information</h3>
-                <div class="input-group">
-                    <label>Full Name</label>
-                    <input type="text" id="full_name" placeholder="Enter Full Name" required>
-                </div>
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email" placeholder="email@example.com" required>
-                </div>
-            </div>
+        <label class="form-label">Bank Institution</label>
+        <select id="bankName" class="profile-pill-input appearance-none">
+            <option value="">Select Bank</option>
+            <option value="OPay">OPay</option>
+            <option value="Moniepoint">Moniepoint</option>
+            <option value="Palmpay">Palmpay</option>
+            <option value="Kuda Bank">Kuda Bank</option>
+            <option value="Access Bank">Access Bank</option>
+            <option value="Zenith Bank">Zenith Bank</option>
+            <option value="GTBank">GTBank</option>
+            <option value="UBA">UBA</option>
+            <option value="First Bank">First Bank</option>
+        </select>
 
-            <!-- Banking Info -->
-            <div class="mb-6">
-                <h3 class="text-[11px] font-bold uppercase opacity-40 mb-4 px-2">Withdrawal Method</h3>
-                <div class="input-group">
-                    <label>Select Bank</label>
-                    <select id="bank_name" class="text-white">
-                        <option value="" class="bg-black">Choose Bank</option>
-                        <option value="OPay" class="bg-black">OPay (Digital Bank)</option>
-                        <option value="Palmpay" class="bg-black">Palmpay</option>
-                        <option value="Kuda" class="bg-black">Kuda Bank</option>
-                        <option value="Moniepoint" class="bg-black">Moniepoint MFB</option>
-                        <option value="Zenith" class="bg-black">Zenith Bank</option>
-                        <option value="GTBank" class="bg-black">GTBank</option>
-                        <option value="Access" class="bg-black">Access Bank</option>
-                         <option value="UBA" class="bg-black">United Bank of Africa (UBA)</option>
-                          <option value="FirstBank" class="bg-black">First Bank</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Account Number</label>
-                    <input type="number" id="acc_number" placeholder="0000000000" required>
-                </div>
-                <div class="input-group">
-                    <label>Account Name</label>
-                    <input type="text" id="acc_name" placeholder="Name on account" required>
-                </div>
-            </div>
+        <label class="form-label">Account Number</label>
+        <input type="number" id="accNumber" class="profile-pill-input" placeholder="10 Digits">
 
-            <button type="submit" class="save-btn">
-                <i class="fas fa-check-circle"></i>
-                Save Profile Details
-            </button>
-        </form>
+        <label class="form-label">Account Holder Name</label>
+        <input type="text" id="holderName" class="profile-pill-input" placeholder="Bank Account Name">
     </div>
 
-    <script>
-        // Function to trigger the custom professional popup
-        function triggerPopup(message) {
-            const popup = document.getElementById('custom-popup');
-            const msgEl = document.getElementById('popup-msg');
-            msgEl.innerText = message;
-            popup.classList.add('active');
-            
-            // Wait 2.5 seconds, then redirect
-            setTimeout(() => {
-                popup.classList.remove('active');
-                setTimeout(() => {
-                    window.location.href = 'main-dashboard.html';
-                }, 500);
-            }, 2500);
-        }
+    <button onclick="saveProfileChanges()" id="saveBtn" class="btn-submit">Update & Continue</button>
+    <a class="logout-link" onclick="handleLogout()">Sign Out</a>
 
-        // Load existing data
-        window.onload = function() {
-            const savedName = localStorage.getItem('glamour_username');
-            if(savedName) {
-                document.getElementById('display-name').innerText = savedName;
-                document.getElementById('full_name').value = savedName;
-            }
-            
-            document.getElementById('email').value = localStorage.getItem('glamour_email') || '';
-            document.getElementById('bank_name').value = localStorage.getItem('glamour_bank') || '';
-            document.getElementById('acc_number').value = localStorage.getItem('glamour_acc_num') || '';
-            document.getElementById('acc_name').value = localStorage.getItem('glamour_acc_name') || '';
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyASDlQQMoXCeMZKs5O3KmO8zuFztt8rg2E",
+            authDomain: "celeste-web1.firebaseapp.com",
+            projectId: "celeste-web1",
+            storageBucket: "celeste-web1.firebasestorage.app",
+            messagingSenderId: "905722043319",
+            appId: "1:905722043319:web:83d032bf3608b8957b2632"
         };
 
-        document.getElementById('profileForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('full_name').value;
-            localStorage.setItem('glamour_username', name);
-            localStorage.setItem('glamour_email', document.getElementById('email').value);
-            localStorage.setItem('glamour_bank', document.getElementById('bank_name').value);
-            localStorage.setItem('glamour_acc_num', document.getElementById('acc_number').value);
-            localStorage.setItem('glamour_acc_name', document.getElementById('acc_name').value);
-            
-            localStorage.setItem('profile_saved', 'true');
-            
-            // Trigger the new professional notification instead of default alert
-            triggerPopup('Profile Updated Successfully! Withdrawal feature unlocked.');
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.showAlert = (title, msg, icon = "fa-shield-halved") => {
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertMsg').innerText = msg;
+            document.getElementById('alertIcon').innerHTML = `<i class="fas ${icon}"></i>`;
+            document.getElementById('customAlert').style.display = 'flex';
+        };
+
+        window.closeAlert = () => {
+            document.getElementById('customAlert').style.display = 'none';
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                document.getElementById('emailProtocol').value = user.email;
+
+                if (!localStorage.getItem(`profileHint_${user.uid}`)) {
+                    showAlert("Identity Setup", "Welcome to GLAMOUR. Please update your profile details for seamless withdrawals.", "fa-user-pen");
+                    localStorage.setItem(`profileHint_${user.uid}`, "true");
+                }
+
+                const snap = await getDoc(doc(db, "users", user.uid));
+                if (snap.exists()) {
+                    const d = snap.data();
+                    document.getElementById('legalName').value = d.fullName || "";
+                    document.getElementById('phoneLine').value = d.phoneNumber || "";
+                    document.getElementById('displayUsername').value = d.username || "";
+                    document.getElementById('bankName').value = d.bankName || "";
+                    document.getElementById('accNumber').value = d.accountNumber || "";
+                    document.getElementById('holderName').value = d.accountHolder || "";
+                    document.getElementById('statusText').innerText = (d.fullName || "MEMBER").toUpperCase();
+                }
+            } else {
+                window.location.href = 'index.html';
+            }
         });
+
+        window.saveProfileChanges = async () => {
+            const user = auth.currentUser;
+            const btn = document.getElementById('saveBtn');
+            const data = {
+                fullName: document.getElementById('legalName').value,
+                phoneNumber: document.getElementById('phoneLine').value,
+                username: document.getElementById('displayUsername').value,
+                bankName: document.getElementById('bankName').value,
+                accountNumber: document.getElementById('accNumber').value,
+                accountHolder: document.getElementById('holderName').value,
+                profileCompleted: true
+            };
+
+            if(!data.bankName || !data.accountNumber || !data.fullName) {
+                showAlert("Details Required", "Please fill in your Name and Bank details to enable withdrawal access.", "fa-triangle-exclamation");
+                return;
+            }
+
+            btn.innerText = "UPDATING...";
+            btn.disabled = true;
+
+            try {
+                await updateDoc(doc(db, "users", user.uid), data);
+                
+                // Saving bank info locally for withdrawal receipt rendering
+                localStorage.setItem('glamour_bank', data.bankName);
+                localStorage.setItem('glamour_acc_num', data.accountNumber);
+                localStorage.setItem('glamour_acc_name', data.accountHolder || data.fullName);
+                localStorage.setItem(`legalName_${user.uid}`, data.fullName);
+                
+                showAlert("Profile Updated", "Redirecting to Withdrawal Gateway.", "fa-circle-check");
+                setTimeout(() => window.location.href = 'withdraw.html', 1500);
+            } catch (error) {
+                showAlert("Update Failed", "Could not connect to servers. Try again.", "fa-circle-xmark");
+                btn.innerText = "UPDATE & CONTINUE";
+                btn.disabled = false;
+            }
+        };
+
+        window.handleLogout = async () => {
+            await signOut(auth);
+            window.location.href = 'index.html';
+        };
     </script>
 </body>
 </html>
