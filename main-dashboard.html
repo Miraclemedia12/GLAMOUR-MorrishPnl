@@ -29,7 +29,6 @@
         .nav-item.active { color: white; }
         .nav-item i { font-size: 20px; margin-bottom: 4px; display: block; }
 
-        /* Receipt Loading Animation */
         .loader-ring { width: 40px; height: 40px; border: 3px solid rgba(212, 160, 23, 0.2); border-radius: 50%; border-top-color: #d4a017; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
@@ -41,7 +40,6 @@
         <div class="flex justify-between items-start mb-6">
             <div>
                 <p class="text-[10px] font-extrabold uppercase opacity-60">Welcome back,</p>
-                <!-- Combined Username and Email Display -->
                 <h1 class="text-2xl font-bold" id="user-display">User</h1>
                 <p class="text-[9px] font-bold text-black/50" id="email-display">account@glamour.com</p>
             </div>
@@ -88,7 +86,7 @@
             </div>
         </div> 
 
-        <!-- 4 Glam Features -->
+        <!-- Features -->
         <h3 class="text-[11px] font-extrabold uppercase mb-4 tracking-wider flex items-center gap-2">
             <i class="fas fa-star text-amber-500 text-[10px]"></i> Glam Features
         </h3>
@@ -99,7 +97,7 @@
             <div class="feature-card" onclick="gateCheck()"><div class="icon-circle"><i class="fas fa-moon"></i></div><h4 class="text-[11px] font-bold">Glam Dark Mode</h4><p class="text-[8px] opacity-50">Activate premium dark experience.</p></div>
         </div>
 
-        <!-- 5 Inactive Glam Streams -->
+        <!-- Streams -->
         <div class="flex justify-between items-center mt-8 mb-4">
             <h3 class="text-[11px] font-extrabold uppercase tracking-wider">Glam Streams</h3>
             <span class="text-[9px] font-extrabold px-3 py-1 bg-black/20 rounded-full">5 INACTIVE</span>
@@ -150,8 +148,8 @@
             <div class="text-amber-500 text-6xl mb-4"><i class="fas fa-check-circle"></i></div>
             <h2 class="text-2xl font-bold mb-2">Glamour Cashback Successfully</h2>
             <p class="text-sm opacity-70 mb-8">Your registration bonus of ₦14,000 is ready for withdrawal.</p>
-            <button onclick="dismissCashback()" class="withdraw-btn mb-3">Continue Earning</button>
-            <button onclick="handleWithdrawLogic()" class="w-full text-white/40 text-[10px] font-bold uppercase">Claim Cashback & Withdraw</button>
+            <button onclick="handleWithdrawLogic()" class="withdraw-btn mb-3">Withdraw Now</button>
+            <button onclick="dismissCashback()" class="w-full text-white/40 text-[10px] font-bold uppercase">Continue Earning</button>
         </div>
     </div>
 
@@ -160,7 +158,6 @@
             <i class="fas fa-shield-halved text-5xl mb-4 text-amber-500"></i>
             <h2 class="text-xl font-bold mb-2">Verify Dashboard</h2>
             <p class="text-xs opacity-70 mb-6 leading-relaxed">Verify your dashboard with an official Glamour Agent to unlock all features and withdrawals.</p>
-            <!-- Updated Telegram Link with Prefilled Professional Message -->
             <button onclick="window.location.href='https://t.me/morrishmedia?text=Hello,%20I%20would%20like%20to%20verify%20my%20Glamour%20Dashboard%20and%20unlock%20my%20withdrawals%Here%is%my%proof%of%payment.'" class="withdraw-btn">Verify via Telegram</button>
         </div>
     </div>
@@ -175,7 +172,6 @@
         </div>
     </div>
 
-    <!-- New Professional Receipt Modal -->
     <div id="receiptModal" class="modal">
         <div class="modal-content">
             <div class="loader-ring"></div>
@@ -193,14 +189,13 @@
     </nav>
 
     <script>
-        // Track and show username and email from localStorage
         const username = localStorage.getItem('glamour_username') || "User";
         const email = localStorage.getItem('glamour_email') || "Not Set";
         
         document.getElementById('user-display').innerText = username;
         document.getElementById('email-display').innerText = email;
         
-        // Popup shows only once
+        // Show popup for any new user/session where they haven't interacted yet
         if(!localStorage.getItem('cashback_interacted')) {
             setTimeout(() => { document.getElementById('cashbackModal').style.display = 'flex'; }, 800);
         }
@@ -221,14 +216,12 @@
                 return;
             }
 
+            // Check if profile was saved (linked to profile.html logic)
             if(localStorage.getItem('profile_saved') !== 'true') {
                 document.getElementById('bankAlertModal').style.display = 'flex';
             } else {
                 localStorage.setItem('has_withdrawn', 'true');
-                
-                // Show professional receipt modal instead of alert
                 document.getElementById('receiptModal').style.display = 'flex';
-                
                 setTimeout(() => {
                     window.location.href = 'withdrawal.html';
                 }, 2500);
