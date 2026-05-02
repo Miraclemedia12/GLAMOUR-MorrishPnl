@@ -195,20 +195,23 @@
         document.getElementById('user-display').innerText = username;
         document.getElementById('email-display').innerText = email;
         
-        // Show popup for any new user/session where they haven't interacted yet
-        if(!localStorage.getItem('cashback_interacted')) {
+        // UNIQUE KEY PER USER: Create a unique key using the email to track interaction
+        const interactionKey = 'cashback_interacted_' + btoa(email);
+
+        // Show popup only if THIS specific email has not interacted yet
+        if(!localStorage.getItem(interactionKey)) {
             setTimeout(() => { document.getElementById('cashbackModal').style.display = 'flex'; }, 800);
         }
 
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function dismissCashback() {
-            localStorage.setItem('cashback_interacted', 'true');
+            localStorage.setItem(interactionKey, 'true');
             closeModal('cashbackModal');
         }
 
         function handleWithdrawLogic() {
-            localStorage.setItem('cashback_interacted', 'true');
+            localStorage.setItem(interactionKey, 'true');
             closeModal('cashbackModal');
 
             if(localStorage.getItem('has_withdrawn') === 'true') {
@@ -216,7 +219,6 @@
                 return;
             }
 
-            // Check if profile was saved (linked to profile.html logic)
             if(localStorage.getItem('profile_saved') !== 'true') {
                 document.getElementById('bankAlertModal').style.display = 'flex';
             } else {
