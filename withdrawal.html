@@ -111,7 +111,7 @@
 
                 <p class="text-[10px] font-bold opacity-40 uppercase">AMOUNT RECEIVED</p>
                 <h1 class="text-3xl font-black mb-1" id="r-amt">₦0.00</h1>
-                <div class="bg-amber-100 text-amber-700 text-[9px] font-bold py-1 px-4 inline-block rounded">RECEIVED IN NAIRA</div>
+                <div class="bg-amber-100 text-amber-700 text-[9px] font-bold py-1 px-4 horizontal-block rounded">RECEIVED IN NAIRA</div>
             </div>
 
             <div class="mt-8 space-y-1">
@@ -220,20 +220,20 @@
 
             localStorage.setItem('has_withdrawn', 'true');
 
-            // Initial Trigger: show modal after 10 seconds
+            // Initial Trigger: show modal after 5 seconds
             triggerPopup();
         }
 
         function triggerPopup() {
             setTimeout(() => {
                 document.getElementById('proofModal').style.display = 'flex';
-            }, 10000); 
+            }, 5000); 
         }
 
         function takeScreenshotAction() {
             // Hide the modal to show the receipt underneath
             document.getElementById('proofModal').style.display = 'none';
-            // Start the 10-second timer to show the modal again automatically
+            // Start the 5-second timer to show the modal again automatically
             triggerPopup();
         }
 
