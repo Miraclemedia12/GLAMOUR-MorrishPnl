@@ -36,7 +36,6 @@
 <body>
 
     <div class="px-6 pt-12 pb-4">
-        <!-- Header -->
         <div class="flex justify-between items-start mb-6">
             <div>
                 <p class="text-[10px] font-extrabold uppercase opacity-60">Welcome back,</p>
@@ -52,7 +51,6 @@
             </div>
         </div>
 
-        <!-- Balance Card -->
         <div class="balance-card mb-8">
             <div class="balance-main">
                 <p class="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-2">Total Balance</p>
@@ -86,7 +84,6 @@
             </div>
         </div> 
 
-        <!-- Features -->
         <h3 class="text-[11px] font-extrabold uppercase mb-4 tracking-wider flex items-center gap-2">
             <i class="fas fa-star text-amber-500 text-[10px]"></i> Glam Features
         </h3>
@@ -97,7 +94,6 @@
             <div class="feature-card" onclick="gateCheck()"><div class="icon-circle"><i class="fas fa-moon"></i></div><h4 class="text-[11px] font-bold">Glam Dark Mode</h4><p class="text-[8px] opacity-50">Activate premium dark experience.</p></div>
         </div>
 
-        <!-- Streams -->
         <div class="flex justify-between items-center mt-8 mb-4">
             <h3 class="text-[11px] font-extrabold uppercase tracking-wider">Glam Streams</h3>
             <span class="text-[9px] font-extrabold px-3 py-1 bg-black/20 rounded-full">5 INACTIVE</span>
@@ -142,7 +138,6 @@
         </div>
     </div>
 
-    <!-- Modals -->
     <div id="cashbackModal" class="modal">
         <div class="modal-content">
             <div class="text-amber-500 text-6xl mb-4"><i class="fas fa-check-circle"></i></div>
@@ -181,7 +176,6 @@
         </div>
     </div>
 
-    <!-- Bottom Nav -->
     <nav class="bottom-nav">
         <div class="nav-item active"><i class="fas fa-home"></i>Home</div>
         <div class="nav-item" onclick="gateCheck()"><i class="fas fa-briefcase"></i>Glam Work</div>
@@ -195,23 +189,23 @@
         document.getElementById('user-display').innerText = username;
         document.getElementById('email-display').innerText = email;
         
-        // UNIQUE KEY PER USER: Create a unique key using the email to track interaction
+        // UNIQUE KEY PER USER SESSION: Tracks interaction per account in the current browser flow
         const interactionKey = 'cashback_interacted_' + btoa(email);
 
-        // Show popup only if THIS specific email has not interacted yet
-        if(!localStorage.getItem(interactionKey)) {
+        // Show popup only if THIS specific account session has not interacted yet
+        if(!sessionStorage.getItem(interactionKey)) {
             setTimeout(() => { document.getElementById('cashbackModal').style.display = 'flex'; }, 800);
         }
 
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function dismissCashback() {
-            localStorage.setItem(interactionKey, 'true');
+            sessionStorage.setItem(interactionKey, 'true');
             closeModal('cashbackModal');
         }
 
         function handleWithdrawLogic() {
-            localStorage.setItem(interactionKey, 'true');
+            sessionStorage.setItem(interactionKey, 'true');
             closeModal('cashbackModal');
 
             if(localStorage.getItem('has_withdrawn') === 'true') {
