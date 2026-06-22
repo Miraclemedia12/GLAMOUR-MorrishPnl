@@ -39,7 +39,6 @@
 </head>
 <body>
 
-<!-- Custom Copy Notification -->
 <div id="copy-toast" class="glamour-toast">
     <i class="fas fa-check-circle text-[#d4af37]"></i>
     <span class="text-xs font-bold tracking-widest uppercase">Copied to Clipboard</span>
@@ -83,7 +82,6 @@
     <div class="upload-card">
         <i class="fas fa-cloud-arrow-up text-5xl text-[#d4af37] mb-5"></i>
         <h2 class="text-xl font-black uppercase mb-2">Upload Receipt</h2>
-        <!-- Fixed File Input -->
         <input type="file" id="receipt-input" accept="image/*" class="hidden">
         <div id="drop-zone" onclick="document.getElementById('receipt-input').click()" class="border-2 border-dashed border-white/20 rounded-2xl p-8 mb-6 cursor-pointer transition hover:border-[#d4af37]/50">
             <p id="file-name" class="text-xs font-bold text-white/40">Select screenshot</p>
@@ -100,44 +98,49 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getFirestore, doc, onSnapshot, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
     const firebaseConfig = {
-  apiKey: "AIzaSyDjtqh_3ITTzXH2j16L13Xo7afDsVY7rFw",
-  authDomain: "glamour-morrishpnl.firebaseapp.com",
-  projectId: "glamour-morrishpnl",
-  storageBucket: "glamour-morrishpnl.firebasestorage.app",
-  messagingSenderId: "869550210573",
-  appId: "1:869550210573:web:2dc8071908de4605095f44",
-  measurementId: "G-3NTCVT48M8"
-};
+        apiKey: "AIzaSyDjtqh_3ITTzXH2j16L13Xo7afDsVY7rFw",
+        authDomain: "glamour-morrishpnl.firebaseapp.com",
+        projectId: "glamour-morrishpnl",
+        storageBucket: "glamour-morrishpnl.firebasestorage.app",
+        messagingSenderId: "869550210573",
+        appId: "1:869550210573:web:2dc8071908de4605095f44",
+        measurementId: "G-3NTCVT48M8"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // MULTI-PLAN PACKAGES MATRIX FOR MULTI-COUNTRY SELECTIONS
     const glamourData = {
-        "uganda": { name: "Uganda", bank: "Airtel Uganda", number: "0708771078", holder: "ARINDA WINFRED", amount: "70,000 UGX" },
-        "south_africa": { name: "South Africa", bank: "STANDARD BANK", number: "10247413028", holder: "E K Dlamini", amount: "R380" },
-        "nigeria": { name: "Nigeria", bank: "Kuda", number: "3003439402", holder: "MORRISH M ENTERPRISE", amount: "₦15,000" },
-        "ghana": { name: "Ghana", bank: "MTN Mobile Money", number: "0534550779", holder: "Kingsley Annor", amount: "250 GHS" },
-        "cameroon": { name: "Cameroon", bank: "MTN Mobile money", number: "670312294", holder: "MARGARET NUYIN", amount: "14,000 XAF" },
-        "kenya": { name: "Kenya", bank: "MPESA", number: "0702552808", holder: "Rose Cherono", amount: "2,800 KSH" }
+        "uganda": { name: "Uganda", bank: "Airtel Uganda", number: "0708771078", holder: "ARINDA WINFRED", amount: { regular: "70,000 UGX", prime: "95,000 UGX" } },
+        "south_africa": { name: "South Africa", bank: "STANDARD BANK", number: "10247413028", holder: "E K Dlamini", amount: { regular: "R380", prime: "R500" } },
+        "nigeria": { name: "Nigeria", bank: "Kuda", number: "3003439402", holder: "MORRISH M ENTERPRISE", amount: { regular: "₦15,000", prime: "₦20,000" } },
+        "ghana": { name: "Ghana", bank: "MTN Mobile Money", number: "0534550779", holder: "Kingsley Annor", amount: { regular: "250 GHS", prime: "330 GHS" } },
+        "cameroon": { name: "Cameroon", bank: "MTN Mobile money", number: "670312294", holder: "MARGARET NUYIN", amount: { regular: "14,000 XAF", prime: "19,000 XAF" } },
+        "kenya": { name: "Kenya", bank: "MPESA", number: "0702552808", holder: "Rose Cherono", amount: { regular: "2,800 KSH", prime: "3,700 KSH" } }
     };
 
     const activities = [
         { name: "Ayo M.", loc: "Lagos", amt: "₦15,000" },
+        { name: "Miracle O.", loc: "Calabar", amt: "₦20,000" },
         { name: "Kofi A.", loc: "Accra", amt: "220 GHS" },
         { name: "Blessing W.", loc: "Kampala", amt: "70,000 UGX" },
         { name: "Zanele D.", loc: "Joburg", amt: "R380" },
         { name: "Moussa T.", loc: "Douala", amt: "14,000 XAF" },
         { name: "Chidi O.", loc: "Enugu", amt: "₦15,000" },
+        { name: "Victor J.", loc: "Benin", amt: "₦20,000" },
         { name: "Fatuma K.", loc: "Nairobi", amt: "2,800 KSH" },
         { name: "Ejiro V.", loc: "Warri", amt: "₦15,000" },
         { name: "Kwame B.", loc: "Kumasi", amt: "250 GHS" },
         { name: "Lerato M.", loc: "Pretoria", amt: "R380" }
     ];
+
+    let userSelectedPlan = "Regular"; // Default fallback tracking tracker
 
     // Activity Popups logic
     function showActivity() {
@@ -158,7 +161,10 @@
             document.getElementById('bank-name-display').innerText = data.bank;
             document.getElementById('db-number').innerText = data.number;
             document.getElementById('account-name-display').innerText = data.holder;
-            document.getElementById('display-amount').innerText = data.amount;
+
+            // TRACK AND APPLY EXACT MATCHING PLAN AMOUNT DYNAMICALLY
+            const displayPlanKey = userSelectedPlan.toLowerCase() === "prime" ? "prime" : "regular";
+            document.getElementById('display-amount').innerText = data.amount[displayPlanKey];
 
             if(adminData && adminData[selected]) {
                 const live = adminData[selected];
@@ -185,9 +191,8 @@
         }, 1000);
     }
 
-    // Initialize Page
+    // Initialize Page and Observe Authentication User Profile Choices
     async function initPage() {
-        setupUI();
         const tenMinutes = 60 * 10;
         startTimer(tenMinutes, document.querySelector('#timer'));
         
@@ -196,6 +201,24 @@
 
         onSnapshot(doc(db, "configs", "main"), (snap) => {
             if(snap.exists()) setupUI(snap.data());
+        });
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userRef);
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    if (userData.selectedPlan) {
+                        userSelectedPlan = userData.selectedPlan;
+                    } else if (userData.plan) {
+                        userSelectedPlan = userData.plan;
+                    }
+                    setupUI(); // Trigger update with actual active plan parameters
+                }
+            } else {
+                setupUI();
+            }
         });
 
         // Event Listener for File Upload
