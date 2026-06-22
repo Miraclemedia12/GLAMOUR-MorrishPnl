@@ -263,7 +263,7 @@
     <div class="menu-item"><i class="fas fa-clapperboard"></i> VIDEO ADS</div>
     <div class="menu-item"><i class="fas fa-users"></i> NETWORK</div>
     <div class="menu-item"><i class="fas fa-gear"></i> SETTINGS</div>
-    
+     
     <button onclick="toggleMenu()" style="margin-top: 40px; background: rgba(255,255,255,0.1); color: #fff; width: 100%; padding: 15px; border-radius: 12px; font-weight: 800; text-transform: uppercase;">
         CLOSE MENU
     </button>
@@ -306,7 +306,7 @@
         <i class="fas fa-file-invoice-dollar text-xl" style="color:var(--glamour-gold)"></i>
         <h2 style="font-size: 20px; font-weight: 800; color: #ffffff">Onboarding Details</h2>
     </div>
-    
+     
     <div class="space-y-4">
         <div class="flex justify-between border-b border-white/10 pb-3">
             <span style="color:rgba(255,255,255,0.5)">Plan:</span>
@@ -326,7 +326,7 @@
         </div>
     </div>
 
-    <div class="action-link-btn" style="background: #e74c3c; color: white; margin-top: 30px;" onclick="openModal()">
+    <div class="action-link-btn" id="dash-reward-btn" style="background: #e74c3c; color: white; margin-top: 30px;" onclick="openModal()">
         Claim instant ₦14,000 reward <i class="fas fa-gift"></i>
     </div>
 </div>
@@ -450,11 +450,17 @@
                     document.getElementById('dash-plan').style.color = "#d4af37"; // Premium Gold Accent
                     document.getElementById('dash-price').innerText = "₦20,000";
                     document.getElementById('dash-price').style.color = "#ffffff";
+                    
+                    // Smoothly switch matching reward layout
+                    document.getElementById('dash-reward-btn').innerHTML = `Claim instant ₦20,000 reward <i class="fas fa-gift"></i>`;
                 } else {
                     document.getElementById('dash-plan').innerText = "Regular Plan";
                     document.getElementById('dash-plan').style.color = "#d4af37";
                     document.getElementById('dash-price').innerText = "₦15,000";
                     document.getElementById('dash-price').style.color = "#ffffff";
+                    
+                    // Safe fallback default matrix logic
+                    document.getElementById('dash-reward-btn').innerHTML = `Claim instant ₦14,000 reward <i class="fas fa-gift"></i>`;
                 }
             }
         } else {
