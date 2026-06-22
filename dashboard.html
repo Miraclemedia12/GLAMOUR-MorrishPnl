@@ -444,8 +444,8 @@
                 document.getElementById('dash-reg-date').innerText = data.regDate || '...';
                 
                 // TRACK AND DISPLAY DETECTED REGISTRATION PLAN AND MATCHING PRICES
-                const fetchedPlan = data.selectedPlan || "Regular"; 
-                if (fetchedPlan === "Prime") {
+                const fetchedPlan = (data.plan || "regular").toLowerCase(); 
+                if (fetchedPlan === "prime") {
                     document.getElementById('dash-plan').innerText = "Prime Package";
                     document.getElementById('dash-plan').style.color = "#d4af37"; // Premium Gold Accent
                     document.getElementById('dash-price').innerText = "₦20,000";
