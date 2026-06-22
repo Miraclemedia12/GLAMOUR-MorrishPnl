@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -67,10 +67,27 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 100px 15px 30px; 
+            padding: 120px 15px 30px; 
+        }
+
+        .plans-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            width: 100%;
+            max-width: 1000px;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        @media (min-width: 768px) {
+            .plans-container {
+                flex-direction: row;
+            }
         }
 
         .reward-box {
+            position: relative;
             width: 100%;
             max-width: 480px;
             background: #0f0f0f;
@@ -79,6 +96,33 @@
             padding: 35px 25px;
             text-align: center;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .reward-box.premium-border {
+            border: 2px solid var(--glam-gold);
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Floating Badge Design */
+        .recommended-badge {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f5e050 0%, #d4af37 100%);
+            color: #000000;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+            white-space: nowrap;
+            z-index: 10;
         }
 
         .plan-header {
@@ -88,6 +132,10 @@
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .price-container {
@@ -164,7 +212,8 @@
             border-radius: 8px;
             font-weight: 800;
             color: #ffffff;
-            font-size: 12px;
+            font-size: 11px;
+            white-space: nowrap;
         }
 
         .plan-button {
@@ -184,10 +233,10 @@
             box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
         }
 
-        /* UPDATED POP UP STYLES - MOVED TO TOP LEFT */
+        /* POP UP STYLES */
         .activity-feed-container {
             position: fixed; 
-            top: 80px; /* Below topbar */
+            top: 80px; 
             left: -400px; 
             z-index: 2000; 
             width: 90%;
@@ -238,33 +287,75 @@
 </div>
 
 <main>
-    <div class="reward-box">
-        <div class="plan-header">ONE TIME ACTIVATION</div>
-        <div class="price-container">
-            <div class="old-price">₦25,000</div>
-            <div class="new-price">₦15,000</div>
-        </div>
-        <div class="timer-badge"><i class="fas fa-bolt mr-2"></i> LIMITED OFFER: <span id="countdown">10:00</span></div>
+    <div class="plans-container">
+        
+        <div class="reward-box">
+            <div>
+                <div class="plan-header"><i class="fas fa-crown"></i> ONE TIME ACTIVATION</div>
+                <div class="price-container">
+                    <div class="old-price">₦25,000</div>
+                    <div class="new-price">₦15,000</div>
+                </div>
+                <div class="timer-badge"><i class="fas fa-bolt mr-2"></i> LIMITED OFFER: <span class="countdown-timer">10:00</span></div>
 
-        <div class="section-title">Activation Bonuses</div>
-        <div class="earn-item">
-            <span><i class="fas fa-gem"></i> Glam Cashback Reward</span> 
-            <span class="val-pill">₦14,000</span>
-        </div>
-        <div class="earn-item">
-            <span><i class="fas fa-link"></i> Glam login Bonus</span> 
-            <span class="val-pill">₦5,000</span>
+                <div class="section-title">Activation Bonuses</div>
+                <div class="earn-item">
+                    <span><i class="fas fa-gem"></i> Glam Cashback Reward</span> 
+                    <span class="val-pill">₦14,000</span>
+                </div>
+                <div class="earn-item">
+                    <span><i class="fas fa-link"></i> Glam login Bonus</span> 
+                    <span class="val-pill">₦5,000</span>
+                </div>
+
+                <div class="section-title">Daily Earning Streams</div>
+                <div class="earn-item"><span><i class="fas fa-plus-circle"></i> GlamStatus</span> <span class="val-pill">€3 = ₦4,000/view</span></div>
+                <div class="earn-item"><span><i class="fas fa-camera"></i> GlamFaceTime</span> <span class="val-pill">€3 = ₦4,000/hr</span></div>
+                <div class="earn-item"><span><i class="fas fa-moon"></i> GlamDarkMode</span> <span class="val-pill">€2 = ₦3,000/hr</span></div>
+                <div class="earn-item"><span><i class="fas fa-bolt"></i> GlamRealtime</span> <span class="val-pill">€2 = ₦3,000/hr</span></div>
+            </div>
+            <div>
+                <button class="plan-button" onclick="window.location.href='register.html?plan=regular'">Activate Glamour</button>
+                <p class="text-[9px] text-zinc-600 mt-4 uppercase font-bold tracking-widest italic">Total Potential: €12/Hour (₦24,000)  + Global Partnerships</p>
+            </div>
         </div>
 
-        <div class="section-title">Daily Earning Streams</div>
-        <div class="earn-item"><span><i class="fas fa-plus-circle"></i> GlamStatus</span> <span class="val-pill">€3=₦4,000/view</span></div>
-        <div class="earn-item"><span><i class="fas fa-camera"></i> GlamFaceTime</span> <span class="val-pill">€3=₦4,000 /hr</span></div>
-        <div class="earn-item"><span><i class="fas fa-moon"></i> GlamDarkMode</span> <span class="val-pill">€2=₦3,000 /hr</span></div>
-        <div class="earn-item"><span><i class="fas fa-bolt"></i> GlamRealtime</span> <span class="val-pill">€2=₦3,000/hr</span></div>
-     
+        <div class="reward-box premium-border">
+            <div class="recommended-badge"><i class="fas fa-fire mr-1"></i> Most Recommended</div>
+            
+            <div>
+                <div class="plan-header" style="color: #ffffff;"><i class="fas fa-bolt gold-text"></i> PRIME PLAN ACTIVATION</div>
+                <div class="price-container">
+                    <div class="old-price">₦30,000</div>
+                    <div class="new-price gold-text">₦20,000</div>
+                </div>
+                <div class="timer-badge"><i class="fas fa-bolt mr-2"></i> LIMITED OFFER: <span class="countdown-timer">10:00</span></div>
 
-        <button class="plan-button" onclick="window.location.href='register.html'">Activate Glamour</button>
-        <p class="text-[9px] text-zinc-600 mt-4 uppercase font-bold tracking-widest italic">Total Potential: €12/Hour (₦24,000)  + Global Partnerships</p>
+                <div class="section-title">Activation Bonuses</div>
+                <div class="earn-item">
+                    <span><i class="fas fa-gem"></i> Glam Reward Bonus</span> 
+                    <span class="val-pill" style="background: rgba(212, 175, 55, 0.2); color: var(--glam-gold);">₦20,000</span>
+                </div>
+                <div class="earn-item">
+                    <span><i class="fas fa-link"></i> Glam Link Bonus</span> 
+                    <span class="val-pill" style="background: rgba(212, 175, 55, 0.2); color: var(--glam-gold);">₦16,000</span>
+                </div>
+
+                <div class="section-title">Daily Earning Streams</div>
+                <div class="earn-item"><span><i class="fas fa-wand-magic-sparkles"></i> GlamLifestyle</span> <span class="val-pill">€7 = ₦14,000/hr</span></div>
+                <div class="earn-item"><span><i class="fas fa-file-signature"></i> GlamScript2Cash</span> <span class="val-pill">€8 = ₦16,000/script</span></div>
+                <div class="earn-item"><span><i class="fas fa-gauge-high"></i> GlamRealtime</span> <span class="val-pill">€7 = ₦14,000/hr</span></div>
+                <div class="earn-item"><span><i class="fas fa-language"></i> GlamLingua</span> <span class="val-pill">€7 = ₦14,000/hr</span></div>
+                <div class="earn-item"><span><i class="fas fa-video"></i> GlamFaceTime</span> <span class="val-pill">€10 = ₦20,000/hr</span></div>
+                <div class="earn-item"><span><i class="fas fa-briefcase"></i> GlamWorks</span> <span class="val-pill">€8 = ₦16,000/hr</span></div>
+                <div class="earn-item"><span><i class="fas fa-moon"></i> GlamDarkMode</span> <span class="val-pill">€12 = ₦24,000/hr</span></div>
+            </div>
+            <div>
+                <button class="plan-button" onclick="window.location.href='register.html?plan=prime'">Activate Prime</button>
+                <p class="text-[9px] text-zinc-500 mt-4 uppercase font-bold tracking-widest italic">Total Potential: €25/Hour (₦50,000) + Global Partnerships</p>
+            </div>
+        </div>
+
     </div>
 </main>
 
@@ -280,14 +371,18 @@
 </div>
 
 <script>
-    function startTimer(duration, display) {
+    function startTimer(duration, displays) {
         let timer = duration, minutes, seconds;
         setInterval(function () {
             minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
             minutes = minutes < 10 ? "0" + minutes : minutes;
             seconds = seconds < 10 ? "0" + seconds : seconds;
-            display.textContent = minutes + ":" + seconds;
+            
+            displays.forEach(display => {
+                display.textContent = minutes + ":" + seconds;
+            });
+
             if (--timer < 0) { timer = duration; }
         }, 1000);
     }
@@ -298,7 +393,7 @@
     const LOCATIONS = [
         { city: "Lagos, Nigeria", euro: false },
         { city: "London, UK", euro: true },
-        { city: "Abuja, Nigeria", euro: false },
+        { city: "Abuja, Nigeria", box: false },
         { city: "Berlin, Germany", euro: true },
         { city: "Port Harcourt, Nigeria", euro: false },
         { city: "Paris, France", euro: true },
@@ -317,7 +412,7 @@
         let amountStr = "";
 
         if (type === "joined") {
-            amountStr = loc.euro ? "€7.5" : "₦15,000";
+            amountStr = loc.euro ? "€10" : "₦20,000";
             activityElement.innerHTML = `
                 <span class="activity-user">${user}</span> from ${loc.city} just <span class="text-white">joined</span> with <span class="activity-amount">${amountStr}</span> to start their <span class="glam-brand">GLAMOUR</span> journey!
                 <span class="activity-time">Just now</span>`;
@@ -336,7 +431,8 @@
     }
 
     window.onload = function () {
-        startTimer(10 * 60, document.querySelector('#countdown'));
+        const timers = document.querySelectorAll('.countdown-timer');
+        startTimer(10 * 60, timers);
         setTimeout(cycleActivityFeed, 3000);
         setInterval(cycleActivityFeed, 12000); 
     };
