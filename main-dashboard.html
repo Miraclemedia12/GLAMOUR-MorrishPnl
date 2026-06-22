@@ -54,7 +54,7 @@
         <div class="balance-card mb-8">
             <div class="balance-main">
                 <p class="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-2">Total Balance</p>
-                <h2 class="text-3xl gold-gradient-text">₦14,000</h2>
+                <h2 class="text-3xl gold-gradient-text" id="dashboard-balance-display">₦14,000</h2>
                 <p class="text-[10px] opacity-60 mt-1">Available for withdrawal</p>
                 
                 <button class="withdraw-btn" onclick="handleWithdrawLogic()">
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <h3 class="text-lg font-bold">€7</h3>
+                    <h3 class="text-lg font-bold" id="dashboard-converted-display">€7</h3>
                     <p class="text-[9px] font-bold opacity-40">1 EUR = ₦2,000</p>
                     <p class="text-[9px] opacity-40">Rates as of today</p>
                 </div>
@@ -142,7 +142,7 @@
         <div class="modal-content">
             <div class="text-amber-500 text-6xl mb-4"><i class="fas fa-check-circle"></i></div>
             <h2 class="text-2xl font-bold mb-2">Glamour Cashback Successfully</h2>
-            <p class="text-sm opacity-70 mb-8">Your registration bonus of ₦14,000 is ready for withdrawal.</p>
+            <p class="text-sm opacity-70 mb-8" id="modal-cashback-text">Your registration bonus of ₦14,000 is ready for withdrawal.</p>
             <button onclick="handleWithdrawLogic()" class="withdraw-btn mb-3">Withdraw Now</button>
             <button onclick="dismissCashback()" class="w-full text-white/40 text-[10px] font-bold uppercase">Continue Earning</button>
         </div>
@@ -157,7 +157,7 @@
         </div>
     </div>
 
-    <div id="bankAlertModal" class="modal">
+    <div id="bankAlertModal" class="modal-content border-amber-600 modal" style="display: none;">
         <div class="modal-content border-amber-600">
             <i class="fas fa-envelope-open-text text-5xl mb-4 text-amber-500"></i>
             <h2 class="text-xl font-bold mb-2 uppercase tracking-tighter">Access the Mail</h2>
@@ -188,11 +188,28 @@
         
         document.getElementById('user-display').innerText = username;
         document.getElementById('email-display').innerText = email;
+
+        // DYNAMICALLY DETECT SELECTED PLAN VIA LOCALSTORAGE MATRIX
+        const userPlan = localStorage.getItem('selected_plan') || 'regular'; 
         
-        // UNIQUE KEY PER USER SESSION: Tracks interaction per account in the current browser flow
+        // Define system parameters based on selection matching
+        let displayAmountString = "₦14,000";
+        let displayEuroString = "€7";
+        
+        if (userPlan.toLowerCase() === 'prime') {
+            displayAmountString = "₦20,000";
+            displayEuroString = "€10";
+        }
+
+        // Apply properties instantly to dashboard cards and verification overlays
+        document.getElementById('dashboard-balance-display').innerText = displayAmountString;
+        document.getElementById('dashboard-converted-display').innerText = displayEuroString;
+        document.getElementById('modal-cashback-text').innerText = `Your registration bonus of ${displayAmountString} is ready for withdrawal.`;
+        
+        // UNIQUE KEY PER UNIQUE ACCOUNT: This links tracking directly to the logged-in email!
         const interactionKey = 'cashback_interacted_' + btoa(email);
 
-        // Show popup only if THIS specific account session has not interacted yet
+        // ALWAYS triggers if this specific account username hasn't closed it yet in this tab session
         if(!sessionStorage.getItem(interactionKey)) {
             setTimeout(() => { document.getElementById('cashbackModal').style.display = 'flex'; }, 800);
         }
