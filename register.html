@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;600;700;800&display=swap');
 
         :root { 
             --glamour-gold: #d4af37; 
@@ -239,14 +239,14 @@
             planPrice.innerHTML = "₦20,000";
             iconWrapper.innerHTML = `<i class="fas fa-bolt text-[#d4af37]"></i>`;
             // Keep plan track record stored for database entry below if needed
-            window.selectedPlanType = "Prime";
+            window.selectedPlanType = "prime";
         } else {
             // Default or Fallback to Regular Plan ₦15k
             planBox.classList.remove('prime-glow');
             planName.innerHTML = "Regular Plan";
             planPrice.innerHTML = "₦15,000";
             iconWrapper.innerHTML = `<i class="fas fa-crown text-[#d4af37]"></i>`;
-            window.selectedPlanType = "Regular";
+            window.selectedPlanType = "regular";
         }
     }
 
@@ -347,7 +347,7 @@
             await setDoc(doc(db, "users", user.uid), {
                 fullName, username: userName, email, phone,
                 paidStatus: false, balance: 0,
-                selectedPlan: window.selectedPlanType || "Regular", // Saves selected plan designation to Firestore
+                plan: window.selectedPlanType || "regular", // Adjusted matrix alignment parameter for dashboard linking
                 regDate: new Date().toLocaleDateString()
             });
 
