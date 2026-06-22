@@ -139,7 +139,7 @@
         { name: "Lerato M.", loc: "Pretoria", amt: "R380" }
     ];
 
-    let userSelectedPlan = "regular"; // Default lowercase tracking fallback
+    let userSelectedPlan = "regular"; 
     let cachedAdminConfig = null;
 
     function showActivity() {
@@ -161,17 +161,31 @@
             document.getElementById('db-number').innerText = data.number;
             document.getElementById('account-name-display').innerText = data.holder;
 
-            // Compute default local matrix amount based on active live tracked user plan choice
-            const displayPlanKey = userSelectedPlan.toLowerCase() === "prime" ? "prime" : "regular";
+            // Determine if the current active plan is prime
+            const isPrime = userSelectedPlan.toLowerCase() === "prime";
+            const displayPlanKey = isPrime ? "prime" : "regular";
+            
+            // Set default plan pricing matrix fallback cleanly
             document.getElementById('display-amount').innerText = data.amount[displayPlanKey];
 
-            // Apply admin overrule live configurations adjustments cleanly if present
+            // Apply admin overrule live configurations adjustments intelligently based on plan tier
             if(cachedAdminConfig && cachedAdminConfig[selected]) {
                 const live = cachedAdminConfig[selected];
                 if(live.bank) document.getElementById('bank-name-display').innerText = live.bank;
                 if(live.num) document.getElementById('db-number').innerText = live.num;
                 if(live.name) document.getElementById('account-name-display').innerText = live.name;
-                if(live.amt) document.getElementById('display-amount').innerText = live.amt;
+                
+                // Prioritize checking custom configurations fields matching registration status
+                if (isPrime) {
+                    if (live.amtPrime) {
+                        document.getElementById('display-amount').innerText = live.amtPrime;
+                    } else if (live.amt) {
+                        // Adaptive back-compat layer in case you only populated regular field
+                        document.getElementById('display-amount').innerText = live.amt;
+                    }
+                } else {
+                    if (live.amt) document.getElementById('display-amount').innerText = live.amt;
+                }
             }
         }
     }
@@ -213,7 +227,6 @@
                 const userSnap = await getDoc(userRef);
                 if (userSnap.exists()) {
                     const userData = userSnap.data();
-                    // Supports both formats cleanly
                     if (userData.plan) {
                         userSelectedPlan = userData.plan;
                     } else if (userData.selectedPlan) {
