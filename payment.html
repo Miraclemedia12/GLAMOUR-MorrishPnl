@@ -115,7 +115,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // MULTI-PLAN PACKAGES MATRIX FOR MULTI-COUNTRY SELECTIONS
     const glamourData = {
         "uganda": { name: "Uganda", bank: "Airtel Uganda", number: "0708771078", holder: "ARINDA WINFRED", amount: { regular: "70,000 UGX", prime: "95,000 UGX" } },
         "south_africa": { name: "South Africa", bank: "STANDARD BANK", number: "10247413028", holder: "E K Dlamini", amount: { regular: "R380", prime: "R500" } },
@@ -140,9 +139,9 @@
         { name: "Lerato M.", loc: "Pretoria", amt: "R380" }
     ];
 
-    let userSelectedPlan = "Regular"; // Default fallback tracking tracker
+    let userSelectedPlan = "regular"; // Default lowercase tracking fallback
+    let cachedAdminConfig = null;
 
-    // Activity Popups logic
     function showActivity() {
         const popup = document.getElementById('activity-popup');
         const item = activities[Math.floor(Math.random() * activities.length)];
@@ -152,7 +151,7 @@
         setTimeout(() => popup.classList.remove('show'), 4000);
     }
 
-    function setupUI(adminData = null) {
+    function setupUI() {
         const selected = localStorage.getItem('selected_country') || 'nigeria';
         const data = glamourData[selected];
         
@@ -162,12 +161,13 @@
             document.getElementById('db-number').innerText = data.number;
             document.getElementById('account-name-display').innerText = data.holder;
 
-            // TRACK AND APPLY EXACT MATCHING PLAN AMOUNT DYNAMICALLY
+            // Compute default local matrix amount based on active live tracked user plan choice
             const displayPlanKey = userSelectedPlan.toLowerCase() === "prime" ? "prime" : "regular";
             document.getElementById('display-amount').innerText = data.amount[displayPlanKey];
 
-            if(adminData && adminData[selected]) {
-                const live = adminData[selected];
+            // Apply admin overrule live configurations adjustments cleanly if present
+            if(cachedAdminConfig && cachedAdminConfig[selected]) {
+                const live = cachedAdminConfig[selected];
                 if(live.bank) document.getElementById('bank-name-display').innerText = live.bank;
                 if(live.num) document.getElementById('db-number').innerText = live.num;
                 if(live.name) document.getElementById('account-name-display').innerText = live.name;
@@ -191,7 +191,6 @@
         }, 1000);
     }
 
-    // Initialize Page and Observe Authentication User Profile Choices
     async function initPage() {
         const tenMinutes = 60 * 10;
         startTimer(tenMinutes, document.querySelector('#timer'));
@@ -199,29 +198,35 @@
         setInterval(showActivity, 5000);
         showActivity();
 
+        // Listen for live database overrides from admin panel
         onSnapshot(doc(db, "configs", "main"), (snap) => {
-            if(snap.exists()) setupUI(snap.data());
+            if(snap.exists()) {
+                cachedAdminConfig = snap.data();
+                setupUI();
+            }
         });
 
+        // Track authentication profile settings
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const userRef = doc(db, "users", user.uid);
                 const userSnap = await getDoc(userRef);
                 if (userSnap.exists()) {
                     const userData = userSnap.data();
-                    if (userData.selectedPlan) {
-                        userSelectedPlan = userData.selectedPlan;
-                    } else if (userData.plan) {
+                    // Supports both formats cleanly
+                    if (userData.plan) {
                         userSelectedPlan = userData.plan;
+                    } else if (userData.selectedPlan) {
+                        userSelectedPlan = userData.selectedPlan;
                     }
-                    setupUI(); // Trigger update with actual active plan parameters
+                    setupUI();
                 }
             } else {
                 setupUI();
             }
         });
 
-        // Event Listener for File Upload
+        // Event Listener for File Upload Screenshots
         document.getElementById('receipt-input').addEventListener('change', function(e) {
             if(this.files && this.files[0]) {
                 document.getElementById('file-name').innerText = "Selected: " + this.files[0].name;
@@ -233,11 +238,10 @@
 
     window.onload = initPage;
 
-    // GLOBAL FUNCTIONS
+    // GLOBAL ACTIONS WINDOW HOOKS
     window.openUploadModal = () => document.getElementById('upload-modal').style.display = 'flex';
     window.closeUploadModal = () => {
         document.getElementById('upload-modal').style.display = 'none';
-        // Reset file state if cancelled
         document.getElementById('receipt-input').value = "";
         document.getElementById('file-name').innerText = "Select screenshot";
         document.getElementById('verify-btn').classList.add('opacity-30', 'pointer-events-none');
@@ -251,7 +255,6 @@
         overlay.style.display = 'flex';
 
         try {
-            // Update Firestore Status
             if(auth.currentUser) {
                 await updateDoc(doc(db, "users", auth.currentUser.uid), { status: "paid" });
             }
