@@ -39,8 +39,8 @@
         <div class="flex justify-between items-start mb-6">
             <div>
                 <p class="text-[10px] font-extrabold uppercase opacity-60">Welcome back,</p>
-                <h1 class="text-2xl font-bold" id="user-display">User</h1>
-                <p class="text-[9px] font-bold text-black/50" id="email-display">account@glamour.com</p>
+                <h1 class="text-2xl font-bold" id="user-display">Loading...</h1>
+                <p class="text-[9px] font-bold text-black/50" id="email-display">Loading account...</p>
             </div>
             <div class="flex gap-2">
                 <div class="bg-white/40 px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
@@ -142,7 +142,7 @@
         <div class="modal-content">
             <div class="text-amber-500 text-6xl mb-4"><i class="fas fa-check-circle"></i></div>
             <h2 class="text-2xl font-bold mb-2">Glamour Cashback Successfully</h2>
-            <p class="text-sm opacity-70 mb-8" id="modal-cashback-text">Your registration bonus of ₦14,000 is ready for withdrawal.</p>
+            <p class="text-sm opacity-70 mb-8" id="modal-cashback-text">Your registration bonus is ready for withdrawal.</p>
             <button onclick="handleWithdrawLogic()" class="withdraw-btn mb-3">Withdraw Now</button>
             <button onclick="dismissCashback()" class="w-full text-white/40 text-[10px] font-bold uppercase">Continue Earning</button>
         </div>
@@ -182,46 +182,86 @@
         <div class="nav-item" onclick="window.location.href='profile.html'"><i class="fas fa-user-circle"></i>Profile</div>
     </nav>
 
-    <script>
-        const username = localStorage.getItem('glamour_username') || localStorage.getItem('username') || localStorage.getItem('glamour_acc_name') || "User";
-        const email = localStorage.getItem('glamour_email') || localStorage.getItem('email') || "Not Set";
-        
-        document.getElementById('user-display').innerText = username;
-        document.getElementById('email-display').innerText = email;
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-        // DYNAMICALLY DETECT SELECTED PLAN VIA LOCALSTORAGE MATRIX
-        const userPlan = localStorage.getItem('selected_plan') || 'regular'; 
-        
-        // Define system parameters based on selection matching
-        let displayAmountString = "₦14,000";
-        let displayEuroString = "€7";
-        
-        if (userPlan.toLowerCase() === 'prime') {
-            displayAmountString = "₦20,000";
-            displayEuroString = "€10";
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjtqh_3ITTzXH2j16L13Xo7afDsVY7rFw",
+            authDomain: "glamour-morrishpnl.firebaseapp.com",
+            projectId: "glamour-morrishpnl",
+            storageBucket: "glamour-morrishpnl.firebasestorage.app",
+            messagingSenderId: "869550210573",
+            appId: "1:869550210573:web:2dc8071908de4605095f44",
+            measurementId: "G-3NTCVT48M8"
+        };
 
-        // Apply properties instantly to dashboard cards and verification overlays
-        document.getElementById('dashboard-balance-display').innerText = displayAmountString;
-        document.getElementById('dashboard-converted-display').innerText = displayEuroString;
-        document.getElementById('modal-cashback-text').innerText = `Your registration bonus of ${displayAmountString} is ready for withdrawal.`;
-        
-        // UNIQUE KEY PER UNIQUE ACCOUNT: This links tracking directly to the logged-in email!
-        const interactionKey = 'cashback_interacted_' + btoa(email);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        // ALWAYS triggers if this specific account username hasn't closed it yet in this tab session
-        if(!sessionStorage.getItem(interactionKey)) {
-            setTimeout(() => { document.getElementById('cashbackModal').style.display = 'flex'; }, 800);
-        }
+        let interactionKey = 'cashback_interacted_global';
 
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const email = user.email;
+                document.getElementById('email-display').innerText = email;
+                interactionKey = 'cashback_interacted_' + btoa(email);
 
-        function dismissCashback() {
+                // Fetch account properties directly from database configuration
+                const snap = await getDoc(doc(db, "users", user.uid));
+                let accountUsername = "User";
+                let currentPlan = "regular";
+
+                if (snap.exists()) {
+                    const d = snap.data();
+                    accountUsername = d.username || d.fullName || "User";
+                    // If plan value doesn't exist, fall back to localStorage value, or default to 'regular'
+                    currentPlan = d.plan || localStorage.getItem('selected_plan') || 'regular';
+                } else {
+                    accountUsername = localStorage.getItem('glamour_username') || localStorage.getItem('username') || "User";
+                    currentPlan = localStorage.getItem('selected_plan') || 'regular';
+                }
+
+                // Add "@" prefix if not already present
+                if (accountUsername !== "User" && !accountUsername.startsWith('@')) {
+                    accountUsername = "@" + accountUsername;
+                }
+                document.getElementById('user-display').innerText = accountUsername;
+
+                // Evaluate display fields matching plan tier metrics
+                let displayAmountString = "₦14,000";
+                let displayEuroString = "€7";
+
+                if (currentPlan.toLowerCase() === 'prime') {
+                    displayAmountString = "₦20,000";
+                    displayEuroString = "€10";
+                }
+
+                // Synchronize system strings right away to DOM
+                document.getElementById('dashboard-balance-display').innerText = displayAmountString;
+                document.getElementById('dashboard-converted-display').innerText = displayEuroString;
+                document.getElementById('modal-cashback-text').innerText = `Your registration bonus of ${displayAmountString} is ready for withdrawal.`;
+
+                // Handle system alert execution dynamically based on account key
+                if(!sessionStorage.getItem(interactionKey)) {
+                    setTimeout(() => { document.getElementById('cashbackModal').style.display = 'flex'; }, 800);
+                }
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Expose balance functions to global context window
+        window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
+
+        window.dismissCashback = function() {
             sessionStorage.setItem(interactionKey, 'true');
             closeModal('cashbackModal');
         }
 
-        function handleWithdrawLogic() {
+        window.handleWithdrawLogic = function() {
             sessionStorage.setItem(interactionKey, 'true');
             closeModal('cashbackModal');
 
@@ -241,13 +281,8 @@
             }
         }
 
-        function gateCheck() {
-            // Checks status or verification steps seamlessly
-            if(localStorage.getItem('has_withdrawn') === 'true') {
-                document.getElementById('verifyModal').style.display = 'flex';
-            } else {
-                document.getElementById('verifyModal').style.display = 'flex';
-            }
+        window.gateCheck = function() {
+            document.getElementById('verifyModal').style.display = 'flex';
         }
     </script>
 </body>
