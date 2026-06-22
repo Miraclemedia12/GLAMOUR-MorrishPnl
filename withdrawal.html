@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -32,7 +32,6 @@
 </head>
 <body>
 
-    <!-- Main Withdrawal Form -->
     <div id="withdrawal-form">
         <div class="flex items-center gap-4 mb-6">
             <button onclick="window.location.href='dashboard.html'" class="w-10 h-10 bg-black/20 rounded-full flex items-center justify-center">
@@ -43,7 +42,7 @@
 
         <div class="glass-card">
             <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest">Total Wallet Balance</p>
-            <h2 class="text-4xl font-extrabold text-amber-500 mt-1">₦14,000</h2>
+            <h2 class="text-4xl font-extrabold text-amber-500 mt-1" id="wallet-balance-display">₦14,000</h2>
             
             <div class="mt-8">
                 <label class="text-[10px] font-bold opacity-60 uppercase tracking-widest">Withdrawal Amount (Min ₦4,000)</label>
@@ -74,7 +73,7 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <p class="text-[11px] font-bold text-green-500">+₦14,000</p>
+                    <p class="text-[11px] font-bold text-green-500" id="history-bonus-display">+₦14,000</p>
                     <p class="text-[8px] text-white/30 uppercase font-bold">Completed</p>
                 </div>
             </div>
@@ -82,7 +81,6 @@
         </div>
     </div>
 
-    <!-- Receipt View -->
     <div id="receipt-view">
         <div class="receipt-header">
             <span>Transaction Successful</span>
@@ -153,7 +151,6 @@
         </div>
     </div>
 
-    <!-- Final Step Modal -->
     <div id="proofModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-[3000] hidden items-center justify-center p-6">
         <div class="bg-[#111] border border-[#d4a017] rounded-[32px] p-8 w-full max-w-[380px] text-center shadow-[0_0_50px_rgba(212,160,23,0.2)]">
             <div class="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-amber-500/20">
@@ -188,6 +185,21 @@
 
             document.getElementById('bank-info').innerText = bank;
             document.getElementById('acc-info').innerText = acc + " | " + name;
+
+            // TRACK PLAN AND SETUP BALANCE DYNAMICALLY
+            const userPlan = localStorage.getItem('selected_plan') || 'regular';
+            let initialBalanceValue = 14000;
+            let initialBalanceText = "₦14,000";
+
+            if (userPlan.toLowerCase() === 'prime') {
+                initialBalanceValue = 20000;
+                initialBalanceText = "₦20,000";
+            }
+
+            // Apply updates smoothly based on user status matrix
+            document.getElementById('wallet-balance-display').innerText = initialBalanceText;
+            document.getElementById('history-bonus-display').innerText = "+" + initialBalanceText;
+            document.getElementById('withdraw-amount').value = initialBalanceValue;
         };
 
         function processWithdrawal() {
