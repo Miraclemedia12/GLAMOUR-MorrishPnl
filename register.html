@@ -73,7 +73,7 @@
         #activityPopup {
             position: fixed; 
             top: 20px; 
-            left: -400px; /* Start off-screen */
+            left: -400px; 
             background: #0d1211;
             border: 1px solid var(--glamour-gold); 
             border-radius: 15px;
@@ -93,7 +93,7 @@
         .act-user { color: var(--glamour-gold); font-weight: 800; }
         .act-val { font-weight: 900; }
 
-        /* SECURITY TOAST (STAYS TOP CENTER) */
+        /* SECURITY TOAST */
         #glamourToast {
             position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 350px; background: #0d1211;
@@ -120,17 +120,32 @@
         .register-button { width: 100%; padding: 18px; background: var(--glamour-gold); color: var(--glamour-dark); border-radius: 12px; font-weight: 900; text-transform: uppercase; border: none; }
         .login-link { display: block; text-align: center; margin-top: 20px; font-size: 14px; color: #fff; text-decoration: none; }
         .login-link span { color: var(--glamour-gold); font-weight: bold; }
+
+        /* PLAN SUMMARY CARD UI */
+        .plan-summary-card {
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px dashed rgba(212, 175, 55, 0.4);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .plan-summary-card.prime-glow {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+        }
     </style>
 </head>
 <body>
 
-<!-- Activity Popup (Top Left) -->
 <div id="activityPopup">
     <div class="act-icon" id="actIcon"><i class="fas fa-circle-check"></i></div>
     <div class="act-text" id="actText">Welcome to Glamour</div>
 </div>
 
-<!-- Security Toast (Top Center) -->
 <div id="glamourToast">
     <div class="flex items-center gap-4">
         <div class="w-10 h-10 rounded-full bg-[#d4af37]/10 flex items-center justify-center text-[#d4af37]">
@@ -154,7 +169,24 @@
 </header>
 
 <div class="register-container">
-    <h1 class="text-center font-black text-2xl uppercase mb-8">Create Glamour Account</h1>
+    <h1 class="text-center font-black text-2xl uppercase mb-6">Create Glamour Account</h1>
+    
+    <div id="selected-plan-box" class="plan-summary-card">
+        <div class="flex items-center gap-3">
+            <div id="plan-icon-wrapper" class="text-[#d4af37] text-lg">
+                <i class="fas fa-crown"></i>
+            </div>
+            <div>
+                <div class="text-[10px] uppercase tracking-widest text-white/50 font-bold">Selected Membership</div>
+                <div id="display-plan-name" class="text-sm font-black text-white uppercase tracking-wider">Regular Plan</div>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="text-[10px] uppercase tracking-widest text-white/50 font-bold">Cost</div>
+            <div id="display-plan-price" class="text-base font-black text-[#d4af37]">₦15,000</div>
+        </div>
+    </div>
+
     <form id="registration-form">
         <div class="form-group"><label>Full Name</label><input type="text" id="full-name" placeholder="Miracle Okon" required></div>
         <div class="form-group"><label>Username</label><input type="text" id="username" placeholder="Choose username" required></div>
@@ -176,19 +208,47 @@
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-   const firebaseConfig = {
-  apiKey: "AIzaSyDjtqh_3ITTzXH2j16L13Xo7afDsVY7rFw",
-  authDomain: "glamour-morrishpnl.firebaseapp.com",
-  projectId: "glamour-morrishpnl",
-  storageBucket: "glamour-morrishpnl.firebasestorage.app",
-  messagingSenderId: "869550210573",
-  appId: "1:869550210573:web:2dc8071908de4605095f44",
-  measurementId: "G-3NTCVT48M8"
-};
+    const firebaseConfig = {
+        apiKey: "AIzaSyDjtqh_3ITTzXH2j16L13Xo7afDsVY7rFw",
+        authDomain: "glamour-morrishpnl.firebaseapp.com",
+        projectId: "glamour-morrishpnl",
+        storageBucket: "glamour-morrishpnl.firebasestorage.app",
+        messagingSenderId: "869550210573",
+        appId: "1:869550210573:web:2dc8071908de4605095f44",
+        measurementId: "G-3NTCVT48M8"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+
+    // URL PARAMETER TRACKER FOR SELECTED PLAN
+    function captureSelectedPlan() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const planParam = urlParams.get('plan');
+        
+        const planBox = document.getElementById('selected-plan-box');
+        const planName = document.getElementById('display-plan-name');
+        const planPrice = document.getElementById('display-plan-price');
+        const iconWrapper = document.getElementById('plan-icon-wrapper');
+
+        if (planParam === 'prime') {
+            // Update UI for Prime Package ₦20k
+            planBox.classList.add('prime-glow');
+            planName.innerHTML = "Prime Package";
+            planPrice.innerHTML = "₦20,000";
+            iconWrapper.innerHTML = `<i class="fas fa-bolt text-[#d4af37]"></i>`;
+            // Keep plan track record stored for database entry below if needed
+            window.selectedPlanType = "Prime";
+        } else {
+            // Default or Fallback to Regular Plan ₦15k
+            planBox.classList.remove('prime-glow');
+            planName.innerHTML = "Regular Plan";
+            planPrice.innerHTML = "₦15,000";
+            iconWrapper.innerHTML = `<i class="fas fa-crown text-[#d4af37]"></i>`;
+            window.selectedPlanType = "Regular";
+        }
+    }
 
     // ACTIVITY DATA (10 SCENARIOS)
     const GLAMOUR_ACTIVITIES = [
@@ -220,12 +280,13 @@
         setTimeout(() => {
             popup.classList.remove('show');
             actIndex = (actIndex + 1) % GLAMOUR_ACTIVITIES.length;
-            setTimeout(cycleActivities, 4000); // Wait 4s before next one
-        }, 5000); // Show for 5s
+            setTimeout(cycleActivities, 4000);
+        }, 5000);
     }
 
-    // Initialize activities on load
+    // Initialize activities and plan tracking on load
     document.addEventListener('DOMContentLoaded', () => {
+        captureSelectedPlan();
         setTimeout(cycleActivities, 2000);
     });
 
@@ -286,6 +347,7 @@
             await setDoc(doc(db, "users", user.uid), {
                 fullName, username: userName, email, phone,
                 paidStatus: false, balance: 0,
+                selectedPlan: window.selectedPlanType || "Regular", // Saves selected plan designation to Firestore
                 regDate: new Date().toLocaleDateString()
             });
 
