@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +40,6 @@
 </head>
 <body class="flex items-center justify-center p-4">
 
-    <!-- Custom Notification -->
     <div id="glamour-notifier">
         <i id="notifier-icon" class="fas fa-circle-check text-[#d4af37]"></i>
         <span id="notifier-text" class="text-xs font-bold uppercase tracking-widest">System Updated</span>
@@ -69,59 +67,82 @@
                 
         <div class="space-y-6 max-h-[65vh] overflow-y-auto pr-3 custom-scrollbar">
             <div id="country-forms" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Nigeria -->
                 <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
                     <p class="text-[10px] font-black text-[#d4af37] mb-3 uppercase tracking-widest">🇳🇬 Nigeria</p>
                     <input type="text" id="ng-bank" placeholder="Bank" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="ng-num" placeholder="Account No" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="ng-name" placeholder="Name" class="w-full p-2 mb-2 rounded-lg text-xs">
-                    <input type="text" id="ng-amt" placeholder="Amount" class="w-full p-2 rounded-lg text-xs">
+                    <input type="text" id="ng-amt" placeholder="Regular Amount" class="w-full p-2 mb-2 rounded-lg text-xs">
+                    <input type="text" id="ng-amt-prime" placeholder="Prime Amount" class="w-full p-2 rounded-lg text-xs">
                 </div>
-                <!-- Ghana -->
                 <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
                     <p class="text-[10px] font-black text-[#d4af37] mb-3 uppercase tracking-widest">🇬🇭 Ghana</p>
                     <input type="text" id="gh-bank" placeholder="Bank" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="gh-num" placeholder="Number" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="gh-name" placeholder="Name" class="w-full p-2 mb-2 rounded-lg text-xs">
-                    <input type="text" id="gh-amt" placeholder="Amount" class="w-full p-2 rounded-lg text-xs">
+                    <input type="text" id="gh-amt" placeholder="Regular Amount" class="w-full p-2 mb-2 rounded-lg text-xs">
+                    <input type="text" id="gh-amt-prime" placeholder="Prime Amount" class="w-full p-2 rounded-lg text-xs">
                 </div>
-                <!-- South Africa -->
                 <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
                     <p class="text-[10px] font-black text-[#d4af37] mb-3 uppercase tracking-widest">🇿🇦 South Africa</p>
                     <input type="text" id="sa-bank" placeholder="Bank" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="sa-num" placeholder="Account No" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="sa-name" placeholder="Name" class="w-full p-2 mb-2 rounded-lg text-xs">
-                    <input type="text" id="sa-amt" placeholder="Amount" class="w-full p-2 rounded-lg text-xs">
+                    <input type="text" id="sa-amt" placeholder="Regular Amount" class="w-full p-2 mb-2 rounded-lg text-xs">
+                    <input type="text" id="sa-amt-prime" placeholder="Prime Amount" class="w-full p-2 rounded-lg text-xs">
                 </div>
-                <!-- Kenya -->
                 <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
                     <p class="text-[10px] font-black text-[#d4af37] mb-3 uppercase tracking-widest">🇰🇪 Kenya</p>
                     <input type="text" id="ke-bank" placeholder="Method" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="ke-num" placeholder="Number" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="ke-name" placeholder="Name" class="w-full p-2 mb-2 rounded-lg text-xs">
-                    <input type="text" id="ke-amt" placeholder="Amount" class="w-full p-2 rounded-lg text-xs">
+                    <input type="text" id="ke-amt" placeholder="Regular Amount" class="w-full p-2 mb-2 rounded-lg text-xs">
+                    <input type="text" id="ke-amt-prime" placeholder="Prime Amount" class="w-full p-2 rounded-lg text-xs">
                 </div>
-                <!-- Uganda -->
                 <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
                     <p class="text-[10px] font-black text-[#d4af37] mb-3 uppercase tracking-widest">🇺🇬 Uganda</p>
                     <input type="text" id="ug-bank" placeholder="Method" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="ug-num" placeholder="Number" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="ug-name" placeholder="Name" class="w-full p-2 mb-2 rounded-lg text-xs">
-                    <input type="text" id="ug-amt" placeholder="Amount" class="w-full p-2 rounded-lg text-xs">
+                    <input type="text" id="ug-amt" placeholder="Regular Amount" class="w-full p-2 mb-2 rounded-lg text-xs">
+                    <input type="text" id="ug-amt-prime" placeholder="Prime Amount" class="w-full p-2 rounded-lg text-xs">
                 </div>
-                <!-- Cameroon -->
                 <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
                     <p class="text-[10px] font-black text-[#d4af37] mb-3 uppercase tracking-widest">🇨🇲 Cameroon</p>
                     <input type="text" id="cm-bank" placeholder="Method" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="cm-num" placeholder="Number" class="w-full p-2 mb-2 rounded-lg text-xs">
                     <input type="text" id="cm-name" placeholder="Name" class="w-full p-2 mb-2 rounded-lg text-xs">
-                    <input type="text" id="cm-amt" placeholder="Amount" class="w-full p-2 rounded-lg text-xs">
+                    <input type="text" id="cm-amt" placeholder="Regular Amount" class="w-full p-2 mb-2 rounded-lg text-xs">
+                    <input type="text" id="cm-amt-prime" placeholder="Prime Amount" class="w-full p-2 rounded-lg text-xs">
                 </div>
             </div>
 
             <div class="p-6 rounded-3xl border border-white/5 bg-white/5">
                 <p class="text-xs font-black text-white uppercase tracking-widest mb-4">Telegram Confirmation Link</p>
                 <input type="text" id="link-in" class="w-full p-4 rounded-xl outline-none text-sm" placeholder="https://t.me/yourlink">
+            </div>
+
+            <div class="p-6 rounded-3xl border border-white/5 bg-white/5">
+                <p class="text-xs font-black text-[#d4af37] uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <i class="fas fa-bolt text-xs animate-pulse"></i> Recent Payment Verification Requests
+                </p>
+                <div class="overflow-x-auto custom-scrollbar max-h-[250px]">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="border-b border-white/10 text-white/40 uppercase font-bold">
+                                <th class="pb-2">User / Email</th>
+                                <th class="pb-2">Country</th>
+                                <th class="pb-2">Plan</th>
+                                <th class="pb-2 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrations-list">
+                            <tr>
+                                <td colspan="4" class="py-4 text-center text-white/30 font-bold">Awaiting authentication access...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <button onclick="handleUpdate()" id="up-btn" class="w-full glamour-btn p-5 rounded-2xl shadow-2xl flex items-center justify-center gap-3">
@@ -133,17 +154,17 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, query, where, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const firebaseConfig = {
-  apiKey: "AIzaSyDjtqh_3ITTzXH2j16L13Xo7afDsVY7rFw",
-  authDomain: "glamour-morrishpnl.firebaseapp.com",
-  projectId: "glamour-morrishpnl",
-  storageBucket: "glamour-morrishpnl.firebasestorage.app",
-  messagingSenderId: "869550210573",
-  appId: "1:869550210573:web:2dc8071908de4605095f44",
-  measurementId: "G-3NTCVT48M8"
-};
+        apiKey: "AIzaSyDjtqh_3ITTzXH2j16L13Xo7afDsVY7rFw",
+        authDomain: "glamour-morrishpnl.firebaseapp.com",
+        projectId: "glamour-morrishpnl",
+        storageBucket: "glamour-morrishpnl.firebasestorage.app",
+        messagingSenderId: "869550210573",
+        appId: "1:869550210573:web:2dc8071908de4605095f44",
+        measurementId: "G-3NTCVT48M8"
+    };
     
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -191,40 +212,88 @@
                 document.getElementById('ng-num').value = d.nigeria.num || "";
                 document.getElementById('ng-name').value = d.nigeria.name || "";
                 document.getElementById('ng-amt').value = d.nigeria.amt || "";
+                document.getElementById('ng-amt-prime').value = d.nigeria.amtPrime || "";
             }
             if(d.ghana) {
                 document.getElementById('gh-bank').value = d.ghana.bank || "";
                 document.getElementById('gh-num').value = d.ghana.num || "";
                 document.getElementById('gh-name').value = d.ghana.name || "";
                 document.getElementById('gh-amt').value = d.ghana.amt || "";
+                document.getElementById('gh-amt-prime').value = d.ghana.amtPrime || "";
             }
             if(d.south_africa) {
                 document.getElementById('sa-bank').value = d.south_africa.bank || "";
                 document.getElementById('sa-num').value = d.south_africa.num || "";
                 document.getElementById('sa-name').value = d.south_africa.name || "";
                 document.getElementById('sa-amt').value = d.south_africa.amt || "";
+                document.getElementById('sa-amt-prime').value = d.south_africa.amtPrime || "";
             }
             if(d.kenya) {
                 document.getElementById('ke-bank').value = d.kenya.bank || "";
                 document.getElementById('ke-num').value = d.kenya.num || "";
                 document.getElementById('ke-name').value = d.kenya.name || "";
                 document.getElementById('ke-amt').value = d.kenya.amt || "";
+                document.getElementById('ke-amt-prime').value = d.kenya.amtPrime || "";
             }
             if(d.uganda) {
                 document.getElementById('ug-bank').value = d.uganda.bank || "";
                 document.getElementById('ug-num').value = d.uganda.num || "";
                 document.getElementById('ug-name').value = d.uganda.name || "";
                 document.getElementById('ug-amt').value = d.uganda.amt || "";
+                document.getElementById('ug-amt-prime').value = d.uganda.amtPrime || "";
             }
             if(d.cameroon) {
                 document.getElementById('cm-bank').value = d.cameroon.bank || "";
                 document.getElementById('cm-num').value = d.cameroon.num || "";
                 document.getElementById('cm-name').value = d.cameroon.name || "";
                 document.getElementById('cm-amt').value = d.cameroon.amt || "";
+                document.getElementById('cm-amt-prime').value = d.cameroon.amtPrime || "";
             }
             document.getElementById('link-in').value = d.telegramLink || "";
         }
+
+        // Live streaming hook tracking new payment uploads instantly
+        const q = query(collection(db, "users"), where("status", "==", "paid"));
+        onSnapshot(q, (snapshot) => {
+            const listContainer = document.getElementById('registrations-list');
+            if (snapshot.empty) {
+                listContainer.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-white/20 font-bold uppercase tracking-wider text-[10px]">No pending verification requests</td></tr>`;
+                return;
+            }
+            
+            listContainer.innerHTML = "";
+            snapshot.forEach((userDoc) => {
+                const uData = userDoc.data();
+                const userId = userDoc.id;
+                const username = uData.username || uData.email || "Anonymous User";
+                const country = uData.selectedCountry || uData.country || "Not Specified";
+                const planType = uData.plan || uData.selectedPlan || "regular";
+                const badgeStyle = planType.toLowerCase() === 'prime' ? 'text-[#d4af37] border border-[#d4af37]/30 bg-[#d4af37]/5' : 'text-white/40 border border-white/10 bg-white/5';
+
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-white/5 hover:bg-white/[0.01] transition duration-200";
+                tr.innerHTML = `
+                    <td class="py-3 font-bold text-white/80 max-w-[140px] truncate">${username}</td>
+                    <td class="py-3 uppercase font-semibold text-white/60">${country}</td>
+                    <td class="py-3"><span class="px-2 py-0.5 rounded text-[9px] font-black uppercase ${badgeStyle}">${planType}</span></td>
+                    <td class="py-3 text-right">
+                        <button onclick="approveUser('${userId}')" class="bg-[#d4af37] text-[#0a0a0a] px-3 py-1 rounded-md font-extrabold uppercase text-[10px] transition hover:brightness-110 active:scale-95">Approve</button>
+                    </td>
+                `;
+                listContainer.appendChild(tr);
+            });
+        });
     }
+
+    // Global action function to instantly verify a user from tracking panel list entries
+    window.approveUser = async (uid) => {
+        try {
+            await updateDoc(doc(db, "users", uid), { status: "active" });
+            showGlamourNotification("User Dashboard Activated Successfully");
+        } catch(err) {
+            showGlamourNotification("Failed to activate account", true);
+        }
+    };
 
     window.handleUpdate = async () => {
         const btn = document.getElementById('up-btn');
@@ -232,12 +301,48 @@
         btn.disabled = true;
 
         const updateObj = {
-            nigeria: { bank: document.getElementById('ng-bank').value, num: document.getElementById('ng-num').value, name: document.getElementById('ng-name').value, amt: document.getElementById('ng-amt').value },
-            ghana: { bank: document.getElementById('gh-bank').value, num: document.getElementById('gh-num').value, name: document.getElementById('gh-name').value, amt: document.getElementById('gh-amt').value },
-            south_africa: { bank: document.getElementById('sa-bank').value, num: document.getElementById('sa-num').value, name: document.getElementById('sa-name').value, amt: document.getElementById('sa-amt').value },
-            kenya: { bank: document.getElementById('ke-bank').value, num: document.getElementById('ke-num').value, name: document.getElementById('ke-name').value, amt: document.getElementById('ke-amt').value },
-            uganda: { bank: document.getElementById('ug-bank').value, num: document.getElementById('ug-num').value, name: document.getElementById('ug-name').value, amt: document.getElementById('ug-amt').value },
-            cameroon: { bank: document.getElementById('cm-bank').value, num: document.getElementById('cm-num').value, name: document.getElementById('cm-name').value, amt: document.getElementById('cm-amt').value },
+            nigeria: { 
+                bank: document.getElementById('ng-bank').value, 
+                num: document.getElementById('ng-num').value, 
+                name: document.getElementById('ng-name').value, 
+                amt: document.getElementById('ng-amt').value,
+                amtPrime: document.getElementById('ng-amt-prime').value
+            },
+            ghana: { 
+                bank: document.getElementById('gh-bank').value, 
+                num: document.getElementById('gh-num').value, 
+                name: document.getElementById('gh-name').value, 
+                amt: document.getElementById('gh-amt').value,
+                amtPrime: document.getElementById('gh-amt-prime').value
+            },
+            south_africa: { 
+                bank: document.getElementById('sa-bank').value, 
+                num: document.getElementById('sa-num').value, 
+                name: document.getElementById('sa-name').value, 
+                amt: document.getElementById('sa-amt').value,
+                amtPrime: document.getElementById('sa-amt-prime').value
+            },
+            kenya: { 
+                bank: document.getElementById('ke-bank').value, 
+                num: document.getElementById('ke-num').value, 
+                name: document.getElementById('ke-name').value, 
+                amt: document.getElementById('ke-amt').value,
+                amtPrime: document.getElementById('ke-amt-prime').value
+            },
+            uganda: { 
+                bank: document.getElementById('ug-bank').value, 
+                num: document.getElementById('ug-num').value, 
+                name: document.getElementById('ug-name').value, 
+                amt: document.getElementById('ug-amt').value,
+                amtPrime: document.getElementById('ug-amt-prime').value
+            },
+            cameroon: { 
+                bank: document.getElementById('cm-bank').value, 
+                num: document.getElementById('cm-num').value, 
+                name: document.getElementById('cm-name').value, 
+                amt: document.getElementById('cm-amt').value,
+                amtPrime: document.getElementById('cm-amt-prime').value
+            },
             telegramLink: document.getElementById('link-in').value,
             lastUpdated: new Date().toLocaleTimeString()
         };
