@@ -54,7 +54,7 @@
         <div class="balance-card mb-8">
             <div class="balance-main">
                 <p class="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-2">Total Balance</p>
-                <h2 class="text-3xl gold-gradient-text" id="dashboard-balance-display">₦15,000</h2>
+                <h2 class="text-3xl gold-gradient-text" id="dashboard-balance-display">₦14,000</h2>
                 <p class="text-[10px] opacity-60 mt-1">Available for withdrawal</p>
                 
                 <button class="withdraw-btn" onclick="handleWithdrawLogic()">
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <h3 class="text-lg font-bold" id="dashboard-converted-display">€7.5</h3>
+                    <h3 class="text-lg font-bold" id="dashboard-converted-display">€7</h3>
                     <p class="text-[9px] font-bold opacity-40">1 EUR = ₦2,000</p>
                     <p class="text-[9px] opacity-40">Rates as of today</p>
                 </div>
@@ -142,7 +142,7 @@
         <div class="modal-content">
             <div class="text-amber-500 text-6xl mb-4"><i class="fas fa-check-circle"></i></div>
             <h2 class="text-2xl font-bold mb-2">Glamour Cashback Successfully</h2>
-            <p class="text-sm opacity-70 mb-8" id="modal-cashback-text">Your registration bonus of ₦15,000 is ready for withdrawal.</p>
+            <p class="text-sm opacity-70 mb-8" id="modal-cashback-text">Your registration bonus of ₦14,000 is ready for withdrawal.</p>
             <button onclick="handleWithdrawLogic()" class="withdraw-btn mb-3">Withdraw Now</button>
             <button onclick="dismissCashback()" class="w-full text-white/40 text-[10px] font-bold uppercase">Continue Earning</button>
         </div>
@@ -183,7 +183,7 @@
     </nav>
 
     <script>
-        const username = localStorage.getItem('glamour_username') || localStorage.getItem('username') || "User";
+        const username = localStorage.getItem('glamour_username') || localStorage.getItem('username') || localStorage.getItem('glamour_acc_name') || "User";
         const email = localStorage.getItem('glamour_email') || localStorage.getItem('email') || "Not Set";
         
         document.getElementById('user-display').innerText = username;
@@ -193,8 +193,8 @@
         const userPlan = localStorage.getItem('selected_plan') || 'regular'; 
         
         // Define system parameters based on selection matching
-        let displayAmountString = "₦15,000";
-        let displayEuroString = "€7.5";
+        let displayAmountString = "₦14,000";
+        let displayEuroString = "€7";
         
         if (userPlan.toLowerCase() === 'prime') {
             displayAmountString = "₦20,000";
