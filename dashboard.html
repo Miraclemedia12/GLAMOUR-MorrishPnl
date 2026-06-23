@@ -1,26 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glamour Dashboard • Earn in Naira</title>
+    <title>DASHBOARD | GLAMOUR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;600;700;800&display=swap');
+
+        :root { 
+            --glamour-gold: #d4af37; 
+            --glamour-dark: #0a0a0a; 
+            --glamour-red: #ff4b4b; 
         }
 
-        body {
-            background: rgb(49, 36, 26);
-            color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        * { 
+            margin: 0;
             padding: 0;
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+        }
+
+        body { 
+            background: var(--glamour-dark); 
+            color: #fff; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -31,483 +40,570 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(circle at 10% 20%, rgba(228, 179, 99, 0.12) 1.5px, transparent 1.5px);
+            background-image: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.07) 1.5px, transparent 1.5px);
             background-size: 28px 28px;
             pointer-events: none;
             z-index: 0;
         }
 
-        .dashboard-container {
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-left: 1px solid rgba(228, 179, 99, 0.25);
-            border-right: 1px solid rgba(228, 179, 99, 0.25);
-            min-height: 100vh;
-            padding-bottom: 80px;
+        .topbar { 
+            width: 100%; 
+            background: var(--glamour-dark); 
+            padding: 15px 5%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            border-bottom: 2px solid var(--glamour-gold); 
             position: relative;
-            z-index: 2;
-            box-shadow: 0 0 0 1px rgba(228, 179, 99, 0.1);
+            z-index: 10;
         }
 
-        .dashboard-container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 10%;
-            width: 80%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgb(228, 179, 99), rgb(245, 200, 120), rgb(228, 179, 99), transparent);
-            opacity: 0.6;
+        .logo-img { 
+            height: 40px; 
+            filter: brightness(0) invert(1); 
+            margin-bottom: 12px; 
         }
 
-        .dashboard-header {
-            padding: 24px 20px;
-            border-bottom: 1px solid rgba(228, 179, 99, 0.25);
+        .navbar { 
+            display: flex; 
+            justify-content: center; 
+            gap: 25px; 
+            width: 100%; 
         }
 
-        .welcome-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
+        .navbar a { 
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 13px; 
+            text-transform: uppercase; 
         }
 
-        .welcome-text h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: rgb(228, 179, 99);
+        .navbar a.active { 
+            border-bottom: 3px solid var(--glamour-gold); 
+            color: var(--glamour-gold); 
+            padding-bottom: 5px; 
         }
 
-        .welcome-text p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.85rem;
+        #glamourToast {
+            position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 350px; background: #0d1211;
+            border: 1px solid var(--glamour-gold); border-radius: 20px;
+            padding: 20px; z-index: 11000; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+        #glamourToast.show { top: 20px; }
+        #glamourToast.error { border-color: var(--glamour-red); }
+        .toast-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--glamour-gold); width: 100%; border-radius: 0 0 20px 20px; }
+
+        .dashboard-container {            
+            max-width: 800px;            
+            margin: 0 auto;            
+            width: 100%;            
+            background: rgba(0, 0, 0, 0.45);            
+            backdrop-filter: blur(14px);            
+            -webkit-backdrop-filter: blur(14px);            
+            border-left: 1px solid rgba(212, 175, 55, 0.25);            
+            border-right: 1px solid rgba(212, 175, 55, 0.25);            
+            min-height: 100vh;            
+            padding-bottom: 100px;            
+            position: relative;            
+            z-index: 2;            
+            box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.1);        
         }
 
-        .user-avatar {
-            width: 48px;
-            height: 48px;
-            background: rgb(228, 179, 99);
-            color: #0a2b3e;
-            font-weight: 700;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        .dashboard-container::before {            
+            content: "";            
+            position: absolute;            
+            top: 0;            
+            left: 10%;            
+            width: 80%;            
+            height: 2px;            
+            background: linear-gradient(90deg, transparent, rgb(212, 175, 55), rgb(245, 200, 120), rgb(212, 175, 55), transparent);            
+            opacity: 0.6;        
         }
 
-        .earnings-card {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(228, 179, 99, 0.3);
-            padding: 22px;
-            margin-top: 8px;
-            border-radius: 24px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-            transition: all 0.2s;
+        .dashboard-header {            
+            padding: 24px 20px;            
+            border-bottom: 1px solid rgba(212, 175, 55, 0.25);        
         }
 
-        .earnings-label {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .welcome-section {            
+            display: flex;            
+            justify-content: space-between;            
+            align-items: center;            
+            margin-bottom: 28px;        
         }
 
-        .earnings-amount {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: rgb(228, 179, 99);
-            margin-bottom: 4px;
+        .welcome-text h1 {            
+            font-size: 1.5rem;            
+            font-weight: 800;            
+            color: var(--glamour-gold);
+            text-transform: uppercase;        
         }
 
-        .plan-badge {
-            display: inline-block;
-            background: rgba(228, 179, 99, 0.15);
-            border: 1px solid rgba(228, 179, 99, 0.5);
-            border-radius: 30px;
-            padding: 4px 14px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: rgb(228, 179, 99);
+        .welcome-text p {            
+            color: rgba(255, 255, 255, 0.6);            
+            font-size: 0.85rem;        
+        }
+
+        .user-avatar {            
+            width: 48px;            
+            height: 48px;            
+            background: var(--glamour-gold);            
+            color: #0a0a0a;            
+            font-weight: 800;            
+            font-size: 1.1rem;            
+            display: flex;            
+            align-items: center;            
+            justify-content: center;            
+            border-radius: 40px;            
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);        
+        }
+
+        .earnings-card {            
+            background: rgba(255, 255, 255, 0.03);            
+            border: 1px solid rgba(212, 175, 55, 0.3);            
+            padding: 22px;            
+            margin-top: 8px;            
+            border-radius: 24px;            
+            backdrop-filter: blur(8px);            
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);            
+            transition: all 0.2s;        
+        }
+
+        .earnings-label {            
+            color: rgba(255, 255, 255, 0.8);            
+            font-size: 0.85rem;            
+            margin-bottom: 8px;            
+            display: flex;            
+            align-items: center;            
+            gap: 6px;        
+        }
+
+        .earnings-amount {            
+            font-size: 2.5rem;            
+            font-weight: 900;            
+            color: var(--glamour-gold);            
+            margin-bottom: 4px;        
+        }
+
+        .plan-badge {            
+            display: inline-block;            
+            background: rgba(212, 175, 55, 0.15);            
+            border: 1px solid rgba(212, 175, 55, 0.5);            
+            border-radius: 30px;            
+            padding: 4px 14px;            
+            font-size: 0.8rem;            
+            font-weight: 800;            
+            color: var(--glamour-gold);            
             margin-bottom: 12px;
+            text-transform: uppercase;        
         }
 
-        .balance-note {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.8rem;
-            margin-bottom: 20px;
+        .balance-note {            
+            color: rgba(255, 255, 255, 0.7);            
+            font-size: 0.8rem;            
+            margin-bottom: 20px;        
         }
 
-        .withdraw-btn {
-            background: rgb(228, 179, 99);
-            color: #0a2b3e;
-            border: none;
-            padding: 12px;
-            font-weight: 600;
-            width: 100%;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 40px;
+        .withdraw-btn {            
+            background: var(--glamour-gold);            
+            color: #0a0a0a;            
+            border: none;            
+            padding: 14px;            
+            font-weight: 900;            
+            width: 100%;            
+            cursor: pointer;            
+            transition: all 0.2s;            
+            border-radius: 40px;            
+            font-size: 0.9rem;            
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;        
+        }
+
+        .withdraw-btn:hover {            
+            background: rgb(245, 200, 120);            
+            transform: translateY(-2px);            
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);        
+        }
+
+        .quick-links-section {            
+            padding: 24px 20px;            
+            border-bottom: 1px solid rgba(212, 175, 55, 0.25);        
+        }
+
+        .section-title {            
+            font-size: 1.2rem;            
+            font-weight: 800;            
+            margin-bottom: 20px;            
+            display: flex;            
+            justify-content: space-between;            
+            align-items: center;            
+            color: var(--glamour-gold);
+            text-transform: uppercase;        
+        }
+
+        .view-all {            
+            color: var(--glamour-gold);            
+            font-size: 0.8rem;            
+            cursor: pointer;            
+            font-weight: 600;        
+        }
+
+        .view-all:hover {            
+            text-decoration: underline;            
+            color: rgb(245, 200, 120);        
+        }
+
+        .quick-links-grid {            
+            display: grid;            
+            grid-template-columns: repeat(4, 1fr);            
+            gap: 12px;        
+        }
+
+        .quick-link-item {            
+            background: rgba(255, 255, 255, 0.02);            
+            border: 1px solid rgba(212, 175, 55, 0.2);            
+            padding: 16px 6px;            
+            text-align: center;            
+            cursor: pointer;            
+            transition: all 0.2s;            
+            border-radius: 20px;            
+            backdrop-filter: blur(4px);        
+        }
+
+        .quick-link-item:hover {            
+            background: rgba(255, 255, 255, 0.05);            
+            border-color: var(--glamour-gold);            
+            transform: translateY(-2px);            
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);        
+        }
+
+        .link-icon {            
+            font-size: 1.4rem;            
+            color: var(--glamour-gold);            
+            margin-bottom: 8px;        
+        }
+
+        .quick-link-item span {            
+            font-size: 0.72rem;            
+            display: block;            
+            color: #ffffff;            
+            font-weight: 700;        
+        }
+
+        .stream-section {            
+            padding: 24px 20px;            
+            border-bottom: 1px solid rgba(212, 175, 55, 0.25);        
+        }
+
+        .boost-badge {            
+            background: var(--glamour-gold);            
+            color: #0a0a0a;            
+            padding: 4px 14px;            
+            font-size: 0.7rem;            
+            font-weight: 900;            
+            display: inline-block;            
+            margin-bottom: 16px;            
+            border-radius: 30px;            
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);        
+        }
+
+        .stream-section h3 {            
+            font-size: 1.2rem;            
+            margin-bottom: 8px;            
+            color: var(--glamour-gold);
+            font-weight: 800;        
+        }
+
+        .stream-section p {            
+            color: rgba(255, 255, 255, 0.9);            
+            font-size: 0.85rem;            
+            margin-bottom: 20px;        
+        }
+
+        .join-btn {            
+            background: var(--glamour-gold);            
+            color: #0a0a0a;            
+            border: none;            
+            padding: 14px;            
+            font-weight: 900;            
+            width: 100%;            
+            cursor: pointer;            
+            transition: all 0.2s;            
+            border-radius: 40px;            
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;        
+        }
+
+        .join-btn:hover {            
+            background: rgb(245, 200, 120);            
+            transform: translateY(-1px);            
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);        
+        }
+
+        .action-buttons {            
+            position: fixed;            
+            bottom: 0;            
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;            
+            max-width: 800px;
+            display: grid;            
+            grid-template-columns: repeat(5, 1fr);            
+            background: rgba(10, 10, 10, 0.9);            
+            backdrop-filter: blur(16px);            
+            -webkit-backdrop-filter: blur(16px);            
+            border-top: 1px solid rgba(212, 175, 55, 0.35);            
+            z-index: 1000;        
+        }
+
+        .action-btn {            
+            background: transparent;            
+            border: none;            
+            padding: 14px 5px;            
+            color: rgba(255, 255, 255, 0.6);            
+            font-size: 0.75rem;            
+            cursor: pointer;            
+            display: flex;            
+            flex-direction: column;            
+            align-items: center;            
+            gap: 4px;            
+            transition: 0.2s;            
+            font-weight: 700;        
+        }
+
+        .action-btn.active {            
+            color: var(--glamour-gold);            
+            border-top: 2px solid var(--glamour-gold);        
+        }
+
+        .action-btn:hover {            
+            background: rgba(212, 175, 55, 0.08);            
+            color: var(--glamour-gold);        
+        }
+
+        .activation-modal {            
+            display: none;            
+            position: fixed;            
+            top: 0;            
+            left: 0;            
+            width: 100%;            
+            height: 100%;            
+            background: rgba(10, 10, 10, 0.85);            
+            backdrop-filter: blur(8px);            
+            z-index: 2000;            
+            align-items: center;            
+            justify-content: center;        
+        }
+
+        .activation-content {            
+            background: #0d1211;            
+            backdrop-filter: blur(16px);            
+            -webkit-backdrop-filter: blur(16px);            
+            border: 1px solid var(--glamour-gold);            
+            width: 92%;            
+            max-width: 400px;            
+            padding: 35px 25px;            
+            text-align: center;            
+            border-radius: 25px;            
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.6);        
+        }
+
+        .activation-icon {            
+            font-size: 3rem;            
+            color: var(--glamour-gold);            
+            margin-bottom: 16px;        
+        }
+
+        .activation-title {            
+            font-size: 1.4rem;            
+            font-weight: 900;            
+            margin-bottom: 12px;            
+            color: var(--glamour-gold);
+            text-transform: uppercase;        
+        }
+
+        .activation-message {            
+            color: rgba(255, 255, 255, 0.7);            
+            margin-bottom: 24px;            
             font-size: 0.9rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            line-height: 1.5;        
         }
 
-        .withdraw-btn:hover {
-            background: rgb(245, 200, 120);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
-        }
-
-        .quick-links-section {
-            padding: 24px 20px;
-            border-bottom: 1px solid rgba(228, 179, 99, 0.25);
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: rgb(228, 179, 99);
-        }
-
-        .view-all {
-            color: rgb(228, 179, 99);
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .view-all:hover {
-            text-decoration: underline;
-            color: rgb(245, 200, 120);
-        }
-
-        .quick-links-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .quick-link-item {
-            background: rgba(0, 0, 0, 0.45);
-            border: 1px solid rgba(228, 179, 99, 0.25);
-            padding: 12px 6px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 20px;
-            backdrop-filter: blur(4px);
-        }
-
-        .quick-link-item:hover {
-            background: rgba(0, 0, 0, 0.6);
-            border-color: rgb(228, 179, 99);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .link-icon {
-            font-size: 1.2rem;
-            color: rgb(228, 179, 99);
-            margin-bottom: 8px;
-        }
-
-        .quick-link-item span {
-            font-size: 0.7rem;
-            display: block;
-            color: #ffffff;
-            font-weight: 500;
-        }
-
-        .stream-section {
-            padding: 24px 20px;
-            border-bottom: 1px solid rgba(228, 179, 99, 0.25);
-        }
-
-        .boost-badge {
-            background: rgb(228, 179, 99);
-            color: #0a2b3e;
-            padding: 4px 14px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            display: inline-block;
-            margin-bottom: 16px;
-            border-radius: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .stream-section h3 {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-            color: rgb(228, 179, 99);
-        }
-
-        .stream-section p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.85rem;
-            margin-bottom: 20px;
-        }
-
-        .join-btn {
-            background: rgb(228, 179, 99);
-            color: #0a2b3e;
-            border: none;
-            padding: 12px;
-            font-weight: 600;
-            width: 100%;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 40px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .join-btn:hover {
-            background: rgb(245, 200, 120);
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .action-buttons {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-top: 1px solid rgba(228, 179, 99, 0.35);
-            z-index: 1000;
-        }
-
-        .action-btn {
-            background: transparent;
-            border: none;
-            padding: 12px 5px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.75rem;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
+        .activate-now-btn {            
+            background: var(--glamour-gold);            
+            color: var(--glamour-dark);            
+            border: none;            
+            padding: 16px;            
+            font-weight: 900;            
+            width: 100%;            
+            cursor: pointer;            
+            margin-bottom: 14px;            
+            border-radius: 12px;            
+            font-size: 1rem;            
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);            
             transition: 0.2s;
-            font-weight: 500;
+            text-transform: uppercase;        
         }
 
-        .action-btn.active {
-            color: rgb(228, 179, 99);
-            border-top: 2px solid rgb(228, 179, 99);
+        .activate-now-btn:hover {            
+            background: rgb(245, 200, 120);            
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);        
         }
 
-        .action-btn:hover {
-            background: rgba(228, 179, 99, 0.1);
-            color: rgb(228, 179, 99);
+        .cancel-link {            
+            color: rgba(255, 255, 255, 0.4);            
+            text-decoration: none;            
+            font-size: 0.85rem;            
+            cursor: pointer;            
+            font-weight: bold;        
         }
 
-        .activation-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
+        .cancel-link:hover {            
+            text-decoration: underline;            
+            color: var(--glamour-gold);        
         }
 
-        .activation-content {
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(228, 179, 99, 0.45);
-            width: 90%;
-            max-width: 380px;
-            padding: 32px 28px;
-            text-align: center;
-            border-radius: 32px;
-            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .activation-icon {
-            font-size: 3rem;
-            color: rgb(228, 179, 99);
-            margin-bottom: 16px;
-        }
-
-        .activation-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: rgb(228, 179, 99);
-        }
-
-        .activation-message {
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 28px;
-            font-size: 0.9rem;
-        }
-
-        .activate-now-btn {
-            background: rgb(228, 179, 99);
-            color: #0a2b3e;
-            border: none;
-            padding: 12px;
-            font-weight: 600;
-            width: 100%;
-            cursor: pointer;
-            margin-bottom: 12px;
-            border-radius: 40px;
-            font-size: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transition: 0.2s;
-        }
-
-        .activate-now-btn:hover {
-            background: rgb(245, 200, 120);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .cancel-link {
-            color: rgb(228, 179, 99);
-            text-decoration: none;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .cancel-link:hover {
-            text-decoration: underline;
-            color: rgb(245, 200, 120);
-        }
-
-        @media (max-width: 600px) {
-            .dashboard-container {
-                max-width: 100%;
-            }
-
-            .quick-links-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .dashboard-header {
-                padding: 20px 16px;
-            }
-
-            .earnings-card {
-                padding: 18px;
-            }
+        @media (max-width: 600px) {            
+            .dashboard-container {                
+                max-width: 100%;                
+                border-left: none;
+                border-right: none;
+            }            
+            .quick-links-grid {                
+                grid-template-columns: repeat(3, 1fr);            
+            }            
+            .dashboard-header {                
+                padding: 20px 16px;            
+            }            
+            .earnings-card {                
+                padding: 18px;            
+            }        
         }
     </style>
 </head>
-
 <body>
-    <div class="dashboard-container">
-        <div class="dashboard-header">
-            <div class="welcome-section">
-                <div class="welcome-text">
-                    <h1 id="welcomeName">hi!</h1>
-                    <p id="userEmail">User</p>
-                </div>
-                <div class="user-avatar" id="userAvatar">👤</div>
-            </div>
-            <div class="earnings-card">
-                <div class="earnings-label"><i class="fas fa-chart-line"></i> Your Plan</div>
-                <div class="plan-badge" id="planBadge">Glam Premium Pass</div>
-                <div class="earnings-amount" id="earningsAmount">₦14,000</div>
-                <div class="balance-note" id="balanceNote">Activate your account to start earning in Naira</div>
-                <button class="withdraw-btn modal-trigger">Request Withdrawal</button>
-            </div>
-        </div>
 
-        <div class="quick-links-section">
-            <div class="section-title">
-                Quick Links
-                <span class="view-all modal-trigger">More →</span>
+    <div id="glamourToast">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-[#d4af37]/10 flex items-center justify-center text-[#d4af37]">
+                <i class="fas fa-shield-halved"></i>
             </div>
-            <div class="quick-links-grid">
-                <div class="quick-link-item modal-trigger">
-                    <div class="link-icon"><i class="fas fa-cloud-upload-alt"></i></div><span>Upload Content</span>
-                </div>
-                <div class="quick-link-item modal-trigger">
-                    <div class="link-icon"><i class="fas fa-file-download"></i></div><span>Glam Scripts</span>
-                </div>
-                <div class="quick-link-item modal-trigger">
-                    <div class="link-icon"><i class="fas fa-video"></i></div><span>Join Livestreams</span>
-                </div>
-                <div class="quick-link-item modal-trigger">
-                    <div class="link-icon"><i class="fas fa-eye"></i></div><span>Watch & Earn</span>
-                </div>
-                <div class="quick-link-item modal-trigger">
-                    <div class="link-icon"><i class="fas fa-cube"></i></div><span>Glam Loot Box</span>
-                </div>
-                <div class="quick-link-item modal-trigger">
-                    <div class="link-icon"><i class="fab fa-telegram"></i></div><span>Telegram Monetization</span>
-                </div>
-                <div class="quick-link-item modal-trigger">
-                    <div class="link-icon"><i class="fas fa-chart-bar"></i></div><span>Analytics</span>
-                </div>
-                <div class="quick-link-item modal-trigger">
-                    <div class="link-icon"><i class="fas fa-graduation-cap"></i></div><span>Glam Academy</span>
-                </div>
+            <div>
+                <b class="text-[10px] uppercase tracking-widest text-[#d4af37]" id="toastTitle">Security Protocol</b>
+                <p id="toastMsg" class="text-xs text-white/70 font-bold">Validating...</p>
             </div>
         </div>
-
-        <div class="stream-section">
-            <div class="boost-badge" id="boostBadge">x10 BOOST</div>
-            <h3>Join. Stream. Earn in Naira</h3>
-            <p id="streamMessage">Join Livestreams on TikTok for x10 boost on GlamStatus — paid in ₦</p>
-            <button class="join-btn modal-trigger">Join Glam Stream</button>
-        </div>
+        <div id="toastBar" class="toast-progress"></div>
     </div>
 
-    <div class="action-buttons">
-        <button class="action-btn active modal-trigger">
-            <div class="action-icon"><i class="fas fa-bolt"></i></div><span>Activate</span>
-        </button>
-        <button class="action-btn modal-trigger">
-            <div class="action-icon"><i class="fas fa-gamepad"></i></div><span>Games</span>
-        </button>
-        <button class="action-btn modal-trigger">
-            <div class="action-icon"><i class="fas fa-wallet"></i></div><span>Withdraw</span>
-        </button>
-        <button class="action-btn modal-trigger">
-            <div class="action-icon"><i class="fas fa-user"></i></div><span>Profile</span>
-        </button>
-    </div>
-
-    <div class="activation-modal" id="activationModal">
-        <div class="activation-content">
-            <div class="activation-icon"><i class="fas fa-gem"></i></div>
-            <h2 class="activation-title">Activate Your Glam Account</h2>
-            <p class="activation-message" id="modalMessage">Complete your Glam Fee payment to unlock withdrawals and all
-                Glam modules.</p>
-            <button class="activate-now-btn" id="activateNowBtn">Pay Glam Fee</button>
-            <a class="cancel-link" id="cancelModalLink">Maybe later</a>
+    <header class="topbar">
+        <img src="logo.png" alt="Glamour Logo" class="logo-img">
+        <div class="navbar">
+            <a href="index.html">HOME</a>
+            <a href="reward.html">REWARD</a>
+            <a href="dashboard.html" class="active">DASHBOARD</a>
         </div>
+    </header>
+
+    <div class="dashboard-container">        
+        <div class="dashboard-header">            
+            <div class="welcome-section">                
+                <div class="welcome-text">                    
+                    <h1 id="welcomeName">HI!</h1>                    
+                    <p id="userEmail">Syncing credentials...</p>                
+                </div>                
+                <div class="user-avatar" id="userAvatar"><i class="fas fa-user"></i></div>            
+            </div>            
+            <div class="earnings-card">                
+                <div class="earnings-label"><i class="fas fa-chart-line text-[#d4af37]"></i> Your Current Plan</div>                
+                <div class="plan-badge" id="planBadge">Regular Plan</div>                
+                <div class="earnings-amount" id="earningsAmount">₦15,000</div>                
+                <div class="balance-note" id="balanceNote">Activate your account to start earning in Naira</div>                
+                <button class="withdraw-btn modal-trigger">Request Withdrawal</button>            
+            </div>        </div>
+        
+        <div class="quick-links-section">            
+            <div class="section-title">                
+                Quick Modules                
+                <span class="view-all modal-trigger">More →</span>            
+            </div>            
+            <div class="quick-links-grid">                
+                <div class="quick-link-item modal-trigger">                    
+                    <div class="link-icon"><i class="fas fa-cloud-upload-alt"></i></div><span>Upload Content</span>                
+                </div>                
+                <div class="quick-link-item modal-trigger">                    
+                    <div class="link-icon"><i class="fas fa-file-download"></i></div><span>Glam Scripts</span>                
+                </div>                
+                <div class="quick-link-item modal-trigger">                    
+                    <div class="link-icon"><i class="fas fa-video"></i></div><span>Join Livestreams</span>                
+                </div>                
+                <div class="quick-link-item modal-trigger">                    
+                    <div class="link-icon"><i class="fas fa-eye"></i></div><span>Watch & Earn</span>                
+                </div>                
+                <div class="quick-link-item modal-trigger">                    
+                    <div class="link-icon"><i class="fas fa-cube"></i></div><span>Glam Loot Box</span>                
+                </div>                
+                <div class="quick-link-item modal-trigger">                    
+                    <div class="link-icon"><i class="fab fa-telegram"></i></div><span>Telegram Monetization</span>                </div>                
+                <div class="quick-link-item modal-trigger">                    
+                    <div class="link-icon"><i class="fas fa-chart-bar"></i></div><span>Analytics</span>                
+                </div>                
+                <div class="quick-link-item modal-trigger">                    
+                    <div class="link-icon"><i class="fas fa-graduation-cap"></i></div><span>Glam Academy</span>                
+                </div>            
+            </div>        
+        </div>
+        
+        <div class="stream-section">            
+            <div class="boost-badge" id="boostBadge">x10 BOOST</div>            
+            <h3>Join. Stream. Earn in Naira</h3>            
+            <p id="streamMessage">Join Livestreams on TikTok for x10 boost on GlamStatus — paid in ₦</p>            
+            <button class="join-btn modal-trigger">Join Glam Stream</button>        
+        </div>    
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    <div class="action-buttons">        
+        <button class="action-btn active modal-trigger">            
+            <div class="link-icon"><i class="fas fa-bolt"></i></div><span>Activate</span>        
+        </button>        
+        <button class="action-btn modal-trigger">            
+            <div class="link-icon"><i class="fas fa-gamepad"></i></div><span>Games</span>        
+        </button>        
+        <button class="action-btn modal-trigger">            
+            <div class="link-icon"><i class="fas fa-wallet"></i></div><span>Withdraw</span>        
+        </button>        
+        <button class="action-btn modal-trigger">            
+            <div class="link-icon"><i class="fas fa-user"></i></div><span>Profile</span>        
+        </button>    
+        <button class="action-btn" id="logout-panel-btn">            
+            <div class="link-icon text-red-500"><i class="fas fa-power-off"></i></div><span class="text-red-400">Logout</span>        
+        </button>
+    </div>
 
-        // Firebase Configuration (Replace with your actual project keys)
-        const firebaseConfig = {
+    <div class="activation-modal" id="activationModal">        
+        <div class="activation-content">            
+            <div class="activation-icon"><i class="fas fa-gem"></i></div>            
+            <h2 class="activation-title">Activate Your Glam Account</h2>            
+            <p class="activation-message" id="modalMessage">Complete your Glam Fee payment to unlock withdrawals and all Glam modules.</p>            
+            
+            <button class="activate-now-btn" id="activateNowBtn">Pay Glam Fee</button>            
+            
+            <div class="mt-4">
+                <a class="cancel-link" id="cancelModalLink">Maybe later</a>            
+            </div>
+        </div>    
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"; // Standard import context match
+    import { getFirestore as initializeFirestore, doc as documentRef, getDoc as fetchDocument } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+    const firebaseConfig = {
         apiKey: "AIzaSyDjtqh_3ITTzXH2j16L13Xo7afDsVY7rFw",
         authDomain: "glamour-morrishpnl.firebaseapp.com",
         projectId: "glamour-morrishpnl",
@@ -517,86 +613,127 @@
         measurementId: "G-3NTCVT48M8"
     };
 
-        // Initialize App instance
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = initializeFirestore(app);
 
-        document.addEventListener('DOMContentLoaded', function () {
-            // Check for login state
-            const userData = JSON.parse(localStorage.getItem('glamourUserData'));
-            if (!userData) {
-                alert('Please complete registration first');
-                window.location.href = 'form.html';
-                return;
+    const PAYMENT_LINKS = {
+        "regular": "https://checkout.korapay.com/pay/TQGZSwvyLUEZN3h",
+        "prime": "https://checkout.korapay.com/pay/SSFochP1hpHsT9T"
+    };
+
+    let userPlanType = "regular";
+
+    window.showGlamourAlert = (msg, type = 'info') => {
+        const toast = document.getElementById('glamourToast');
+        const title = document.getElementById('toastTitle');
+        document.getElementById('toastMsg').innerText = msg;
+        
+        if(type === 'error') {
+            toast.classList.add('error');
+            title.innerText = "SECURITY BREACH";
+        } else {
+            toast.classList.remove('error');
+            title.innerText = "SYSTEM PROTOCOL";
+        }
+
+        toast.classList.add('show');
+        let width = 100;
+        const interval = setInterval(() => {
+            width -= 2;
+            document.getElementById('toastBar').style.width = width + '%';
+            if (width <= 0) {
+                clearInterval(interval);
+                toast.classList.remove('show');
+                setTimeout(() => { document.getElementById('toastBar').style.width = '100%'; }, 500);
             }
+        }, 60);
+    };
 
-            const firstName = userData.fullName.split(' ')[0];
-            document.getElementById('welcomeName').textContent = `hi, ${firstName}!`;
-            document.getElementById('userEmail').textContent = userData.email;
-            const initials = userData.fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-            document.getElementById('userAvatar').innerHTML = initials || '<i class="fas fa-user"></i>';
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
 
-            let planPrice = parseInt(userData.planPrice) || 15000;
+        try {
+            const userDocRef = documentRef(db, "users", user.uid);
+            const userDocSnap = await fetchDocument(userDocRef);
 
-            // Korapay payment link assets
-            const PAYMENT_LINKS = {
-                15000: 'https://checkout.korapay.com/pay/TQGZSwvyLUEZN3h',
-                20000: 'https://checkout.korapay.com/pay/SSFochP1hpHsT9T'
-            };
+            if (userDocSnap.exists()) {
+                const data = userDocSnap.data();
+                
+                const fullName = data.fullName || "Glamour Member";
+                userPlanType = data.plan || "regular";
+                
+                const firstName = fullName.split(' ')[0];
+                document.getElementById('welcomeName').textContent = `HI, ${firstName}!`;
+                document.getElementById('userEmail').textContent = user.email;
+                
+                const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                document.getElementById('userAvatar').innerHTML = initials || '<i class="fas fa-user"></i>';
 
-            // Modal reference points
-            const modal = document.getElementById('activationModal');
-            const closeModal = () => { modal.style.display = 'none'; document.body.style.overflow = 'auto'; };
-            const openModal = () => { modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; };
-            
-            document.querySelectorAll('.modal-trigger').forEach(trigger => trigger.addEventListener('click', openModal));
-            document.getElementById('cancelModalLink')?.addEventListener('click', closeModal);
-            window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+                const isPlus = userPlanType === 'prime';
 
-            // Fetch live data payload from Firebase instance node tree
-            const usernameClean = userData.username || userData.fullName.replace(/\s+/g, '').toLowerCase();
-            const userDbRef = ref(database, 'users/' + usernameClean);
-
-            onValue(userDbRef, (snapshot) => {
-                const liveData = snapshot.val();
-                if (liveData && liveData.planPrice) {
-                    planPrice = parseInt(liveData.planPrice);
-                    userData.planPrice = planPrice;
-                    localStorage.setItem('glamourUserData', JSON.stringify(userData));
+                if (isPlus) {
+                    document.getElementById('earningsAmount').textContent = '₦20,000';
+                    document.getElementById('planBadge').textContent = 'Glam Premium Plus';
+                    document.getElementById('balanceNote').innerHTML = 'Premium Plus – Higher daily earnings & VIP perks';
+                    document.getElementById('boostBadge').textContent = 'x15 BOOST';
+                    document.getElementById('streamMessage').textContent = 'Join Livestreams on TikTok for x15 boost (Premium Plus benefit)';
+                    document.getElementById('modalMessage').textContent = 'Activate your Glam Premium Plus account (₦20,000) to unlock VIP rewards, x15 boost and higher withdrawal limits.';
+                } else {
+                    document.getElementById('earningsAmount').textContent = '₦15,000';
+                    document.getElementById('planBadge').textContent = 'Regular Plan';
+                    document.getElementById('balanceNote').innerHTML = 'Activate your account to start earning up to ₦12,200+ daily';
+                    document.getElementById('boostBadge').textContent = 'x10 BOOST';
+                    document.getElementById('streamMessage').textContent = 'Join Livestreams on TikTok for x10 boost on GlamStatus — paid in ₦';
+                    document.getElementById('modalMessage').textContent = 'Complete your Glam Fee payment (₦15,000) to unlock withdrawals and all Glam modules.';
                 }
 
-                // Check plan profile parameters
-                const isPlus = planPrice === 20000;
+                const storagePaidKey = localStorage.getItem(`paid_${user.uid}`);
+                if (data.paidStatus === true || storagePaidKey === 'true') {
+                    if (storagePaidKey !== 'true') localStorage.setItem(`paid_${user.uid}`, 'true');
+                    document.getElementById('balanceNote').innerHTML = `<span class="text-emerald-400 font-bold"><i class="fas fa-check-circle"></i> Account Active</span> • Balance: ₦${(data.balance || 0).toLocaleString()}`;
+                    document.getElementById('earningsAmount').textContent = `₦${(data.balance || 0).toLocaleString()}`;
+                }
 
-                // Sync layout interface elements dynamically
-                document.getElementById('earningsAmount').textContent = isPlus ? '₦20,000' : '₦14,000';
-                document.getElementById('planBadge').textContent = isPlus ? 'Glam Premium Plus' : 'Glam Premium Pass';
-                document.getElementById('balanceNote').innerHTML = isPlus
-                    ? 'Premium Plus – Higher daily earnings & VIP perks'
-                    : 'Activate your account to start earning up to ₤12,200+ daily';
+            } else {
+                showGlamourAlert("Profile matrix document error.", "error");
+            }
+        } catch (err) {
+            console.error(err);
+            showGlamourAlert("Error fetching cloud profile metrics.", "error");
+        }
+    });
 
-                document.getElementById('boostBadge').textContent = isPlus ? 'x15 BOOST' : 'x10 BOOST';
-                document.getElementById('streamMessage').textContent = isPlus
-                    ? 'Join Livestreams on TikTok for x15 boost (Premium Plus benefit)'
-                    : 'Join Livestreams on TikTok for x10 boost on GlamStatus — paid in ₦';
+    const modal = document.getElementById('activationModal');
+    const closeModal = () => { modal.style.display = 'none'; document.body.style.overflow = 'auto'; };
+    const openModal = () => { modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; };
+    
+    document.querySelectorAll('.modal-trigger').forEach(trigger => trigger.addEventListener('click', openModal));
+    document.getElementById('cancelModalLink').addEventListener('click', closeModal);
+    window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-                document.getElementById('modalMessage').textContent = isPlus
-                    ? 'Activate your Glam Premium Plus account (₦20,000) to unlock VIP rewards, x15 boost and higher withdrawal limits.'
-                    : 'Complete your Glam Fee payment (₦14,000) to unlock withdrawals and all Glam modules.';
-            });
+    document.getElementById('activateNowBtn').addEventListener('click', () => {
+        window.location.href = PAYMENT_LINKS[userPlanType] || PAYMENT_LINKS["regular"];
+    });
 
-            // Redirect routing processing on pay button trigger actions
-            document.getElementById('activateNowBtn')?.addEventListener('click', () => {
-                window.location.href = PAYMENT_LINKS[planPrice] || PAYMENT_LINKS[15000];
-            });
+    document.getElementById('logout-panel-btn').addEventListener('click', async () => {
+        try {
+            await signOut(auth);
+            showGlamourAlert("Session severed safely.");
+            setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+        } catch (err) {
+            showGlamourAlert("Error running exit procedure.", "error");
+        }
+    });
 
-            // Navigation state interface processing handler
-            document.querySelectorAll('.action-btn').forEach(btn => btn.addEventListener('click', function () {
-                document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-            }));
-        });
-    </script>
+    document.querySelectorAll('.action-btn').forEach(btn => btn.addEventListener('click', function () {
+        if(this.id === 'logout-panel-btn') return;
+        document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+    }));
+</script>
 </body>
-
 </html>
