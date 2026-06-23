@@ -46,45 +46,7 @@
             z-index: 0;
         }
 
-        .topbar { 
-            width: 100%; 
-            background: var(--glamour-dark); 
-            padding: 15px 5%; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            border-bottom: 2px solid var(--glamour-gold); 
-            position: relative;
-            z-index: 10;
-        }
-
-        .logo-img { 
-            height: 40px; 
-            filter: brightness(0) invert(1); 
-            margin-bottom: 12px; 
-        }
-
-        .navbar { 
-            display: flex; 
-            justify-content: center; 
-            gap: 25px; 
-            width: 100%; 
-        }
-
-        .navbar a { 
-            color: #fff; 
-            text-decoration: none; 
-            font-weight: bold; 
-            font-size: 13px; 
-            text-transform: uppercase; 
-        }
-
-        .navbar a.active { 
-            border-bottom: 3px solid var(--glamour-gold); 
-            color: var(--glamour-gold); 
-            padding-bottom: 5px; 
-        }
-
+        /* SECURITY TOAST */
         #glamourToast {
             position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 350px; background: #0d1211;
@@ -499,15 +461,6 @@
         <div id="toastBar" class="toast-progress"></div>
     </div>
 
-    <header class="topbar">
-        <img src="logo.png" alt="Glamour Logo" class="logo-img">
-        <div class="navbar">
-            <a href="index.html">HOME</a>
-            <a href="reward.html">REWARD</a>
-            <a href="dashboard.html" class="active">DASHBOARD</a>
-        </div>
-    </header>
-
     <div class="dashboard-container">        
         <div class="dashboard-header">            
             <div class="welcome-section">                
@@ -519,11 +472,12 @@
             </div>            
             <div class="earnings-card">                
                 <div class="earnings-label"><i class="fas fa-chart-line text-[#d4af37]"></i> Your Current Plan</div>                
-                <div class="plan-badge" id="planBadge">Regular Plan</div>                
-                <div class="earnings-amount" id="earningsAmount">₦15,000</div>                
+                <div class="plan-badge" id="planBadge">Tracking Plan...</div>                
+                <div class="earnings-amount" id="earningsAmount">₦0.00</div>                
                 <div class="balance-note" id="balanceNote">Activate your account to start earning in Naira</div>                
                 <button class="withdraw-btn modal-trigger">Request Withdrawal</button>            
-            </div>        </div>
+            </div>        
+        </div>
         
         <div class="quick-links-section">            
             <div class="section-title">                
@@ -547,7 +501,8 @@
                     <div class="link-icon"><i class="fas fa-cube"></i></div><span>Glam Loot Box</span>                
                 </div>                
                 <div class="quick-link-item modal-trigger">                    
-                    <div class="link-icon"><i class="fab fa-telegram"></i></div><span>Telegram Monetization</span>                </div>                
+                    <div class="link-icon"><i class="fab fa-telegram"></i></div><span>Telegram Monetization</span>                
+                </div>                
                 <div class="quick-link-item modal-trigger">                    
                     <div class="link-icon"><i class="fas fa-chart-bar"></i></div><span>Analytics</span>                
                 </div>                
@@ -600,8 +555,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"; // Standard import context match
-    import { getFirestore as initializeFirestore, doc as documentRef, getDoc as fetchDocument } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDjtqh_3ITTzXH2j16L13Xo7afDsVY7rFw",
@@ -615,11 +569,11 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = initializeFirestore(app);
+    const db = getFirestore(app);
 
     const PAYMENT_LINKS = {
-        "regular": "https://checkout.korapay.com/pay/TQGZSwvyLUEZN3h",
-        "prime": "https://checkout.korapay.com/pay/SSFochP1hpHsT9T"
+        "regular": "https://checkout.korapay.com/pay/6xiRR0YJCiH914h",
+        "prime": "https://checkout.korapay.com/pay/QJMZTZpbWoAjTDv"
     };
 
     let userPlanType = "regular";
@@ -650,6 +604,7 @@
         }, 60);
     };
 
+    // ACTIVE DATABASE SYNC AND MAPPING PROTOCOL
     onAuthStateChanged(auth, async (user) => {
         if (!user) {
             window.location.href = 'login.html';
@@ -657,14 +612,14 @@
         }
 
         try {
-            const userDocRef = documentRef(db, "users", user.uid);
-            const userDocSnap = await fetchDocument(userDocRef);
+            const userDocRef = doc(db, "users", user.uid);
+            const userDocSnap = await getDoc(userDocRef);
 
             if (userDocSnap.exists()) {
                 const data = userDocSnap.data();
                 
                 const fullName = data.fullName || "Glamour Member";
-                userPlanType = data.plan || "regular";
+                userPlanType = data.plan || "regular"; 
                 
                 const firstName = fullName.split(' ')[0];
                 document.getElementById('welcomeName').textContent = `HI, ${firstName}!`;
@@ -673,15 +628,16 @@
                 const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
                 document.getElementById('userAvatar').innerHTML = initials || '<i class="fas fa-user"></i>';
 
-                const isPlus = userPlanType === 'prime';
+                const isPlus = (userPlanType === 'prime');
 
+                // TRACKING AND UPDATING VALUES ACCORDING TO USER DATABASE SCHEMA
                 if (isPlus) {
                     document.getElementById('earningsAmount').textContent = '₦20,000';
-                    document.getElementById('planBadge').textContent = 'Glam Premium Plus';
-                    document.getElementById('balanceNote').innerHTML = 'Premium Plus – Higher daily earnings & VIP perks';
+                    document.getElementById('planBadge').textContent = 'Prime Plan';
+                    document.getElementById('balanceNote').innerHTML = 'Prime Plan – Higher daily earnings & VIP perks';
                     document.getElementById('boostBadge').textContent = 'x15 BOOST';
                     document.getElementById('streamMessage').textContent = 'Join Livestreams on TikTok for x15 boost (Premium Plus benefit)';
-                    document.getElementById('modalMessage').textContent = 'Activate your Glam Premium Plus account (₦20,000) to unlock VIP rewards, x15 boost and higher withdrawal limits.';
+                    document.getElementById('modalMessage').textContent = 'Activate your Glam Prime Plan account (₦20,000) to unlock VIP rewards, x15 boost and higher withdrawal limits.';
                 } else {
                     document.getElementById('earningsAmount').textContent = '₦15,000';
                     document.getElementById('planBadge').textContent = 'Regular Plan';
@@ -691,6 +647,7 @@
                     document.getElementById('modalMessage').textContent = 'Complete your Glam Fee payment (₦15,000) to unlock withdrawals and all Glam modules.';
                 }
 
+                // If account is already processed and marked true, show full tracking data values
                 const storagePaidKey = localStorage.getItem(`paid_${user.uid}`);
                 if (data.paidStatus === true || storagePaidKey === 'true') {
                     if (storagePaidKey !== 'true') localStorage.setItem(`paid_${user.uid}`, 'true');
