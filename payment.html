@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;600;700;800&display=swap');
         :root { --glamour-gold: #d4af37; --glamour-dark: #0a0a0a; --glamour-red: #ff4b4b; }
         body {
             background-color: var(--glamour-dark);
@@ -152,41 +152,61 @@
     }
 
     function setupUI() {
+        // First check URL query parameters for explicit plan or amount overriding
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlPlan = urlParams.get('plan');
+        const urlAmount = urlParams.get('amount');
+        
+        if (urlPlan) {
+            userSelectedPlan = urlPlan.toLowerCase();
+        }
+
         const selected = localStorage.getItem('selected_country') || 'nigeria';
         const data = glamourData[selected];
-        
+        const isPrime = userSelectedPlan === "prime";
+
         if (data) {
             document.getElementById('country-name-label').innerText = data.name;
-            document.getElementById('bank-name-display').innerText = data.bank;
-            document.getElementById('db-number').innerText = data.number;
-            document.getElementById('account-name-display').innerText = data.holder;
 
-            // Determine if the current active plan is prime
-            const isPrime = userSelectedPlan.toLowerCase() === "prime";
-            const displayPlanKey = isPrime ? "prime" : "regular";
-            
-            // Set default plan pricing matrix fallback cleanly
-            document.getElementById('display-amount').innerText = data.amount[displayPlanKey];
+            // Default base data from matrix
+            let finalBank = data.bank;
+            let finalNumber = data.number;
+            let finalHolder = data.holder;
+            let finalAmount = isPrime ? data.amount.prime : data.amount.regular;
 
-            // Apply admin overrule live configurations adjustments intelligently based on plan tier
-            if(cachedAdminConfig && cachedAdminConfig[selected]) {
+            // If an explicit amount was passed in query parameter and matches numerical scale
+            if (urlAmount && selected === 'nigeria') {
+                finalAmount = '₦' + Number(urlAmount).toLocaleString();
+            }
+
+            // Override dynamically if admin updated configs in Firestore
+            if (cachedAdminConfig && cachedAdminConfig[selected]) {
                 const live = cachedAdminConfig[selected];
-                if(live.bank) document.getElementById('bank-name-display').innerText = live.bank;
-                if(live.num) document.getElementById('db-number').innerText = live.num;
-                if(live.name) document.getElementById('account-name-display').innerText = live.name;
-                
-                // Prioritize checking custom configurations fields matching registration status
+
                 if (isPrime) {
-                    if (live.amtPrime) {
-                        document.getElementById('display-amount').innerText = live.amtPrime;
-                    } else if (live.amt) {
-                        // Adaptive back-compat layer in case you only populated regular field
-                        document.getElementById('display-amount').innerText = live.amt;
-                    }
+                    if (live.primeBank) finalBank = live.primeBank;
+                    else if (live.bank) finalBank = live.bank;
+
+                    if (live.primeNum) finalNumber = live.primeNum;
+                    else if (live.num) finalNumber = live.num;
+
+                    if (live.primeName) finalHolder = live.primeName;
+                    else if (live.name) finalHolder = live.name;
+
+                    if (live.amtPrime) finalAmount = live.amtPrime;
+                    else if (live.amt && !urlAmount) finalAmount = live.amt;
                 } else {
-                    if (live.amt) document.getElementById('display-amount').innerText = live.amt;
+                    if (live.bank) finalBank = live.bank;
+                    if (live.num) finalNumber = live.num;
+                    if (live.name) finalHolder = live.name;
+                    if (live.amt && !urlAmount) finalAmount = live.amt;
                 }
             }
+
+            document.getElementById('bank-name-display').innerText = finalBank;
+            document.getElementById('db-number').innerText = finalNumber;
+            document.getElementById('account-name-display').innerText = finalHolder;
+            document.getElementById('display-amount').innerText = finalAmount;
         }
     }
 
@@ -222,7 +242,10 @@
 
         // Track authentication profile settings
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlPlan = urlParams.get('plan');
+
+            if (user && !urlPlan) {
                 const userRef = doc(db, "users", user.uid);
                 const userSnap = await getDoc(userRef);
                 if (userSnap.exists()) {
@@ -232,11 +255,9 @@
                     } else if (userData.selectedPlan) {
                         userSelectedPlan = userData.selectedPlan;
                     }
-                    setupUI();
                 }
-            } else {
-                setupUI();
             }
+            setupUI();
         });
 
         // Event Listener for File Upload Screenshots
